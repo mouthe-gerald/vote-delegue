@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:14
+    container_name: vote_db
+    environment:
+      POSTGRES_DB: vote_db
+      POSTGRES_USER: vote_user
+      POSTGRES_PASSWORD: vote_password_2024
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - vote_network
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: vote_backend
+    environment:
+      - SECRET_KEY=django-secret-key-vote-delegue-2024
+      - DEBUG=False
+      - ALLOWED_HOSTS=localhost,127.0.0.1,192.168.63.203
+      - DB_NAME=vote_db
+      - DB_USER=vote_user
+      - DB_PASSWORD=vote_password_2024
+      - DB_HOST=db
+      - DB_PORT=5432
+      - JWT_ACCESS_TOKEN_LIFETIME=480
+      - JWT_REFRESH_TOKEN_LIFETIME=1440
+      - FACE_RECOGNITION_THRESHOLD=0.5
+      - EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_PORT=587
+      - EMAIL_USE_TLS=True
+      - EMAIL_HOST_USER=mickymil24@gmail.com
+      - EMAIL_HOST_PASSWORD=wetwymmozmzgrzsd
+      - EMAIL_FROM=VoteDelegue <mickymil24@gmail.com>
+      - CORS_ALLOW_ALL_ORIGINS=True
+    volumes:
+      - media_data:/app/media
+      - static_data:/app/staticfiles
+    depends_on:
+      - db
+    networks:
+      - vote_network
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: vote_frontend
+    networks:
+      - vote_network
+    restart: always
+
+  nginx:
+    build: ./nginx
+    container_name: vote_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs
+      - media_data:/app/media
+      - static_data:/app/staticfiles
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - vote_network
+    restart: always
+
+volumes:
+  postgres_data:
+  media_data:
+  static_data:
+
+networks:
+  vote_network:
+    driver: bridge

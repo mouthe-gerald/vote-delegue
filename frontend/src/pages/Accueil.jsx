@@ -11,30 +11,30 @@ const Accueil = () => {
     }}>
 
       {/* Navbar */}
-      <nav className="px-8 py-5 flex items-center justify-between">
+      <nav className="px-8 py-5 flex items-center justify-between" style={{ flexWrap: 'wrap', gap: '15px' }}>
         <div className="flex items-center gap-3">
           {/* Logo plateforme */}
-         <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-  <Vote size={24} className="text-white" />
-</div>
+          <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+            <Vote size={24} className="text-white" />
+          </div>
           <div>
             <p className="text-white font-bold text-lg leading-tight">Vote Des Délégués</p>
             <p className="text-white/60 text-xs">De Classe</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
           <button onClick={() => navigate('/resultats')}
             className="text-white/80 hover:text-white px-4 py-2 rounded-xl hover:bg-white/10 transition-all text-sm">
             Résultats
           </button>
           <button onClick={() => navigate('/inscription')}
-  className="text-white/80 hover:text-white px-4 py-2 rounded-xl hover:bg-white/10 transition-all text-sm">
-  S'inscrire
-</button>
-<button onClick={() => navigate('/connexion')}
-  className="bg-white text-purple-700 font-semibold px-5 py-2 rounded-xl hover:bg-purple-50 transition-all text-sm shadow-lg">
-  Se connecter
-</button>
+            className="text-white/80 hover:text-white px-4 py-2 rounded-xl hover:bg-white/10 transition-all text-sm">
+            S'inscrire
+          </button>
+          <button onClick={() => navigate('/connexion')}
+            className="bg-white text-purple-700 font-semibold px-5 py-2 rounded-xl hover:bg-purple-50 transition-all text-sm shadow-lg">
+            Se connecter
+          </button>
         </div>
       </nav>
 
@@ -45,13 +45,13 @@ const Accueil = () => {
         <div className="flex-1 text-center lg:text-left">
 
           {/* Badge université */}
-         <div className="flex flex-col items-start mb-8">
-  <img src={logoIUT} alt="IUT FV" className="w-96 h-96 object-contain mb-3" />
-  <span className="text-white/80 text-sm bg-white/10 border border-white/20 rounded-full px-4 py-2">
-    IUT Fotso Victor de Bandjoun
-  </span>
-</div>
-          <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+          <div className="flex flex-col items-center lg:items-start mb-8">
+            <img src={logoIUT} alt="IUT FV" className="w-48 h-48 lg:w-96 lg:h-96 object-contain mb-3" />
+            <span className="text-white/80 text-sm bg-white/10 border border-white/20 rounded-full px-4 py-2">
+              IUT Fotso Victor de Bandjoun
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
             Vote Des<br />
             <span className="text-pink-300">Délégués</span><br />
             De Classe
@@ -61,7 +61,7 @@ const Accueil = () => {
             Votez en toute sécurité 🔐
           </p>
 
-          <p className="text-white/60 text-base mb-10 max-w-md">
+          <p className="text-white/60 text-base mb-10 max-w-md mx-auto lg:mx-0">
             Plateforme officielle d'élection des délégués de classe — 
             Licence Génie Informatique, Université de Dschang.
           </p>
@@ -125,7 +125,7 @@ const Accueil = () => {
       {/* Footer */}
       <div className="text-center py-8 border-t border-white/10">
         <p className="text-white/50 text-sm">
-          © 2025-2026 Vote Des Délégués De Classe — IUT Fotso Victor de Bandjoun
+          ©️ 2025-2026 Vote Des Délégués De Classe — IUT Fotso Victor de Bandjoun
         </p>
         <p className="text-white/30 text-xs mt-1">
           Département Licence Génie Informatique — Université de Dschang

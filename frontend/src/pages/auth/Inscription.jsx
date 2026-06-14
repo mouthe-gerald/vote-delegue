@@ -24,8 +24,8 @@ const Inscription = () => {
   const navigate                = useNavigate()
 
   const [form, setForm] = useState({
-    nom: '', prenom: '', matricule: '', email: '',
-    filiere: '', niveau: '',annee_academique: '2025-2026',
+    nom: '', prenom: '', matricule: 'CM-UDS-', email: '',
+    filiere: '', niveau: '', annee_academique: '2025-2026',
     mot_de_passe: '', mot_de_passe_confirm: '',
   })
 
@@ -93,7 +93,7 @@ const Inscription = () => {
     setErreur('')
     try {
       const { data: loginData } = await authAPI.connexion({
-        matricule: form.matricule,
+        identifiant: form.matricule,
         mot_de_passe: form.mot_de_passe,
       })
       localStorage.setItem('access_token', loginData.tokens.access)
@@ -171,9 +171,16 @@ const Inscription = () => {
             </div>
             <div className="relative">
               <Hash size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-              <input placeholder="CM-UDS-24IUT0001" value={form.matricule}
-                onChange={e => setForm({...form, matricule: e.target.value})}
-                className="input-field pl-9 text-sm" required />
+              <input
+                placeholder="CM-UDS-24IUT0001"
+                value={form.matricule}
+                onChange={e => {
+                  const val = e.target.value
+                  if (val.startsWith('CM-UDS-')) setForm({...form, matricule: val})
+                }}
+                className="input-field pl-9 text-sm"
+                required
+              />
             </div>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
@@ -282,7 +289,6 @@ const Inscription = () => {
               </p>
             </div>
 
-            {/* Instructions */}
             <div className="bg-blue-50 rounded-xl p-3 text-sm text-blue-700">
               💡 Conseils : Bonne lumière frontale, visage centré, regardez la caméra
             </div>
@@ -291,8 +297,8 @@ const Inscription = () => {
               {!visageCapture ? (
                 <Webcam
                   ref={webcamRef}
-                 screenshotFormat="image/jpeg"
-screenshotQuality={0.95}
+                  screenshotFormat="image/jpeg"
+                  screenshotQuality={0.95}
                   className="w-full rounded-2xl"
                   onUserMedia={() => setWebcamReady(true)}
                   onUserMediaError={() => toast.error('Impossible d\'accéder à la caméra.')}
@@ -306,7 +312,6 @@ screenshotQuality={0.95}
                 <img src={visageCapture} alt="capture" className="w-full rounded-2xl" />
               )}
               <div className="absolute inset-0 border-4 border-purple-500/50 rounded-2xl pointer-events-none" />
-              {/* Guide visage */}
               {!visageCapture && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="w-48 h-56 border-4 border-white/60 rounded-full" />

@@ -26,7 +26,7 @@ class CandidatureListView(APIView):
         )
         if election_id:
             candidatures = candidatures.filter(election_id=election_id)
-        serializer = CandidatureSerializer(candidatures, many=True)
+        serializer = CandidatureSerializer(candidatures, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -53,7 +53,7 @@ class SoumettreCandidatureView(APIView):
                 )
             candidature = serializer.save(etudiant=etudiant)
             return Response(
-                CandidatureSerializer(candidature).data,
+                CandidatureSerializer(candidature, context={'request': request}).data,
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

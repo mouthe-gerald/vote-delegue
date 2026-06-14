@@ -17,9 +17,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 COPY requirements_docker.txt .
-RUN pip install --no-cache-dir --timeout=300 --no-deps \
+
+RUN pip install --no-cache-dir --timeout=1000 --no-deps \
     Django==4.2 \
     djangorestframework==3.14.0 \
     djangorestframework-simplejwt==5.3.0 \
@@ -30,13 +30,10 @@ RUN pip install --no-cache-dir --timeout=300 --no-deps \
     gunicorn==21.2.0 \
     python-dotenv==1.0.1 \
     PyJWT==2.8.0 && \
-    pip install --no-cache-dir --timeout=300 \
-    asgiref sqlparse pytz typing_extensions cryptography
+    pip install --no-cache-dir --timeout=1000 \
+    asgiref sqlparse pytz typing_extensions cryptography numpy
 
 COPY . .
-
 RUN python manage.py collectstatic --noinput || true
-
 EXPOSE 8000
-
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "180", "config.wsgi:application"]

@@ -21,12 +21,17 @@ class ResultatSerializer(serializers.ModelSerializer):
 
     def get_candidat_numero(self, obj):
         return obj.candidat.numero_candidat
+    
 
+
+    
     def get_candidat_photo(self, obj):
         if obj.candidat.photo_campagne:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.candidat.photo_campagne.url)
             return obj.candidat.photo_campagne.url
         return None
-
 
 class RapportSerializer(serializers.ModelSerializer):
     election_titre = serializers.SerializerMethodField()

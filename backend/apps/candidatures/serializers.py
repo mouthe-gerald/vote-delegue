@@ -4,16 +4,17 @@ from apps.authentication.serializers import UtilisateurSerializer
 
 
 class CandidatureSerializer(serializers.ModelSerializer):
-    etudiant_nom    = serializers.SerializerMethodField()
+    etudiant_nom     = serializers.SerializerMethodField()
     etudiant_filiere = serializers.SerializerMethodField()
+    candidat_photo   = serializers.SerializerMethodField()
 
     class Meta:
         model  = Candidature
         fields = [
             'id', 'etudiant_nom', 'etudiant_filiere',
             'election', 'programme', 'photo_campagne',
-            'numero_candidat', 'statut', 'motif_rejet',
-            'motif_retrait', 'date_soumission', 'date_traitement'
+            'candidat_photo', 'numero_candidat', 'statut',
+            'motif_rejet', 'motif_retrait', 'date_soumission', 'date_traitement'
         ]
         read_only_fields = [
             'statut', 'numero_candidat', 'date_soumission', 'date_traitement'
@@ -25,6 +26,14 @@ class CandidatureSerializer(serializers.ModelSerializer):
 
     def get_etudiant_filiere(self, obj):
         return obj.etudiant.filiere
+
+    def get_candidat_photo(self, obj):
+        if obj.photo_campagne:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.photo_campagne.url)
+            return obj.photo_campagne.url
+        return None
 
 
 class SoumettreCandidatureSerializer(serializers.ModelSerializer):

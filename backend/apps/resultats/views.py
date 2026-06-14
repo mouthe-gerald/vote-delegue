@@ -28,7 +28,7 @@ class ResultatsElectionView(APIView):
             election=election
         ).order_by('-nb_voix')
 
-        serializer = ResultatSerializer(resultats, many=True)
+        serializer = ResultatSerializer(resultats, many=True, context={'request': request})
         return Response({
             'election':         str(election.id),
             'titre':            election.titre,
@@ -98,7 +98,7 @@ class CalculerResultatsView(APIView):
 
         serializer = ResultatSerializer(
             Resultat.objects.filter(election=election).order_by('-nb_voix'),
-            many=True
+            many=True, context={'request': request}
         )
 
         return Response({

@@ -1,68 +1,16 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { User, Lock, Eye, EyeOff, GraduationCap, Mail, Trophy, BarChart2, Award } from 'lucide-react'
+import { User, Lock, Eye, EyeOff, Vote, Shield, BarChart2, Users } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const Connexion = () => {
-  const [typeConnexion, setTypeConnexion] = useState(null)
-  const [form, setForm]                   = useState({ identifiant: '', mot_de_passe: '' })
-  const [showPwd, setShowPwd]             = useState(false)
-  const [loading, setLoading]             = useState(false)
-  const [erreur, setErreur]               = useState('')
-  const { connexion }                     = useAuth()
-  const navigate                          = useNavigate()
-
-  const types = [
-    {
-      id:          'admin',
-      label:       'Administrateur',
-      icon:        Mail,
-      color:       'from-blue-600 to-blue-800',
-      bgLight:     'bg-blue-50',
-      textColor:   'text-blue-700',
-      borderColor: 'border-blue-200',
-      placeholder: 'Email administrateur',
-      description: 'Gestion de la plateforme',
-      emoji:       '👨‍💼'
-    },
-    {
-      id:          'etudiant',
-      label:       'Étudiant',
-      icon:        GraduationCap,
-      color:       'from-purple-600 to-purple-800',
-      bgLight:     'bg-purple-50',
-      textColor:   'text-purple-700',
-      borderColor: 'border-purple-200',
-      placeholder: 'Matricule (Ex: CM-UDS-24IUT0001)',
-      description: 'Voter pour un délégué',
-      emoji:       '🎓'
-    },
-    {
-      id:          'candidat',
-      label:       'Candidat',
-      icon:        Award,
-      color:       'from-green-600 to-green-800',
-      bgLight:     'bg-green-50',
-      textColor:   'text-green-700',
-      borderColor: 'border-green-200',
-      placeholder: 'Matricule (Ex: CM-UDS-24IUT0001)',
-      description: 'Gérer ma candidature',
-      emoji:       '🏆'
-    },
-    {
-      id:          'resultats',
-      label:       'Résultats',
-      icon:        BarChart2,
-      color:       'from-orange-500 to-orange-700',
-      bgLight:     'bg-orange-50',
-      textColor:   'text-orange-700',
-      borderColor: 'border-orange-200',
-      placeholder: null,
-      description: 'Voir les résultats en direct',
-      emoji:       '📊'
-    },
-  ]
+  const [form, setForm]       = useState({ identifiant: '', mot_de_passe: '' })
+  const [showPwd, setShowPwd] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [erreur, setErreur]   = useState('')
+  const { connexion }         = useAuth()
+  const navigate              = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -84,128 +32,140 @@ const Connexion = () => {
     }
   }
 
-  const typeActif = types.find(t => t.id === typeConnexion)
-
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10"
-      style={{ background: 'linear-gradient(135deg, #1a1a6e 0%, #6d28d9 50%, #ec4899 100%)' }}>
+    <div className="min-h-screen bg-slate-900 flex">
 
-      <div className="w-full max-w-2xl">
+      {/* Panneau gauche — branding (desktop only) */}
+      <div className="hidden lg:flex flex-col justify-between w-2/5 bg-slate-950 border-r border-white/5 p-12">
+        <div>
+          <Link to="/" className="flex items-center gap-3 mb-16">
+            <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center">
+              <Vote size={20} className="text-slate-900" />
+            </div>
+            <span className="text-white font-bold text-lg">VotingApp</span>
+          </Link>
 
-        {/* Header */}
-        <div className="text-center mb-10">
-          <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-4">
-            <GraduationCap size={40} className="text-white" />
-          </div>
-          <h1 className="text-4xl font-bold text-white mb-2">Vote Délégué</h1>
-          <p className="text-white/70">Licence Génie Informatique — 2025-2026</p>
+          <h1 className="text-3xl font-extrabold text-white leading-tight mb-4">
+            Bienvenue sur la<br />
+            <span className="text-amber-500">plateforme officielle</span><br />
+            de vote
+          </h1>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Connectez-vous pour accéder à votre espace et participer au processus électoral sécurisé.
+          </p>
         </div>
 
-        {/* Sélection du type */}
-        {!typeConnexion && (
-          <div>
-            <p className="text-white/80 text-center mb-6 font-medium">
-              Choisissez votre type de connexion
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              {types.map(type => (
-                <button key={type.id}
-                  onClick={() => {
-                    if (type.id === 'resultats') {
-                      navigate('/resultats')
-                    } else {
-                      setTypeConnexion(type.id)
-                    }
-                  }}
-                  className="bg-white rounded-2xl p-6 text-center hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
-                  <div className={`w-14 h-14 bg-gradient-to-br ${type.color} rounded-2xl flex items-center justify-center mx-auto mb-3`}>
-                    <type.icon size={28} className="text-white" />
-                  </div>
-                  <p className="text-2xl mb-1">{type.emoji}</p>
-                  <h3 className="font-bold text-gray-800 text-lg">{type.label}</h3>
-                  <p className="text-gray-500 text-sm mt-1">{type.description}</p>
-                </button>
-              ))}
+        {/* Features list */}
+        <div className="flex flex-col gap-4">
+          {[
+            { icon: Shield,   label: 'Sécurisé par blockchain' },
+            { icon: Users,    label: 'Vote démocratique garanti' },
+            { icon: BarChart2, label: 'Résultats en temps réel' },
+          ].map((f, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-amber-500/15 rounded-lg flex items-center justify-center">
+                <f.icon size={15} className="text-amber-500" />
+              </div>
+              <span className="text-slate-400 text-sm">{f.label}</span>
             </div>
-            <p className="text-center text-white/60 mt-6 text-sm">
-              Pas encore de compte ?{' '}
-              <Link to="/inscription" className="text-pink-300 font-semibold hover:underline">
-                S'inscrire
-              </Link>
-            </p>
+          ))}
+        </div>
+
+        <p className="text-slate-600 text-xs">© 2025-2026 VotingApp</p>
+      </div>
+
+      {/* Panneau droit — formulaire */}
+      <div className="flex-1 flex items-center justify-center px-4 py-12"
+        style={{ backgroundImage: 'radial-gradient(circle at 60% 40%, rgba(21,101,192,0.15) 0%, transparent 60%)' }}>
+        <div className="w-full max-w-md">
+
+          {/* Mobile logo */}
+          <Link to="/" className="flex items-center gap-3 mb-10 lg:hidden">
+            <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+              <Vote size={18} className="text-slate-900" />
+            </div>
+            <span className="text-white font-bold">VotingApp</span>
+          </Link>
+
+          <div className="mb-8">
+            <h2 className="text-2xl font-extrabold text-white mb-2">Connexion</h2>
+            <p className="text-slate-400 text-sm">Entrez vos identifiants pour accéder à votre espace.</p>
           </div>
-        )}
 
-        {/* Formulaire de connexion */}
-        {typeConnexion && typeActif && (
-          <div className="bg-white rounded-3xl shadow-2xl p-8">
-            <div className="flex items-center gap-4 mb-6">
-              <button onClick={() => { setTypeConnexion(null); setErreur(''); setForm({ identifiant: '', mot_de_passe: '' }) }}
-                className="p-2 hover:bg-gray-100 rounded-xl text-gray-500">
-                ← Retour
-              </button>
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 bg-gradient-to-br ${typeActif.color} rounded-xl flex items-center justify-center`}>
-                  <typeActif.icon size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-800">{typeActif.emoji} {typeActif.label}</h3>
-                  <p className="text-gray-500 text-xs">{typeActif.description}</p>
-                </div>
-              </div>
+          {erreur && (
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-4 mb-6 text-sm flex items-start gap-3">
+              <div className="w-1 h-full min-h-4 bg-red-500 rounded-full flex-shrink-0 mt-0.5" />
+              {erreur}
             </div>
+          )}
 
-            {erreur && (
-              <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 mb-5 text-sm">
-                {erreur}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label className="text-slate-400 text-xs font-medium mb-2 block">Matricule ou Email</label>
               <div className="relative">
-                <typeActif.icon size={18} className={`absolute left-4 top-1/2 -translate-y-1/2 ${typeActif.textColor}`} />
+                <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
-                  type={typeConnexion === 'admin' ? 'email' : 'text'}
-                  placeholder={typeActif.placeholder}
+                  type="text"
+                  placeholder="CM-UDS-24IUT0001 ou admin@email.com"
                   value={form.identifiant}
                   onChange={e => setForm({...form, identifiant: e.target.value})}
-                  className="input-field pl-11"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-white outline-none border transition-colors"
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                  }}
                   required
                 />
               </div>
+            </div>
 
+            <div>
+              <label className="text-slate-400 text-xs font-medium mb-2 block">Mot de passe</label>
               <div className="relative">
-                <Lock size={18} className={`absolute left-4 top-1/2 -translate-y-1/2 ${typeActif.textColor}`} />
+                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type={showPwd ? 'text' : 'password'}
-                  placeholder="Mot de passe"
+                  placeholder="••••••••"
                   value={form.mot_de_passe}
                   onChange={e => setForm({...form, mot_de_passe: e.target.value})}
-                  className="input-field pl-11 pr-11"
+                  className="w-full pl-11 pr-12 py-3.5 rounded-xl text-sm text-white outline-none border transition-colors"
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                  }}
                   required
                 />
                 <button type="button" onClick={() => setShowPwd(!showPwd)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                  {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
+                  {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+            </div>
 
-              <button type="submit" disabled={loading}
-                className={`w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r ${typeActif.color} hover:opacity-90 transition-all flex items-center justify-center gap-2`}>
-                {loading
-                  ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  : `Se connecter comme ${typeActif.label}`}
-              </button>
-            </form>
+            <button type="submit" disabled={loading}
+              className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2 mt-2">
+              {loading
+                ? <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                : 'Se connecter'
+              }
+            </button>
+          </form>
 
-            <p className="text-center text-gray-500 mt-5 text-sm">
+          <div className="flex flex-col items-center gap-3 mt-6">
+            <p className="text-slate-500 text-sm">
               Pas encore de compte ?{' '}
-              <Link to="/inscription" className="text-purple-600 font-semibold hover:underline">
+              <Link to="/inscription" className="text-amber-500 font-semibold hover:text-amber-400">
                 S'inscrire
               </Link>
             </p>
+            <Link to="/resultats" className="text-slate-600 text-sm hover:text-slate-400 transition-colors">
+              Voir les résultats sans connexion →
+            </Link>
+            <Link to="/mot-de-passe-oublie" className="text-slate-600 text-sm hover:text-slate-400 transition-colors">
+              Mot de passe oublié ?
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )

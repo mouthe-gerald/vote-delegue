@@ -13,7 +13,7 @@ Votre code de vérification pour l'inscription sur la plateforme de vote est :
     ║   {code_otp}     ║
     ╚══════════════╝
 
-Ce code est valable pendant 10 minutes.
+Ce code est valable pendant 3 minutes.
 
 Si vous n'avez pas demandé ce code, ignorez cet email.
 
@@ -44,7 +44,7 @@ Licence Génie Informatique
                              letter-spacing: 12px;">{code_otp}</span>
             </div>
             <p style="color: #999; font-size: 14px; text-align: center;">
-                ⏱️ Ce code expire dans <strong>10 minutes</strong>
+                ⏱️ Ce code expire dans <strong>3 minutes</strong>
             </p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
             <p style="color: #bbb; font-size: 12px; text-align: center;">

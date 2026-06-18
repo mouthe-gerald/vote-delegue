@@ -1,71 +1,53 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { electionAPI, resultatAPI } from '../services/api'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell,
   LineChart, Line, Legend
 } from 'recharts'
-import { Trophy, ArrowLeft, User, Award, RefreshCw } from 'lucide-react'
+import { Trophy, ArrowLeft, User, Award, RefreshCw, Vote } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const ResultatsPage = () => {
-  const [elections, setElections]     = useState([])
-  const [election, setElection]       = useState(null)
-  const [resultats, setResultats]     = useState([])
+  const [elections, setElections]       = useState([])
+  const [election, setElection]         = useState(null)
+  const [resultats, setResultats]       = useState([])
   const [totalVotants, setTotalVotants] = useState(0)
-  const [loading, setLoading]         = useState(true)
-  const [lastUpdate, setLastUpdate]   = useState(null)
-  const navigate                      = useNavigate()
+  const [loading, setLoading]           = useState(true)
+  const [lastUpdate, setLastUpdate]     = useState(null)
+  const navigate                        = useNavigate()
 
-  const COULEURS = ['#f59e0b', '#6d28d9', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']
+  const COULEURS = ['#F0A500', '#3B82F6', '#10B981', '#8B5CF6', '#EF4444', '#06B6D4']
 
   const chargerElections = useCallback(async () => {
     try {
       const { data } = await electionAPI.liste()
       setElections(data)
-      const publiee = data.find(e => e.statut === 'RESULTATS_PUBLIES')
-      const enCours = data.find(e => e.statut === 'EN_COURS')
-      const cible   = publiee || enCours
+      const cible = data.find(e => e.statut === 'EN_COURS') || data.find(e => e.statut === 'CLOTUREE') || data.find(e => e.statut === 'RESULTATS_PUBLIES')
       if (cible) chargerResultats(cible)
-    } catch {
-      toast.error('Erreur de chargement.')
-    } finally {
-      setLoading(false)
-    }
+    } catch { toast.error('Erreur de chargement.') }
+    finally { setLoading(false) }
   }, [])
 
   const chargerResultats = async (elec) => {
     try {
       setElection(elec)
-      if (elec.statut === 'RESULTATS_PUBLIES') {
+      try {
+        if (elec.statut === 'EN_COURS') await resultatAPI.calculer(elec.id)
         const { data } = await resultatAPI.consulter(elec.id)
         setResultats(data.resultats || [])
         setTotalVotants(data.total_votants || 0)
         setLastUpdate(new Date())
-      } else if (elec.statut === 'EN_COURS') {
-        // Calculer en temps réel
-        try {
-          await resultatAPI.calculer(elec.id)
-          const { data } = await resultatAPI.consulter(elec.id)
-          setResultats(data.resultats || [])
-          setTotalVotants(data.total_votants || 0)
-          setLastUpdate(new Date())
-        } catch {}
-      }
+      } catch {}
     } catch {}
   }
 
-  useEffect(() => {
-    chargerElections()
-  }, [chargerElections])
+  useEffect(() => { chargerElections() }, [chargerElections])
 
-  // Rafraîchissement automatique toutes les 5 secondes
   useEffect(() => {
     if (!election) return
-    const interval = setInterval(() => {
-      chargerResultats(election)
-    }, 5000)
+    const interval = setInterval(() => chargerResultats(election), 5000)
     return () => clearInterval(interval)
   }, [election])
 
@@ -80,59 +62,58 @@ const ResultatsPage = () => {
   const elu = resultats.find(r => r.est_elu)
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-50">
-      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   return (
-    <div className="min-h-screen"
-      style={{ background: 'linear-gradient(180deg, #dbeafe 0%, #f0f9ff 50%, #ffffff 100%)' }}>
+    <div className="min-h-screen bg-slate-900">
 
       {/* Header */}
-      <div className="bg-white shadow-sm px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-xl">
-            <ArrowLeft size={20} className="text-gray-600" />
+      <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+            <ArrowLeft size={16} />
           </button>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-              <Trophy size={20} className="text-blue-600" />
-            </div>
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-5 bg-amber-500 rounded-full" />
             <div>
-              <h1 className="font-bold text-gray-800">Résultats de l'Élection</h1>
-              <p className="text-xs text-gray-500">Licence Génie Informatique</p>
+              <h1 className="text-white font-bold text-sm">Résultats de l'Élection</h1>
             </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
           {lastUpdate && (
-            <div className="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-xl">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-green-600 text-xs font-medium">
-                Mis à jour : {lastUpdate.toLocaleTimeString('fr-FR')}
-              </span>
+            <div className="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
+              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+              <span className="text-emerald-400 text-xs">{lastUpdate.toLocaleTimeString('fr-FR')}</span>
             </div>
           )}
           <button onClick={() => election && chargerResultats(election)}
-            className="p-2 hover:bg-gray-100 rounded-xl">
-            <RefreshCw size={18} className="text-gray-600" />
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+            <RefreshCw size={14} />
           </button>
+          <Link to="/" className="flex items-center gap-2 bg-amber-500 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-400 transition-all">
+            <Vote size={13} /> Accueil
+          </Link>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
 
         {/* Sélecteur élection */}
         {elections.length > 1 && (
-          <div className="bg-white rounded-2xl shadow-sm p-4 mb-6">
-            <div className="flex gap-3 flex-wrap">
+          <div className="bg-slate-800 border border-white/5 rounded-xl p-4 mb-6">
+            <div className="flex gap-2 flex-wrap">
               {elections.map(e => (
                 <button key={e.id} onClick={() => chargerResultats(e)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all
-                    ${election?.id === e.id
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    election?.id === e.id
+                      ? 'bg-amber-500 text-slate-900'
+                      : 'bg-white/5 text-slate-400 hover:bg-white/10 border border-white/10'
+                  }`}>
                   {e.titre}
                 </button>
               ))}
@@ -140,35 +121,33 @@ const ResultatsPage = () => {
           </div>
         )}
 
-        {election && (
+        {election ? (
           <>
-            {/* Titre élection */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 mb-6 text-center">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
-                  <Trophy size={32} className="text-blue-600" />
+            {/* Info élection */}
+            <div className="bg-slate-800 border border-white/5 rounded-xl p-5 mb-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-amber-500/15 rounded-xl flex items-center justify-center">
+                    <Trophy size={24} className="text-amber-500" />
+                  </div>
+                  <div>
+                    <h2 className="text-white font-bold text-lg">{election.titre}</h2>
+                    <p className="text-slate-400 text-sm">{election.annee_academique}</p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <h2 className="text-2xl font-bold text-gray-800">{election.titre}</h2>
-                  <p className="text-gray-500">{election.annee_academique}</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-4">
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
-                  election.statut === 'EN_COURS'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-blue-100 text-blue-700'
-                }`}>
-                  {election.statut === 'EN_COURS' && (
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  )}
-                  <span className="font-semibold text-sm">
-                    {election.statut === 'EN_COURS' ? 'ÉLECTION EN COURS — Mise à jour toutes les 5s' : 'RÉSULTATS OFFICIELS'}
+                <div className="flex items-center gap-3">
+                  <span className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border ${
+                    election.statut === 'EN_COURS'
+                      ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20'
+                      : election.statut === 'CLOTUREE'
+                      ? 'bg-amber-500/15 text-amber-400 border-amber-500/20'
+                      : 'bg-blue-500/15 text-blue-400 border-blue-500/20'
+                  }`}>
+                    {election.statut === 'EN_COURS' && <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />}
+                    {election.statut === 'EN_COURS' ? 'En cours — temps réel' : election.statut === 'CLOTUREE' ? 'Élection clôturée — Résultats finaux' : 'Résultats officiels'}
                   </span>
-                </div>
-                <div className="bg-purple-50 px-3 py-1.5 rounded-full">
-                  <span className="text-purple-600 font-semibold text-sm">
-                    {totalVotants} vote(s) exprimé(s)
+                  <span className="bg-amber-500/15 text-amber-400 border border-amber-500/20 px-3 py-1.5 rounded-lg text-xs font-medium">
+                    {totalVotants} vote(s)
                   </span>
                 </div>
               </div>
@@ -176,62 +155,58 @@ const ResultatsPage = () => {
 
             {/* Élu */}
             {elu && elu.nb_voix > 0 && (
-              <div className="bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl shadow-lg p-6 mb-6 text-white">
+              <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-500/30 rounded-xl p-5 mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center">
-                    {elu.candidat_photo ? (
-                      <img src={elu.candidat_photo} alt={elu.candidat_nom}
-                        className="w-full h-full rounded-full object-cover" />
-                    ) : (
-                      <Award size={32} className="text-white" />
-                    )}
+                  <div className="w-14 h-14 bg-amber-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    {elu.candidat_photo
+                      ? <img src={elu.candidat_photo} alt={elu.candidat_nom} className="w-full h-full rounded-full object-cover" />
+                      : <Award size={28} className="text-amber-500" />
+                    }
                   </div>
                   <div>
-                    <p className="text-white/80 text-sm font-medium">
+                    <p className="text-amber-400 text-xs font-semibold mb-1">
                       {election.statut === 'EN_COURS' ? '🏆 EN TÊTE' : '🏆 DÉLÉGUÉ ÉLU'}
                     </p>
-                    <h3 className="text-2xl font-bold">{elu.candidat_nom}</h3>
-                    <p className="text-white/80">{elu.nb_voix} votes — {elu.pourcentage}%</p>
+                    <h3 className="text-white font-bold text-xl">{elu.candidat_nom}</h3>
+                    <p className="text-slate-400 text-sm">{elu.nb_voix} votes — {elu.pourcentage}%</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Graphique */}
+            {/* Graphique barres */}
             {dataGraphique.length > 0 && totalVotants > 0 && (
-              <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-                <h3 className="font-bold text-gray-800 mb-6 flex items-center gap-2">
-                  <BarChart size={20} className="text-purple-600" />
-                  Résultats du scrutin
+              <div className="bg-slate-800 border border-white/5 rounded-xl p-5 mb-6">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-1 h-5 bg-amber-500 rounded-full" />
+                  <h3 className="text-white font-bold text-sm">Résultats du scrutin</h3>
                   {election.statut === 'EN_COURS' && (
-                    <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full ml-2">
-                      En temps réel
+                    <span className="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full ml-1">
+                      Temps réel
                     </span>
                   )}
-                </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={dataGraphique} margin={{ top: 20, right: 20, left: 0, bottom: 60 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="name" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" />
-                    <YAxis tick={{ fontSize: 12 }} />
-                    <Tooltip
-                      content={({ active, payload }) => {
-                        if (active && payload?.length) {
-                          const d = payload[0].payload
-                          return (
-                            <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-lg">
-                              <p className="font-bold text-gray-800">{d.nomComplet}</p>
-                              <p className="text-purple-600">{d.voix} votes</p>
-                              <p className="text-gray-500">{d.pourcentage}%</p>
-                            </div>
-                          )
-                        }
-                        return null
-                      }}
-                    />
-                    <Bar dataKey="voix" radius={[8, 8, 0, 0]}>
+                </div>
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart data={dataGraphique} margin={{ top: 10, right: 10, left: -10, bottom: 50 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94A3B8' }} angle={-30} textAnchor="end" />
+                    <YAxis tick={{ fontSize: 11, fill: '#94A3B8' }} />
+                    <Tooltip content={({ active, payload }) => {
+                      if (active && payload?.length) {
+                        const d = payload[0].payload
+                        return (
+                          <div className="bg-slate-700 border border-white/10 rounded-xl p-3 shadow-xl">
+                            <p className="text-white font-bold text-sm mb-1">{d.nomComplet}</p>
+                            <p className="text-amber-400 text-xs">{d.voix} votes</p>
+                            <p className="text-slate-400 text-xs">{d.pourcentage}%</p>
+                          </div>
+                        )
+                      }
+                      return null
+                    }} />
+                    <Bar dataKey="voix" radius={[6, 6, 0, 0]}>
                       {dataGraphique.map((entry, i) => (
-                        <Cell key={i} fill={entry.elu ? '#f59e0b' : COULEURS[i % COULEURS.length]} />
+                        <Cell key={i} fill={entry.elu ? '#F0A500' : COULEURS[i % COULEURS.length]} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -239,120 +214,101 @@ const ResultatsPage = () => {
               </div>
             )}
 
-            {/* Graphique en courbe */}
-{dataGraphique.length > 0 && totalVotants > 0 && (
-  <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-    <h3 className="font-bold text-gray-800 mb-6 flex items-center gap-2">
-      <BarChart size={20} className="text-purple-600" />
-      Évolution des votes — Courbe
-    </h3>
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={dataGraphique} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-        <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-        <YAxis tick={{ fontSize: 12 }} />
-        <Tooltip
-          content={({ active, payload }) => {
-            if (active && payload?.length) {
-              const d = payload[0].payload
-              return (
-                <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-lg">
-                  <p className="font-bold text-gray-800">{d.nomComplet}</p>
-                  <p className="text-purple-600">{d.voix} votes</p>
-                  <p className="text-gray-500">{d.pourcentage}%</p>
+            {/* Graphique courbe */}
+            {dataGraphique.length > 0 && totalVotants > 0 && (
+              <div className="bg-slate-800 border border-white/5 rounded-xl p-5 mb-6">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-1 h-5 bg-amber-500 rounded-full" />
+                  <h3 className="text-white font-bold text-sm">Évolution — Courbe comparative</h3>
                 </div>
-              )
-            }
-            return null
-          }}
-        />
-        <Legend />
-        <Line
-          type="monotone"
-          dataKey="voix"
-          stroke="#6d28d9"
-          strokeWidth={3}
-          dot={{ fill: '#6d28d9', strokeWidth: 2, r: 6 }}
-          activeDot={{ r: 8 }}
-          name="Votes"
-        />
-        <Line
-          type="monotone"
-          dataKey="pourcentage"
-          stroke="#ec4899"
-          strokeWidth={3}
-          dot={{ fill: '#ec4899', strokeWidth: 2, r: 6 }}
-          activeDot={{ r: 8 }}
-          name="Pourcentage %"
-        />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
-)}
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={dataGraphique} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94A3B8' }} />
+                    <YAxis tick={{ fontSize: 11, fill: '#94A3B8' }} />
+                    <Tooltip content={({ active, payload }) => {
+                      if (active && payload?.length) {
+                        const d = payload[0].payload
+                        return (
+                          <div className="bg-slate-700 border border-white/10 rounded-xl p-3 shadow-xl">
+                            <p className="text-white font-bold text-sm mb-1">{d.nomComplet}</p>
+                            <p className="text-amber-400 text-xs">{d.voix} votes</p>
+                            <p className="text-blue-400 text-xs">{d.pourcentage}%</p>
+                          </div>
+                        )
+                      }
+                      return null
+                    }} />
+                    <Legend wrapperStyle={{ color: '#94A3B8', fontSize: '12px' }} />
+                    <Line type="monotone" dataKey="voix" stroke="#F0A500" strokeWidth={2}
+                      dot={{ fill: '#F0A500', r: 4 }} name="Votes" />
+                    <Line type="monotone" dataKey="pourcentage" stroke="#3B82F6" strokeWidth={2}
+                      dot={{ fill: '#3B82F6', r: 4 }} name="Pourcentage %" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
 
             {/* Tableau */}
-            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-                <h3 className="font-bold text-gray-800">Tableau des résultats</h3>
-                <span className="text-gray-500 text-sm">{totalVotants} votant(s)</span>
+            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-5 bg-amber-500 rounded-full" />
+                  <h3 className="text-white font-bold text-sm">Tableau des résultats</h3>
+                </div>
+                <span className="text-slate-400 text-xs">{totalVotants} votant(s)</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
-                    <tr>
+                  <thead>
+                    <tr className="border-b border-white/5">
                       {['Rang', 'Candidat', 'Votes', 'Pourcentage', 'Statut'].map(h => (
-                        <th key={h} className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">{h}</th>
+                        <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-slate-500">{h}</th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody>
                     {resultats.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
-                          Aucun vote exprimé pour le moment.
-                        </td>
-                      </tr>
+                      <tr><td colSpan={5} className="px-5 py-10 text-center text-slate-500 text-sm">
+                        Aucun vote exprimé pour le moment.
+                      </td></tr>
                     ) : resultats.map((r, i) => (
-                      <tr key={r.id} className={r.est_elu ? 'bg-yellow-50' : ''}>
-                        <td className="px-6 py-4">
-                          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                            ${i === 0 ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'}`}>
-                            {i + 1}
-                          </span>
+                      <tr key={r.id} className={`border-t border-white/5 transition-colors ${r.est_elu ? 'bg-amber-500/5' : 'hover:bg-white/3'}`}>
+                        <td className="px-5 py-3.5">
+                          <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                            i === 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-white/5 text-slate-500'
+                          }`}>{i + 1}</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-                              {r.candidat_photo ? (
-                                <img src={r.candidat_photo} alt={r.candidat_nom}
-                                  className="w-full h-full rounded-xl object-cover" />
-                              ) : (
-                                <User size={18} className="text-purple-600" />
-                              )}
+                            <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0">
+                              {r.candidat_photo
+                                ? <img src={r.candidat_photo} alt={r.candidat_nom} className="w-full h-full rounded-lg object-cover" />
+                                : <User size={14} className="text-slate-400" />
+                              }
                             </div>
-                            <span className="font-semibold text-gray-800">{r.candidat_nom}</span>
+                            <span className="text-white text-sm font-medium">{r.candidat_nom}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 font-bold text-gray-800">{r.nb_voix}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-5 py-3.5 text-white font-bold text-sm">{r.nb_voix}</td>
+                        <td className="px-5 py-3.5">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-gray-200 rounded-full h-2">
-                              <div className="bg-purple-600 h-2 rounded-full transition-all duration-500"
+                            <div className="flex-1 bg-white/5 rounded-full h-1.5 min-w-16">
+                              <div className="bg-amber-500 h-1.5 rounded-full transition-all duration-500"
                                 style={{ width: `${r.pourcentage}%` }} />
                             </div>
-                            <span className="text-sm font-medium text-gray-700 w-12">{r.pourcentage}%</span>
+                            <span className="text-slate-300 text-xs w-10">{r.pourcentage}%</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          {r.est_elu ? (
-                            <span className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-bold">
-                              {election.statut === 'EN_COURS' ? '🏆 En tête' : '🏆 Élu'}
-                            </span>
-                          ) : (
-                            <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                              Candidat
-                            </span>
-                          )}
+                        <td className="px-5 py-3.5">
+                          {r.est_elu
+                            ? <span className="bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-xs font-medium">
+                                {election.statut === 'EN_COURS' ? '🏆 En tête' : '🏆 Élu'}
+                              </span>
+                            : <span className="bg-white/5 text-slate-500 border border-white/10 px-2.5 py-1 rounded-full text-xs">
+                                Candidat
+                              </span>
+                          }
                         </td>
                       </tr>
                     ))}
@@ -361,13 +317,13 @@ const ResultatsPage = () => {
               </div>
             </div>
           </>
-        )}
-
-        {elections.length === 0 && (
-          <div className="text-center py-16">
-            <Trophy size={48} className="text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-500">Aucun résultat disponible</h3>
-            <p className="text-gray-400 mt-2">Les résultats seront publiés après la clôture de l'élection.</p>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Trophy size={32} className="text-slate-600" />
+            </div>
+            <h3 className="text-slate-400 font-bold text-lg mb-2">Aucun résultat disponible</h3>
+            <p className="text-slate-500 text-sm">Les résultats seront publiés après la clôture de l'élection.</p>
           </div>
         )}
       </div>

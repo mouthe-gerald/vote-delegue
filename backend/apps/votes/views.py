@@ -45,11 +45,12 @@ class VerifierDroitVoteView(APIView):
                 'raison':     'Vous avez déjà voté pour cette élection.',
             }, status=status.HTTP_200_OK)
 
-        # Vérifier que le visage est enregistré
-        if not hasattr(etudiant, 'visage'):
+        # Vérifier que l'empreinte WebAuthn est enregistrée
+        from apps.authentication.models import WebAuthnCredential
+        if not WebAuthnCredential.objects.filter(utilisateur=etudiant.utilisateur).exists():
             return Response({
                 'peut_voter': False,
-                'raison':     'Aucun visage enregistré. Impossible de voter.',
+                'raison':     'Aucune empreinte enregistrée. Impossible de voter.',
             }, status=status.HTTP_200_OK)
 
         return Response({

@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { electionAPI, voteAPI } from '../../services/api'
+import { electionAPI, voteAPI, candidatureAPI } from '../../services/api'
 import {
-  GraduationCap, Vote, CheckCircle, LogOut,
-  Bell, Search, ChevronRight, User, BarChart2,
-  BookOpen, Calendar, Shield, Clock
+  Vote, CheckCircle, LogOut, Bell, ChevronRight, User,
+  BarChart2, BookOpen, Calendar, Shield, Clock, Award,
+  Menu, X, Hash, Mail, GraduationCap, Layers
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const DashboardEtudiant = () => {
-  const { user, deconnexion }       = useAuth()
-  const [elections, setElections]   = useState([])
-  const [droitVote, setDroitVote]   = useState(null)
-  const [loading, setLoading]       = useState(true)
-  const [activeMenu, setActiveMenu] = useState('dashboard')
-  const navigate                    = useNavigate()
+  const { user, deconnexion }           = useAuth()
+  const [elections, setElections]       = useState([])
+  const [droitVote, setDroitVote]       = useState(null)
+  const [candidature, setCandidature]   = useState(null)
+  const [loading, setLoading]           = useState(true)
+  const [activeMenu, setActiveMenu]     = useState('dashboard')
+  const [sidebarOpen, setSidebarOpen]   = useState(false)
+  const navigate                        = useNavigate()
 
   useEffect(() => { chargerDonnees() }, [])
 
@@ -27,233 +29,285 @@ const DashboardEtudiant = () => {
       if (electionActive) {
         const { data: droit } = await voteAPI.verifierDroit(electionActive.id)
         setDroitVote({ ...droit, election: electionActive })
+        const { data: cands } = await candidatureAPI.liste(electionActive.id)
+        const maCandidature = cands.find(
+          c => c.etudiant_nom === `${user?.prenom} ${user?.nom}`
+        )
+        if (maCandidature) setCandidature(maCandidature)
       }
-    } catch {
-      toast.error('Erreur lors du chargement.')
-    } finally {
-      setLoading(false)
-    }
+    } catch { toast.error('Erreur lors du chargement.') }
+    finally { setLoading(false) }
   }
 
-  const handleDeconnexion = async () => {
-    await deconnexion()
-    navigate('/connexion')
-  }
+  const handleDeconnexion = async () => { await deconnexion(); navigate('/connexion') }
 
   const profil = user?.profil
 
   const menuItems = [
     { id: 'dashboard',   label: 'Tableau de bord', icon: BarChart2 },
     { id: 'profil',      label: 'Mon Profil',       icon: User },
-    { id: 'vote',        label: 'Voter',             icon: Vote },
-    { id: 'resultats',   label: 'Résultats',         icon: CheckCircle },
-    { id: 'candidature', label: 'Candidature',       icon: BookOpen },
+    { id: 'vote',        label: 'Voter',             icon: Vote,     action: () => navigate('/etudiant/voter') },
+    { id: 'resultats',   label: 'Résultats',         icon: BarChart2, action: () => navigate('/resultats') },
+    { id: 'candidature', label: 'Candidature',       icon: BookOpen,  action: () => navigate('/etudiant/candidature') },
   ]
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-50">
-      <div className="text-center">
-        <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-purple-600 font-medium">Chargement...</p>
-      </div>
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   return (
-    <div className="min-h-screen flex bg-purple-50">
+    <div className="min-h-screen bg-slate-900 flex">
 
-      {/* Sidebar */}
-      <div className="w-72 min-h-screen flex flex-col"
-        style={{ background: 'linear-gradient(180deg, #6d28d9 0%, #7c3aed 100%)' }}>
-        <div className="p-6 border-b border-white/10">
-          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
-            <GraduationCap size={32} className="text-white" />
+      {/* Sidebar desktop */}
+      <aside className="hidden lg:flex flex-col w-60 bg-slate-950 border-r border-white/5 flex-shrink-0">
+        <div className="p-5 border-b border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+              <Vote size={18} className="text-slate-900" />
+            </div>
+            <div>
+              <div className="text-white font-bold text-sm">VotingApp</div>
+              <div className="text-slate-500 text-xs">Espace étudiant</div>
+            </div>
           </div>
-          <p className="text-white font-bold text-center text-sm">Vote Délégué</p>
-          <p className="text-white/60 text-xs text-center">Licence GI</p>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-3 flex flex-col gap-1">
           {menuItems.map(item => (
             <button key={item.id}
-             onClick={() => {
-  setActiveMenu(item.id)
-  if (item.id === 'vote')        navigate('/etudiant/voter')
-  if (item.id === 'resultats')   navigate('/resultats')
-  if (item.id === 'candidature') navigate('/etudiant/candidature')
-}}
-              className={activeMenu === item.id ? 'sidebar-item-active w-full' : 'sidebar-item w-full'}>
-              <item.icon size={20} />
-              <span>{item.label}</span>
+              onClick={() => { setActiveMenu(item.id); item.action && item.action(); setSidebarOpen(false) }}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left transition-all ${
+                activeMenu === item.id
+                  ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+              }`}>
+              <item.icon size={15} />
+              {item.label}
             </button>
           ))}
+
+          {candidature?.statut === 'VALIDEE' && (
+            <button onClick={() => navigate('/candidat/dashboard')}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left mt-2 bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all">
+              <Award size={15} />
+              Espace Candidat
+              <ChevronRight size={12} className="ml-auto" />
+            </button>
+          )}
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-3 border-t border-white/5">
+          <div className="flex items-center gap-3 px-3 py-2 mb-1">
+            <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center text-amber-500 text-xs font-bold flex-shrink-0">
+              {user?.prenom?.[0]}{user?.nom?.[0]}
+            </div>
+            <div className="min-w-0">
+              <div className="text-white text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
+              <div className="text-slate-500 text-xs truncate">{user?.matricule}</div>
+            </div>
+          </div>
           <button onClick={handleDeconnexion}
-            className="sidebar-item w-full text-red-300 hover:text-red-200 hover:bg-red-500/20">
-            <LogOut size={20} />
-            <span>Déconnexion</span>
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-all text-sm">
+            <LogOut size={14} /> Déconnexion
           </button>
         </div>
-      </div>
+      </aside>
 
-      {/* Contenu principal */}
-      <div className="flex-1 flex flex-col">
+      {/* Sidebar mobile overlay */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
+          <aside className="relative w-64 bg-slate-950 border-r border-white/5 flex flex-col z-10">
+            <div className="p-5 border-b border-white/5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+                  <Vote size={18} className="text-slate-900" />
+                </div>
+                <span className="text-white font-bold text-sm">VotingApp</span>
+              </div>
+              <button onClick={() => setSidebarOpen(false)} className="text-slate-400"><X size={18} /></button>
+            </div>
+            <nav className="flex-1 p-3 flex flex-col gap-1">
+              {menuItems.map(item => (
+                <button key={item.id}
+                  onClick={() => { setActiveMenu(item.id); item.action && item.action(); setSidebarOpen(false) }}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left transition-all ${
+                    activeMenu === item.id ? 'bg-amber-500/15 text-amber-400' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}>
+                  <item.icon size={15} /> {item.label}
+                </button>
+              ))}
+              {candidature?.statut === 'VALIDEE' && (
+                <button onClick={() => { navigate('/candidat/dashboard'); setSidebarOpen(false) }}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left mt-2 bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <Award size={15} /> Espace Candidat <ChevronRight size={12} className="ml-auto" />
+                </button>
+              )}
+            </nav>
+            <div className="p-3 border-t border-white/5">
+              <button onClick={handleDeconnexion}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 text-sm">
+                <LogOut size={14} /> Déconnexion
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
 
-        {/* Header */}
-        <div className="bg-white shadow-sm px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 bg-gray-100 rounded-xl px-4 py-2 w-72">
-            <Search size={18} className="text-gray-400" />
-            <input placeholder="Rechercher..."
-              className="bg-transparent outline-none text-sm text-gray-600 w-full" />
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="relative p-2 hover:bg-gray-100 rounded-xl">
-              <Bell size={20} className="text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+      {/* Main */}
+      <div className="flex-1 flex flex-col min-w-0">
+
+        {/* Topbar */}
+        <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <button className="lg:hidden text-slate-400 hover:text-white" onClick={() => setSidebarOpen(true)}>
+              <Menu size={20} />
             </button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-                <User size={20} className="text-purple-600" />
+            <h1 className="text-white font-bold text-sm">
+              {menuItems.find(m => m.id === activeMenu)?.label || 'Tableau de bord'}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="relative p-2 text-slate-400 hover:text-white">
+              <Bell size={16} />
+            </button>
+            <div className="hidden sm:flex items-center gap-2 bg-white/5 rounded-lg px-3 py-1.5">
+              <div className="w-6 h-6 bg-amber-500/20 rounded-md flex items-center justify-center text-amber-500 text-xs font-bold">
+                {user?.prenom?.[0]}
               </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-800">{user?.prenom} {user?.nom}</p>
-                <p className="text-xs text-gray-500">{profil?.niveau}</p>
-              </div>
+              <span className="text-white text-xs font-medium">{user?.prenom}</span>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Body */}
-        <div className="flex-1 p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
 
-          {/* Bannière */}
-          <div className="rounded-3xl p-8 mb-8 flex items-center justify-between overflow-hidden relative"
-            style={{ background: 'linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)' }}>
-            <div className="relative z-10">
-              <p className="text-white/70 text-sm mb-1">
-                {new Date().toLocaleDateString('fr-FR', {
-                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                })}
-              </p>
-              <h2 className="text-3xl font-bold text-white mb-2">
-                Bienvenue, {user?.prenom} ! 👋
-              </h2>
-              <p className="text-white/80">Restez informé de l'actualité électorale</p>
+          {/* Bannière candidat validé */}
+          {candidature?.statut === 'VALIDEE' && (
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 mb-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Award size={20} className="text-amber-500 flex-shrink-0" />
+                <div>
+                  <p className="text-amber-400 font-semibold text-sm">Candidature validée !</p>
+                  <p className="text-slate-400 text-xs">Accédez à votre espace candidat pour gérer votre programme.</p>
+                </div>
+              </div>
+              <button onClick={() => navigate('/candidat/dashboard')}
+                className="flex-shrink-0 flex items-center gap-1 bg-amber-500 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-400">
+                Espace Candidat <ChevronRight size={12} />
+              </button>
             </div>
-            <div className="w-32 h-32 bg-white/10 rounded-full absolute -right-8 -top-8" />
-            <div className="w-24 h-24 bg-white/10 rounded-full absolute right-16 -bottom-8" />
-            <GraduationCap size={80} className="text-white/20 relative z-10" />
+          )}
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            {[
+              { icon: Vote,   label: 'Statut Vote', value: profil?.a_vote ? 'Voté ✓' : 'Non voté', color: '#F0A500' },
+              { icon: Clock,  label: 'Élection',    value: elections.find(e => e.statut === 'EN_COURS') ? 'En cours' : elections.find(e => e.statut === 'PLANIFIEE') ? 'Planifiée' : 'Aucune', color: '#10B981' },
+              { icon: Shield, label: 'Sécurité',    value: 'Blockchain ✓', color: '#3B82F6' },
+            ].map((s, i) => (
+              <div key={i} className="bg-slate-800 border border-white/5 rounded-xl p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${s.color}20` }}>
+                    <s.icon size={16} style={{ color: s.color }} />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">{s.label}</p>
+                    <p className="text-white font-bold text-sm">{s.value}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Cartes */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="card border-2 border-purple-100">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <Vote size={24} className="text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Statut Vote</p>
-                  <p className="font-bold text-gray-800">{profil?.a_vote ? 'Voté ✓' : 'Non voté'}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="card border-2 border-green-100">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Clock size={24} className="text-green-600" />
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Élection</p>
-                  <p className="font-bold text-gray-800">
-                    {elections.find(e => e.statut === 'EN_COURS')
-                      ? 'En cours'
-                      : elections.find(e => e.statut === 'PLANIFIEE')
-                        ? 'Planifiée' : 'Aucune'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="card border-2 border-blue-100">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <Shield size={24} className="text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Sécurité</p>
-                  <p className="font-bold text-gray-800">Blockchain ✓</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
             {/* Profil */}
-            <div className="card">
-              <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <User size={20} className="text-purple-600" /> Mon Profil
-              </h3>
-              <div className="space-y-3">
-                {[
-                  { label: 'Nom complet', value: `${user?.prenom} ${user?.nom}` },
-                  { label: 'Matricule',   value: user?.matricule },
-                  { label: 'Filière',     value: profil?.filiere },
-                  { label: 'Niveau',      value: profil?.niveau },
-                  { label: 'Email',       value: user?.email },
-                ].map((item, i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span className="text-gray-500 text-sm">{item.label}</span>
-                    <span className="font-medium text-gray-800 text-sm">{item.value || '—'}</span>
+            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
+                <div className="w-1 h-5 bg-amber-500 rounded-full" />
+                <h3 className="text-white font-bold text-sm">Mon Profil</h3>
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 bg-amber-500/15 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-amber-500 font-bold text-xl">{user?.prenom?.[0]}{user?.nom?.[0]}</span>
                   </div>
-                ))}
+                  <div>
+                    <p className="text-white font-bold">{user?.prenom} {user?.nom}</p>
+                    <p className="text-slate-400 text-xs">{profil?.filiere || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: Hash,          label: 'Matricule', value: user?.matricule },
+                    { icon: GraduationCap, label: 'Filière',   value: profil?.filiere },
+                    { icon: Layers,        label: 'Niveau',    value: profil?.niveau },
+                    { icon: Mail,          label: 'Email',     value: user?.email },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
+                      <div className="w-7 h-7 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <item.icon size={12} className="text-slate-400" />
+                      </div>
+                      <span className="text-slate-400 text-xs w-20 flex-shrink-0">{item.label}</span>
+                      <span className="text-white text-xs font-medium truncate">{item.value || '—'}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Vote */}
-            <div className="card">
-              <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Vote size={20} className="text-purple-600" /> Action de Vote
-              </h3>
-              {droitVote ? (
-                <div className="space-y-4">
-                  <div className={`p-4 rounded-xl ${droitVote.peut_voter
-                    ? 'bg-green-50 border border-green-200'
-                    : 'bg-red-50 border border-red-200'}`}>
-                    <p className={`font-semibold ${droitVote.peut_voter ? 'text-green-700' : 'text-red-700'}`}>
-                      {droitVote.peut_voter ? '✅ Vous pouvez voter' : '❌ ' + droitVote.raison}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">{droitVote.election?.titre}</p>
+            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
+                <div className="w-1 h-5 bg-amber-500 rounded-full" />
+                <h3 className="text-white font-bold text-sm">Action de Vote</h3>
+              </div>
+              <div className="p-5">
+                {droitVote ? (
+                  <div className="flex flex-col gap-4">
+                    <div className={`p-4 rounded-xl border ${
+                      droitVote.peut_voter
+                        ? 'bg-emerald-500/10 border-emerald-500/20'
+                        : 'bg-red-500/10 border-red-500/20'
+                    }`}>
+                      <p className={`font-semibold text-sm mb-1 ${droitVote.peut_voter ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {droitVote.peut_voter ? '✅ Vous pouvez voter' : '❌ ' + droitVote.raison}
+                      </p>
+                      <p className="text-slate-400 text-xs">{droitVote.election?.titre}</p>
+                    </div>
+                    {droitVote.peut_voter && (
+                      <button onClick={() => navigate('/etudiant/voter')}
+                        className="w-full bg-amber-500 text-slate-900 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2">
+                        <Vote size={16} /> Voter maintenant <ChevronRight size={14} />
+                      </button>
+                    )}
                   </div>
-                  {droitVote.peut_voter && (
-                    <button onClick={() => navigate('/etudiant/voter')}
-                      className="btn-primary w-full flex items-center justify-center gap-2">
-                      <Vote size={18} /> Voter maintenant <ChevronRight size={18} />
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="p-4 bg-gray-50 rounded-xl text-center">
-                  <Calendar size={32} className="text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500 text-sm">Aucune élection en cours</p>
-                </div>
-              )}
-              {profil?.a_vote && profil?.vote_tx_hash && (
-                <div className="mt-4 p-3 bg-purple-50 rounded-xl">
-                  <p className="text-xs font-semibold text-purple-700 mb-1">Hash Blockchain</p>
-                  <p className="text-xs text-purple-600 font-mono break-all">{profil.vote_tx_hash}</p>
-                </div>
-              )}
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-8 text-center">
+                    <div className="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center mb-3">
+                      <Calendar size={22} className="text-slate-500" />
+                    </div>
+                    <p className="text-slate-400 text-sm">Aucune élection en cours</p>
+                    <p className="text-slate-600 text-xs mt-1">Revenez plus tard</p>
+                  </div>
+                )}
+                {profil?.a_vote && profil?.vote_tx_hash && (
+                  <div className="mt-4 p-3 bg-slate-700/50 rounded-xl border border-white/5">
+                    <p className="text-slate-500 text-xs mb-1">Hash Blockchain</p>
+                    <p className="text-amber-400 font-mono text-xs break-all">{profil.vote_tx_hash}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   )
 }
 
-export default DashboardEtudiant    
+export default DashboardEtudiant

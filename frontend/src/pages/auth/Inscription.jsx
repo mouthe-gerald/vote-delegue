@@ -1,14 +1,13 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import Webcam from 'react-webcam'
 import { authAPI } from '../../services/api'
 import {
-  User, Mail, Lock, Eye, EyeOff, Camera, CheckCircle,
-  GraduationCap, BookOpen, Hash, ArrowRight, ArrowLeft
+  User, Mail, Lock, Eye, EyeOff, CheckCircle,
+  GraduationCap, BookOpen, Hash, ArrowRight, ArrowLeft, Fingerprint, Vote
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-const ETAPES = ['Informations', 'Vérification Email', 'Capture Visage']
+const ETAPES = ['Informations', 'Vérification Email', 'Empreinte Digitale']
 
 const Inscription = () => {
   const [etape, setEtape]       = useState(0)
@@ -18,10 +17,8 @@ const Inscription = () => {
   const [erreur, setErreur]     = useState('')
   const [email, setEmail]       = useState('')
   const [otp, setOtp]           = useState(['', '', '', '', '', ''])
-  const [visageCapture, setVisageCapture] = useState(null)
-  const [webcamReady, setWebcamReady]     = useState(false)
-  const webcamRef               = useRef(null)
-  const navigate                = useNavigate()
+  const [empreinteOk, setEmpreinteOk] = useState(false)
+  const navigate                      = useNavigate()
 
   const [form, setForm] = useState({
     nom: '', prenom: '', matricule: 'CM-UDS-', email: '',
@@ -29,40 +26,36 @@ const Inscription = () => {
     mot_de_passe: '', mot_de_passe_confirm: '',
   })
 
-  const handleInscription = async (e) => {
+  // Étape 1 — Validation + envoi OTP
+  const handlePreInscription = async (e) => {
     e.preventDefault()
     setLoading(true)
     setErreur('')
     try {
-      await authAPI.inscription(form)
-      setEmail(form.email)
-      toast.success('Inscription réussie ! Vérifiez votre email.')
+      const { data } = await authAPI.preInscription(form)
+      setEmail(data.email)
+      toast.success('Code OTP envoyé à votre email !')
       setEtape(1)
     } catch (err) {
       const errors = err.response?.data
-      if (errors) {
-        const msg = Object.values(errors).flat().join(' ')
-        setErreur(msg)
-      }
-    } finally {
-      setLoading(false)
-    }
+      if (errors?.erreur) setErreur(errors.erreur)
+      else if (errors) setErreur(Object.values(errors).flat().join(' '))
+    } finally { setLoading(false) }
   }
 
-  const handleOTP = async () => {
+  // Étape 2 — Vérification OTP (pas de création compte)
+  const handleFinaliserInscription = async () => {
     const code = otp.join('')
     if (code.length !== 6) { setErreur('Entrez le code à 6 chiffres.'); return }
     setLoading(true)
     setErreur('')
     try {
-      await authAPI.verifierOTP({ email, code })
-      toast.success('Email vérifié ! Enregistrez votre visage.')
+      await authAPI.finaliserInscription({ code, email })
+      toast.success('Code vérifié ! Enregistrez votre empreinte.')
       setEtape(2)
     } catch (err) {
       setErreur(err.response?.data?.erreur || 'Code invalide.')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   const handleOtpChange = (index, value) => {
@@ -73,282 +66,353 @@ const Inscription = () => {
     if (value && index < 5) document.getElementById(`otp-${index + 1}`)?.focus()
   }
 
-  const captureVisage = useCallback(() => {
-    if (!webcamRef.current) {
-      toast.error('Caméra non disponible.')
-      return
+  // Étape 3 — Empreinte + création compte (tout en même temps)
+  // Gestionnaire erreurs globales
+  if (typeof window !== 'undefined') {
+    window.onerror = (msg, src, line, col, err) => {
+      setErreur(`Erreur JS: ${msg}`)
+      setLoading(false)
+      return true
     }
-    const img = webcamRef.current.getScreenshot()
-    if (img) {
-      setVisageCapture(img)
-      setErreur('')
-    } else {
-      toast.error('Impossible de capturer. Vérifiez votre caméra.')
-    }
-  }, [webcamRef])
-
-  const handleVisage = async () => {
-    if (!visageCapture) return
-    setLoading(true)
-    setErreur('')
-    try {
-      const { data: loginData } = await authAPI.connexion({
-        identifiant: form.matricule,
-        mot_de_passe: form.mot_de_passe,
-      })
-      localStorage.setItem('access_token', loginData.tokens.access)
-      localStorage.setItem('refresh_token', loginData.tokens.refresh)
-      const base64 = visageCapture.split(',')[1]
-      const response = await authAPI.encoderVisage({ image_base64: base64 })
-      toast.success('Inscription complète ! Vous pouvez vous connecter.')
-      navigate('/connexion')
-    } catch (err) {
-      const msg = err.response?.data?.erreur || 'Erreur lors de la capture.'
-      setErreur(msg)
-      setVisageCapture(null)
-    } finally {
+    window.onunhandledrejection = (e) => {
+      setErreur(`Erreur async: ${e.reason?.message || e.reason}`)
       setLoading(false)
     }
   }
 
-  const renvoierOTP = async () => {
+  const base64urlToUint8Array = (base64url) => {
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=')
+    const binary = atob(padded)
+    return Uint8Array.from(binary, c => c.charCodeAt(0))
+  }
+
+  const uint8ArrayToBase64 = (uint8Array) => {
+    return btoa(String.fromCharCode(...new Uint8Array(uint8Array)))
+  }
+
+  const enregistrerEmpreinte = async () => {
+    setLoading(true)
+    setErreur('')
     try {
-      await authAPI.envoyerOTP({ email })
-      toast.success('Nouveau code envoyé !')
-    } catch { toast.error('Erreur lors de l\'envoi.') }
+      // 1. Obtenir le challenge WebAuthn
+      const { data: options } = await authAPI.webauthnRegisterBeginPublic(email)
+
+      const publicKeyOptions = {
+        ...options,
+        challenge: base64urlToUint8Array(options.challenge),
+        user: {
+          ...options.user,
+          id: base64urlToUint8Array(options.user.id),
+        },
+        excludeCredentials: (options.excludeCredentials || []).map(c => ({
+          ...c,
+          id: base64urlToUint8Array(c.id),
+        })),
+      }
+
+      // 2. Demander l'empreinte
+      setErreur('Étape 2: demande empreinte...')
+      const credential = await navigator.credentials.create({ publicKey: publicKeyOptions })
+      setErreur('Étape 2: empreinte obtenue, envoi...')
+
+      if (!credential) {
+        setErreur('Aucune empreinte obtenue. Réessayez.')
+        setLoading(false)
+        return
+      }
+
+      const credentialResponse = {
+        id:       credential.id,
+        rawId:    uint8ArrayToBase64(credential.rawId),
+        type:     credential.type,
+        response: {
+          attestationObject: uint8ArrayToBase64(credential.response.attestationObject),
+          clientDataJSON:    uint8ArrayToBase64(credential.response.clientDataJSON),
+        },
+      }
+
+      // 3. Créer le compte + empreinte en même temps
+      setErreur('Étape 3: création compte...')
+      await authAPI.completerInscription({ email, credential: credentialResponse })
+
+      setEmpreinteOk(true)
+      toast.success('Inscription complète !')
+    } catch (err) {
+      console.error('WebAuthn error:', err)
+      const msg = err.name === 'NotAllowedError' ? 'Accès refusé. Réessayez.'
+        : err.name === 'NotSupportedError' ? 'Appareil non supporté.'
+        : err.name === 'InvalidStateError' ? 'Empreinte déjà enregistrée.'
+        : err.name === 'AbortError' ? 'Opération annulée.'
+        : err.response?.data?.erreur || `Erreur: ${err.name} - ${err.message}`
+      setErreur(msg)
+    } finally { setLoading(false) }
+  }
+
+  const terminerInscription = () => {
+    toast.success('Vous pouvez maintenant vous connecter !')
+    navigate('/connexion')
+  }
+
+  const renvoierOTP = async () => {
+    try { await authAPI.preInscription(form); toast.success('Nouveau code envoyé !') }
+    catch { toast.error('Erreur lors de l\'envoi.') }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-10 px-4"
-      style={{ background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #8b5cf6 100%)' }}>
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8">
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12"
+      style={{ backgroundImage: 'radial-gradient(circle at 30% 70%, rgba(21,101,192,0.2) 0%, transparent 50%)' }}>
 
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-            <GraduationCap size={28} className="text-purple-600" />
+      <div className="w-full max-w-lg">
+
+        <Link to="/" className="flex items-center gap-3 mb-8 justify-center">
+          <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+            <Vote size={18} className="text-slate-900" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800">Créer un compte</h2>
-          <p className="text-gray-500 text-sm mt-1">Plateforme Vote Délégué — Licence GI</p>
-        </div>
+          <span className="text-white font-bold text-base">VotingApp</span>
+        </Link>
 
-        {/* Stepper */}
-        <div className="flex items-center justify-center mb-8">
-          {ETAPES.map((e, i) => (
-            <div key={i} className="flex items-center">
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold
-                ${i <= etape ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
-                {i < etape ? <CheckCircle size={16} /> : i + 1}
-              </div>
-              {i < ETAPES.length - 1 && (
-                <div className={`w-16 h-1 mx-1 rounded ${i < etape ? 'bg-purple-600' : 'bg-gray-200'}`} />
-              )}
-            </div>
-          ))}
-        </div>
+        <div className="bg-slate-800 border border-white/10 rounded-2xl p-8">
 
-        {erreur && (
-          <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 mb-5 text-sm">
-            {erreur}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-extrabold text-white mb-1">Créer un compte</h2>
+            <p className="text-slate-400 text-sm">Plateforme de Vote en Ligne</p>
           </div>
-        )}
 
-        {/* Étape 1 — Formulaire */}
-        {etape === 0 && (
-          <form onSubmit={handleInscription} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-                <input placeholder="Prénom" value={form.prenom}
-                  onChange={e => setForm({...form, prenom: e.target.value})}
-                  className="input-field pl-9 text-sm" required />
-              </div>
-              <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-                <input placeholder="Nom" value={form.nom}
-                  onChange={e => setForm({...form, nom: e.target.value})}
-                  className="input-field pl-9 text-sm" required />
-              </div>
-            </div>
-            <div className="relative">
-              <Hash size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-              <input
-                placeholder="CM-UDS-24IUT0001"
-                value={form.matricule}
-                onChange={e => {
-                  const val = e.target.value
-                  if (val.startsWith('CM-UDS-')) setForm({...form, matricule: val})
-                }}
-                className="input-field pl-9 text-sm"
-                required
-              />
-            </div>
-            <div className="relative">
-              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-              <input type="email" placeholder="Email" value={form.email}
-                onChange={e => setForm({...form, email: e.target.value})}
-                className="input-field pl-9 text-sm" required />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <BookOpen size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-                <select value={form.filiere}
-                  onChange={e => setForm({...form, filiere: e.target.value})}
-                  className="input-field pl-9 text-sm" required>
-                  <option value="">Filière</option>
-                  <option>Génie Informatique</option>
-                  <option>Génie Logiciel</option>
-                  <option>Réseaux & Télécoms</option>
-                </select>
-              </div>
-              <div className="relative">
-                <GraduationCap size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-                <select value={form.niveau}
-                  onChange={e => setForm({...form, niveau: e.target.value})}
-                  className="input-field pl-9 text-sm" required>
-                  <option value="">Niveau</option>
-                  <option>Licence 1</option>
-                  <option>Licence 2</option>
-                  <option>Licence 3</option>
-                </select>
-              </div>
-            </div>
-            <div className="relative">
-              <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-              <input type={showPwd ? 'text' : 'password'} placeholder="Mot de passe"
-                value={form.mot_de_passe}
-                onChange={e => setForm({...form, mot_de_passe: e.target.value})}
-                className="input-field pl-9 pr-9 text-sm" required />
-              <button type="button" onClick={() => setShowPwd(!showPwd)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-            <div className="relative">
-              <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" />
-              <input type={showPwd2 ? 'text' : 'password'} placeholder="Confirmer le mot de passe"
-                value={form.mot_de_passe_confirm}
-                onChange={e => setForm({...form, mot_de_passe_confirm: e.target.value})}
-                className="input-field pl-9 pr-9 text-sm" required />
-              <button type="button" onClick={() => setShowPwd2(!showPwd2)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                {showPwd2 ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-            <button type="submit" disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2">
-              {loading
-                ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                : <><span>Continuer</span><ArrowRight size={18} /></>}
-            </button>
-          </form>
-        )}
-
-        {/* Étape 2 — OTP */}
-        {etape === 1 && (
-          <div className="text-center space-y-6">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-              <Mail size={28} className="text-purple-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-800">Vérifiez votre email</h3>
-              <p className="text-gray-500 text-sm mt-1">
-                Un code à 6 chiffres a été envoyé à<br />
-                <span className="font-semibold text-purple-600">{email}</span>
-              </p>
-            </div>
-            <div className="flex justify-center gap-3">
-              {otp.map((digit, i) => (
-                <input key={i} id={`otp-${i}`} type="text" maxLength={1} value={digit}
-                  onChange={e => handleOtpChange(i, e.target.value)}
-                  className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-200
-                             rounded-xl focus:outline-none focus:border-purple-500 transition-colors" />
-              ))}
-            </div>
-            <button onClick={handleOTP} disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2">
-              {loading
-                ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                : 'Vérifier le code'}
-            </button>
-            <button onClick={renvoierOTP} className="text-purple-600 text-sm hover:underline">
-              Renvoyer le code
-            </button>
-          </div>
-        )}
-
-        {/* Étape 3 — Capture Visage */}
-        {etape === 2 && (
-          <div className="space-y-5">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Camera size={28} className="text-purple-600" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-800">Enregistrer votre visage</h3>
-              <p className="text-gray-500 text-sm mt-1">
-                Positionnez votre visage dans le cadre, assurez-vous d'être bien éclairé
-              </p>
-            </div>
-
-            <div className="bg-blue-50 rounded-xl p-3 text-sm text-blue-700">
-              💡 Conseils : Bonne lumière frontale, visage centré, regardez la caméra
-            </div>
-
-            <div className="relative rounded-2xl overflow-hidden bg-gray-900">
-              {!visageCapture ? (
-                <Webcam
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  screenshotQuality={0.95}
-                  className="w-full rounded-2xl"
-                  onUserMedia={() => setWebcamReady(true)}
-                  onUserMediaError={() => toast.error('Impossible d\'accéder à la caméra.')}
-                  videoConstraints={{
-                    facingMode: 'user',
-                    width: { ideal: 640 },
-                    height: { ideal: 480 },
-                  }}
-                />
-              ) : (
-                <img src={visageCapture} alt="capture" className="w-full rounded-2xl" />
-              )}
-              <div className="absolute inset-0 border-4 border-purple-500/50 rounded-2xl pointer-events-none" />
-              {!visageCapture && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-48 h-56 border-4 border-white/60 rounded-full" />
+          {/* Stepper */}
+          <div className="flex items-center justify-center mb-8">
+            {ETAPES.map((e, i) => (
+              <div key={i} className="flex items-center">
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all ${
+                  i < etape ? 'bg-amber-500 text-slate-900' :
+                  i === etape ? 'bg-amber-500 text-slate-900' :
+                  'bg-white/10 text-slate-500'
+                }`}>
+                  {i < etape ? <CheckCircle size={14} /> : i + 1}
                 </div>
-              )}
-            </div>
+                {i < ETAPES.length - 1 && (
+                  <div className={`w-12 h-0.5 mx-1 transition-all ${i < etape ? 'bg-amber-500' : 'bg-white/10'}`} />
+                )}
+              </div>
+            ))}
+          </div>
 
-            <div className="flex gap-3">
-              {visageCapture ? (
-                <>
-                  <button onClick={() => { setVisageCapture(null); setErreur('') }}
-                    className="btn-secondary flex-1 flex items-center justify-center gap-2">
-                    <ArrowLeft size={16} /> Reprendre
+          {erreur && (
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-3 mb-5 text-sm flex gap-2">
+              <div className="w-1 bg-red-500 rounded-full flex-shrink-0" /> {erreur}
+            </div>
+          )}
+
+          {/* Étape 1 */}
+          {etape === 0 && (
+            <form onSubmit={handlePreInscription} className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-400 text-xs mb-1.5 block">Prénom</label>
+                  <div className="relative">
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input placeholder="Prénom" value={form.prenom}
+                      onChange={e => setForm({...form, prenom: e.target.value})}
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 text-xs mb-1.5 block">Nom</label>
+                  <div className="relative">
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input placeholder="Nom" value={form.nom}
+                      onChange={e => setForm({...form, nom: e.target.value})}
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-slate-400 text-xs mb-1.5 block">Matricule</label>
+                <div className="relative">
+                  <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input placeholder="CM-UDS-24IUT0001" value={form.matricule}
+                    onChange={e => { const v = e.target.value; if (v.startsWith('CM-UDS-')) setForm({...form, matricule: v}) }}
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-slate-400 text-xs mb-1.5 block">Email</label>
+                <div className="relative">
+                  <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input type="email" placeholder="votre@email.com" value={form.email}
+                    onChange={e => setForm({...form, email: e.target.value})}
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-400 text-xs mb-1.5 block">Filière</label>
+                  <div className="relative">
+                    <BookOpen size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <select value={form.filiere} onChange={e => setForm({...form, filiere: e.target.value})}
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-slate-700 appearance-none" required>
+                      <option value="">Filière</option>
+                      <option>Génie Informatique GI</option>
+                      <option>Batiment BAT</option>
+                      <option>Mecatronique MKA</option>
+                      <option>Genie Electrique GE</option>
+                      <option>AII</option>
+                      <option>GTR</option>
+                      <option>MIP</option>
+                      <option>GTEE</option>
+                      <option>IBM</option>
+                      <option>ESO</option>
+                      <option>EEO</option>
+                      <option>EHY</option>
+                      <option>ITE</option>
+                      <option>BIO</option>
+                      <option>GEA</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 text-xs mb-1.5 block">Niveau</label>
+                  <div className="relative">
+                    <GraduationCap size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <select value={form.niveau} onChange={e => setForm({...form, niveau: e.target.value})}
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-slate-700 appearance-none" required>
+                      <option value="">Niveau</option>
+                      <option>Licence 1</option>
+                      <option>Licence 2</option>
+                      <option>Licence 3</option>
+                      <option>Licence 4</option>
+                      <option>Licence 5</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-slate-400 text-xs mb-1.5 block">Mot de passe</label>
+                <div className="relative">
+                  <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input type={showPwd ? 'text' : 'password'} placeholder="Min. 8 caractères"
+                    value={form.mot_de_passe} onChange={e => setForm({...form, mot_de_passe: e.target.value})}
+                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                  <button type="button" onClick={() => setShowPwd(!showPwd)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                    {showPwd ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
-                  <button onClick={handleVisage} disabled={loading}
-                    className="btn-primary flex-1 flex items-center justify-center gap-2">
-                    {loading
-                      ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      : <><CheckCircle size={16} /> Valider</>}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-slate-400 text-xs mb-1.5 block">Confirmer le mot de passe</label>
+                <div className="relative">
+                  <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input type={showPwd2 ? 'text' : 'password'} placeholder="Répétez le mot de passe"
+                    value={form.mot_de_passe_confirm} onChange={e => setForm({...form, mot_de_passe_confirm: e.target.value})}
+                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-white outline-none border border-white/10 bg-white/5 placeholder-slate-600" required />
+                  <button type="button" onClick={() => setShowPwd2(!showPwd2)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                    {showPwd2 ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
-                </>
+                </div>
+              </div>
+
+              <button type="submit" disabled={loading}
+                className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2 mt-2">
+                {loading
+                  ? <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                  : <><span>Continuer</span><ArrowRight size={16} /></>}
+              </button>
+            </form>
+          )}
+
+          {/* Étape 2 — OTP */}
+          {etape === 1 && (
+            <div className="text-center flex flex-col items-center gap-5">
+              <div className="w-16 h-16 bg-amber-500/15 rounded-full flex items-center justify-center">
+                <Mail size={28} className="text-amber-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-1">Vérifiez votre email</h3>
+                <p className="text-slate-400 text-sm">
+                  Code envoyé à <span className="text-amber-500 font-medium">{email}</span>
+                </p>
+              </div>
+              <div className="flex justify-center gap-2">
+                {otp.map((digit, i) => (
+                  <input key={i} id={`otp-${i}`} type="text" maxLength={1} value={digit}
+                    onChange={e => handleOtpChange(i, e.target.value)}
+                    className="w-11 h-12 text-center text-xl font-bold text-white bg-white/5 border border-white/10 rounded-xl outline-none focus:border-amber-500 transition-colors" />
+                ))}
+              </div>
+              <button onClick={handleFinaliserInscription} disabled={loading}
+                className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2">
+                {loading
+                  ? <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                  : 'Vérifier le code'}
+              </button>
+              <div className="flex gap-4">
+                <button onClick={renvoierOTP} className="text-slate-500 text-sm hover:text-amber-500 transition-colors">
+                  Renvoyer le code
+                </button>
+                <button onClick={() => { setEtape(0); setErreur('') }}
+                  className="text-slate-500 text-sm hover:text-white transition-colors flex items-center gap-1">
+                  <ArrowLeft size={14} /> Retour
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Étape 3 — Empreinte + création compte */}
+          {etape === 2 && (
+            <div className="flex flex-col items-center gap-5">
+              <div className={`w-24 h-24 rounded-full flex items-center justify-center transition-all ${
+                empreinteOk ? 'bg-emerald-500/15' : 'bg-amber-500/15'
+              }`}>
+                {empreinteOk
+                  ? <CheckCircle size={48} className="text-emerald-500" />
+                  : <Fingerprint size={48} className="text-amber-500" />
+                }
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-bold text-white mb-1">
+                  {empreinteOk ? 'Inscription complète !' : 'Dernière étape'}
+                </h3>
+                <p className="text-slate-400 text-sm">
+                  {empreinteOk
+                    ? 'Votre compte a été créé avec succès.'
+                    : 'Enregistrez votre empreinte pour finaliser votre inscription. Votre compte sera créé à ce moment.'}
+                </p>
+              </div>
+
+              <div className="w-full bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 text-blue-400 text-xs text-center">
+                💡 Votre compte ne sera créé qu'après l'enregistrement de l'empreinte
+              </div>
+
+              {!empreinteOk ? (
+                <button type="button" onClick={enregistrerEmpreinte} disabled={loading}
+                  className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-3">
+                  {loading
+                    ? <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                    : <><Fingerprint size={18} /> Enregistrer mon empreinte</>}
+                </button>
               ) : (
-                <button onClick={captureVisage} disabled={!webcamReady}
-                  className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50">
-                  <Camera size={18} /> {webcamReady ? 'Capturer mon visage' : 'Chargement caméra...'}
+                <button onClick={terminerInscription}
+                  className="w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-500 transition-all flex items-center justify-center gap-2">
+                  <CheckCircle size={18} /> Se connecter
                 </button>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        <p className="text-center text-gray-500 mt-6 text-sm">
-          Déjà un compte ?{' '}
-          <Link to="/connexion" className="text-purple-600 font-semibold hover:underline">
-            Se connecter
-          </Link>
-        </p>
+          <p className="text-center text-slate-500 text-sm mt-6">
+            Déjà un compte ?{' '}
+            <Link to="/connexion" className="text-amber-500 font-semibold hover:text-amber-400">
+              Se connecter
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

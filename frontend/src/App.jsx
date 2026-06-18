@@ -11,6 +11,9 @@ import PageCandidature from './pages/etudiant/PageCandidature'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import DashboardCandidat from './pages/candidat/DashboardCandidat'
 import ResultatsPage from './pages/ResultatsPage'
+import GestionEtudiants from './pages/admin/GestionEtudiants'
+import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
+import MotDePasseOublie from './pages/auth/MotDePasseOublie'
 
 const App = () => {
   return (
@@ -27,11 +30,14 @@ const App = () => {
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
 
+          {/* Routes ETUDIANT uniquement */}
           <Route path="/etudiant/dashboard" element={
-            <ProtectedRoute roles={['ETUDIANT', 'CANDIDAT']}>
+            <ProtectedRoute roles={['ETUDIANT']}>
               <DashboardEtudiant />
             </ProtectedRoute>
           } />
+
+          {/* Routes ETUDIANT + CANDIDAT */}
           <Route path="/etudiant/voter" element={
             <ProtectedRoute roles={['ETUDIANT', 'CANDIDAT']}>
               <PageVote />
@@ -43,20 +49,33 @@ const App = () => {
             </ProtectedRoute>
           } />
 
+          {/* Routes CANDIDAT uniquement */}
+          <Route path="/candidat/dashboard" element={
+            <ProtectedRoute roles={['ETUDIANT', 'CANDIDAT']}>
+              <DashboardCandidat />
+            </ProtectedRoute>
+          } />
+
+          {/* Routes ADMIN uniquement */}
           <Route path="/admin/dashboard" element={
             <ProtectedRoute roles={['ADMINISTRATEUR']}>
               <DashboardAdmin />
             </ProtectedRoute>
           } />
-
-          <Route path="/candidat/dashboard" element={
-            <ProtectedRoute roles={['CANDIDAT']}>
-              <DashboardCandidat />
+          <Route path="/admin/etudiants-autorises" element={
+            <ProtectedRoute roles={['ADMINISTRATEUR']}>
+              <GestionEtudiants />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/utilisateurs" element={
+            <ProtectedRoute roles={['ADMINISTRATEUR']}>
+              <GestionUtilisateurs />
             </ProtectedRoute>
           } />
 
-       <Route path="/resultats" element={<ResultatsPage />} />
-
+          {/* Route publique */}
+          <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
+          <Route path="/resultats" element={<ResultatsPage />} />
           <Route path="*" element={<Navigate to="/connexion" replace />} />
         </Routes>
       </AuthProvider>

@@ -1,7 +1,7 @@
 from rest_framework             import status
 from rest_framework.views       import APIView
 from rest_framework.response    import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts           import get_object_or_404
 
 from apps.authentication.models import Administrateur, Role
@@ -16,7 +16,7 @@ class IsAdmin(IsAuthenticated):
 
 
 class ElectionListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         elections  = Election.objects.all()
@@ -138,4 +138,26 @@ class ElectionStatutView(APIView):
             'est_ouverte': election.est_ouverte(),
             'date_debut':  election.date_debut,
             'date_fin':    election.date_fin,
+        }, status=status.HTTP_200_OK)
+
+class ElectionAnnulerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, election_id):
+        if request.user.role != 'ADMINISTRATEUR':
+            return Response({'erreur': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        election = get_object_or_404(Election, pk=election_id)
+        if election.statut == 'ANNULEE':
+            return Response({'erreur': 'Cette élection est déjà annulée.'}, status=status.HTTP_400_BAD_REQUEST)
+        if election.statut == 'RESULTATS_PUBLIES':
+            return Response({'erreur': 'Impossible d\'annuler une élection dont les résultats sont publiés.'}, status=status.HTTP_400_BAD_REQUEST)
+        motif = request.data.get('motif_annulation', '').strip()
+        if not motif:
+            return Response({'erreur': 'Un motif d\'annulation est obligatoire.'}, status=status.HTTP_400_BAD_REQUEST)
+        election.statut           = 'ANNULEE'
+        election.motif_annulation = motif
+        election.save()
+        return Response({
+            'message':          'Élection annulée avec succès.',
+            'motif_annulation': motif,
         }, status=status.HTTP_200_OK)

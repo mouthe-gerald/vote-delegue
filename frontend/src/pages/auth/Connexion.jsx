@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { User, Lock, Eye, EyeOff, Vote, Shield, BarChart2, Users } from 'lucide-react'
+import { User, Lock, Eye, EyeOff, Vote, Shield, BarChart2, Users, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const Connexion = () => {
@@ -33,7 +33,10 @@ const Connexion = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 flex">
+    <div className="min-h-screen bg-slate-900 flex relative">
+      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all border border-white/10">
+        <ArrowLeft size={16} />
+      </Link>
 
       {/* Panneau gauche — branding (desktop only) */}
       <div className="hidden lg:flex flex-col justify-between w-2/5 bg-slate-950 border-r border-white/5 p-12">

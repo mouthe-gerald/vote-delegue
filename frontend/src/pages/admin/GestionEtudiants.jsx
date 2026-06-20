@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authAPI } from '../../services/api'
-import { Users, ArrowLeft, Search, Trash2, Upload, Plus, CheckCircle, XCircle, X, Hash, User, BookOpen, GraduationCap } from 'lucide-react'
+import { Users, ArrowLeft, Search, Trash2, Upload, Plus, CheckCircle, XCircle, X, Hash, User, BookOpen, GraduationCap, AlertTriangle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const GestionEtudiants = () => {
@@ -12,6 +12,7 @@ const GestionEtudiants = () => {
   const [recherche, setRecherche]   = useState('')
   const [showForm, setShowForm]     = useState(false)
   const [importing, setImporting]   = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(null)
   const [form, setForm] = useState({
     matricule: 'CM-UDS-', nom: '', prenom: '', filiere: '', niveau: '', annee_academique: '2025-2026'
   })
@@ -38,9 +39,9 @@ const GestionEtudiants = () => {
   }
 
   const supprimer = async (id) => {
-    if (!window.confirm('Supprimer cet étudiant ?')) return
     try { await authAPI.supprimerEtudiantAutorise(id); toast.success('Supprimé.'); charger() }
     catch { toast.error('Erreur.') }
+    finally { setConfirmDelete(null) }
   }
 
   const importerExcel = async (e) => {
@@ -164,7 +165,7 @@ const GestionEtudiants = () => {
                       }
                     </td>
                     <td className="px-5 py-3.5">
-                      <button onClick={() => supprimer(e.id)}
+                      <button onClick={() => setConfirmDelete(e)}
                         className="w-7 h-7 flex items-center justify-center bg-red-500/15 text-red-400 rounded-lg hover:bg-red-500/25 border border-red-500/20">
                         <Trash2 size={12} />
                       </button>
@@ -266,6 +267,42 @@ const GestionEtudiants = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Confirmation Suppression */}
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-sm p-6 relative">
+            <button onClick={() => setConfirmDelete(null)}
+              className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+              <X size={16} />
+            </button>
+
+            <div className="flex flex-col items-center text-center gap-4 pt-2">
+              <div className="w-14 h-14 bg-red-500/15 rounded-full flex items-center justify-center">
+                <AlertTriangle size={26} className="text-red-400" />
+              </div>
+
+              <div>
+                <h3 className="text-white font-bold text-base mb-2">Supprimer l'étudiant</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Voulez-vous supprimer <span className="text-white font-semibold">{confirmDelete.prenom} {confirmDelete.nom}</span> ({confirmDelete.matricule}) de la liste des étudiants autorisés ?
+                </p>
+              </div>
+
+              <div className="flex gap-3 w-full mt-2">
+                <button onClick={() => setConfirmDelete(null)}
+                  className="flex-1 py-2.5 rounded-xl text-slate-300 bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
+                  Annuler
+                </button>
+                <button onClick={() => supprimer(confirmDelete.id)}
+                  className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-sm font-bold hover:bg-red-600 transition-colors">
+                  Supprimer
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

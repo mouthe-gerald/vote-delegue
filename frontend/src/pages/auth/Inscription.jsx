@@ -147,8 +147,12 @@ const Inscription = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12"
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12 relative"
       style={{ backgroundImage: 'radial-gradient(circle at 30% 70%, rgba(21,101,192,0.2) 0%, transparent 50%)' }}>
+
+      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all border border-white/10">
+        <ArrowLeft size={16} />
+      </Link>
 
       <div className="w-full max-w-lg">
 

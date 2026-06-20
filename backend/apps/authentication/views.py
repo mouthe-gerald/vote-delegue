@@ -766,10 +766,15 @@ class WebAuthnRegisterBeginPublicView(APIView):
                 user_verification=UserVerificationRequirement.REQUIRED,
                 resident_key=ResidentKeyRequirement.PREFERRED,
             ),
-            supported_pub_key_algs=[COSEAlgorithmIdentifier.ECDSA_SHA_256],
+            supported_pub_key_algs=[
+                COSEAlgorithmIdentifier.ECDSA_SHA_256,
+                COSEAlgorithmIdentifier.RSASSA_PKCS1_v1_5_SHA_256,
+            ],
         )
         # Stocker le challenge en BD (pas en session)
         challenge_b64 = base64.b64encode(options.challenge).decode()
         inscription.webauthn_challenge = challenge_b64
         inscription.save()
-        return Response(json.loads(webauthn.options_to_json(options)), status=status.HTTP_200_OK)
+        # Convertir les options en dict et s'assurer que pubKeyCredParams est correct
+        options_dict = json.loads(webauthn.options_to_json(options))
+        return Response(options_dict, status=status.HTTP_200_OK)

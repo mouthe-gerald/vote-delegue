@@ -67,19 +67,6 @@ const Inscription = () => {
   }
 
   // Étape 3 — Empreinte + création compte (tout en même temps)
-  // Gestionnaire erreurs globales
-  if (typeof window !== 'undefined') {
-    window.onerror = (msg, src, line, col, err) => {
-      setErreur(`Erreur JS: ${msg}`)
-      setLoading(false)
-      return true
-    }
-    window.onunhandledrejection = (e) => {
-      setErreur(`Erreur async: ${e.reason?.message || e.reason}`)
-      setLoading(false)
-    }
-  }
-
   const base64urlToUint8Array = (base64url) => {
     const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
     const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=')

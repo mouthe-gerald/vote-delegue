@@ -32,7 +32,7 @@ from .serializers import (
 )
 from .email_service import envoyer_otp_email
 
-RP_ID   = 'localhost'
+RP_ID   = '192.168.11.203'
 RP_NAME = 'Vote Délégué IUT'
 ORIGIN  = 'https://192.168.11.203:5173'
 

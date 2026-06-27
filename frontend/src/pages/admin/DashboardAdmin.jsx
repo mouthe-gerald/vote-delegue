@@ -205,6 +205,19 @@ const DashboardAdmin = () => {
 
         {/* Body */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <style>{`
+            @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+            .fade1 { animation: fadeUp 0.5s ease 0.1s both; }
+            .fade2 { animation: fadeUp 0.5s ease 0.2s both; }
+            .fade3 { animation: fadeUp 0.5s ease 0.3s both; }
+            .fade4 { animation: fadeUp 0.5s ease 0.4s both; }
+            .fade5 { animation: fadeUp 0.5s ease 0.5s both; }
+            .card-anim { animation: fadeUp 0.5s ease both; }
+            .card-anim:nth-child(1) { animation-delay:0.1s; }
+            .card-anim:nth-child(2) { animation-delay:0.2s; }
+            .card-anim:nth-child(3) { animation-delay:0.3s; }
+            .card-anim:nth-child(4) { animation-delay:0.4s; }
+          `}</style>
 
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -214,7 +227,7 @@ const DashboardAdmin = () => {
               { label: 'Candidatures',     value: candidatures.length,                                            icon: Users,      color: '#3B82F6' },
               { label: 'Résultats publiés', value: elections.filter(e => e.statut === 'RESULTATS_PUBLIES').length, icon: Trophy,     color: '#8B5CF6' },
             ].map((s, i) => (
-              <div key={i} className="bg-slate-800 border border-white/5 rounded-xl p-4">
+              <div key={i} className="card-anim bg-slate-800 border border-white/5 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}20` }}>
                     <s.icon size={16} style={{ color: s.color }} />
@@ -226,7 +239,7 @@ const DashboardAdmin = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 fade3">
 
             {/* Élections */}
             <div className="lg:col-span-2 bg-slate-800 border border-white/5 rounded-xl overflow-hidden">

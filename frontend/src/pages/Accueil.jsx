@@ -68,6 +68,8 @@ const Accueil = () => {
         .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card-hover:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.1); }
         .slide-down { animation: slideDown 0.3s ease forwards; }
+        @keyframes logo-pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.12); } }
+        .logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
         .btn-inscrire { position:relative; overflow:hidden; }
         .btn-inscrire::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:#F0A500; transition:left 0.4s ease; z-index:0; }
         .btn-inscrire:hover::before { left:0; }
@@ -84,7 +86,7 @@ const Accueil = () => {
       <nav className={`fixed top-0 left-0 right-0 z-50 border-b-2 border-amber-500 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur-md shadow-lg' : 'bg-slate-900'}`}>
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center" style={{animation:'pulse-ring 2s infinite'}}>
+            <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={18} className="text-slate-900" />
             </div>
             <span className="text-white font-bold text-base">VotingApp</span>
@@ -139,7 +141,7 @@ const Accueil = () => {
             </p>
             <div className="fade4 flex flex-wrap gap-4 mb-10">
               <button onClick={() => navigate('/connexion')}
-                className="shimmer-btn flex items-center gap-2 text-slate-900 px-6 py-3.5 rounded-lg font-bold text-sm hover:scale-105 hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-200">
+                className="btn-acceder shimmer-btn flex items-center gap-2 text-slate-900 px-6 py-3.5 rounded-lg font-bold text-sm hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-200">
                 Accéder à la plateforme <ChevronRight size={16} />
               </button>
               <button onClick={() => navigate('/resultats')}

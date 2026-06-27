@@ -34,6 +34,18 @@ const Connexion = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 flex relative">
+      <style>{`
+        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+        .fade1 { animation: fadeUp 0.6s ease 0.1s both; }
+        .fade2 { animation: fadeUp 0.6s ease 0.25s both; }
+        .fade3 { animation: fadeUp 0.6s ease 0.4s both; }
+        .fade4 { animation: fadeUp 0.6s ease 0.55s both; }
+        .fade5 { animation: fadeUp 0.6s ease 0.7s both; }
+        @keyframes logo-pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.12); } }
+        .logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
+        @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+        .btn-submit { background: linear-gradient(90deg,#F0A500 0%,#FFD55A 40%,#F0A500 60%,#F0A500 100%); background-size:200% auto; animation: shimmer 3s linear infinite; }
+      `}</style>
       <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all border border-white/10">
         <ArrowLeft size={16} />
       </Link>
@@ -41,19 +53,19 @@ const Connexion = () => {
       {/* Panneau gauche — branding (desktop only) */}
       <div className="hidden lg:flex flex-col justify-between w-2/5 bg-slate-950 border-r border-white/5 p-12">
         <div>
-          <Link to="/" className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center">
+          <Link to="/" className="flex items-center gap-3 mb-16 fade1">
+            <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={20} className="text-slate-900" />
             </div>
             <span className="text-white font-bold text-lg">VotingApp</span>
           </Link>
 
-          <h1 className="text-3xl font-extrabold text-white leading-tight mb-4">
+          <h1 className="text-3xl font-extrabold text-white leading-tight mb-4 fade2">
             Bienvenue sur la<br />
             <span className="text-amber-500">plateforme officielle</span><br />
             de vote
           </h1>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-400 text-sm leading-relaxed fade3">
             Connectez-vous pour accéder à votre espace et participer au processus électoral sécurisé.
           </p>
         </div>
@@ -90,7 +102,7 @@ const Connexion = () => {
             <span className="text-white font-bold">VotingApp</span>
           </Link>
 
-          <div className="mb-8">
+          <div className="mb-8 fade1">
             <h2 className="text-2xl font-extrabold text-white mb-2">Connexion</h2>
             <p className="text-slate-400 text-sm">Entrez vos identifiants pour accéder à votre espace.</p>
           </div>
@@ -102,7 +114,7 @@ const Connexion = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 fade2">
             <div>
               <label className="text-slate-400 text-xs font-medium mb-2 block">Matricule ou Email</label>
               <div className="relative">
@@ -146,7 +158,7 @@ const Connexion = () => {
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2 mt-2">
+              className="btn-submit w-full text-slate-900 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 mt-2">
               {loading
                 ? <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
                 : 'Se connecter'
@@ -154,7 +166,7 @@ const Connexion = () => {
             </button>
           </form>
 
-          <div className="flex flex-col items-center gap-3 mt-6">
+          <div className="flex flex-col items-center gap-3 mt-6 fade3">
             <p className="text-slate-500 text-sm">
               Pas encore de compte ?{' '}
               <Link to="/inscription" className="text-amber-500 font-semibold hover:text-amber-400">

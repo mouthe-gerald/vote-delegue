@@ -12,6 +12,7 @@ import DashboardAdmin from './pages/admin/DashboardAdmin'
 import DashboardCandidat from './pages/candidat/DashboardCandidat'
 import ResultatsPage from './pages/ResultatsPage'
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
+import GestionEtudiants from './pages/admin/GestionEtudiants'
 
 const App = () => {
   return (
@@ -59,6 +60,11 @@ const App = () => {
           <Route path="/admin/utilisateurs" element={
   <ProtectedRoute roles={['ADMINISTRATEUR']}>
     <GestionUtilisateurs />
+  </ProtectedRoute>
+} />
+          <Route path="/admin/etudiants-autorises" element={
+  <ProtectedRoute roles={['ADMINISTRATEUR']}>
+    <GestionEtudiants />
   </ProtectedRoute>
 } />
 

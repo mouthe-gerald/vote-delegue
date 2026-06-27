@@ -147,8 +147,20 @@ const Inscription = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12 relative"
-      style={{ backgroundImage: 'radial-gradient(circle at 30% 70%, rgba(21,101,192,0.2) 0%, transparent 50%)' }}>
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12 relative">
+      <style>{`
+        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+        .fade1 { animation: fadeUp 0.6s ease 0.1s both; }
+        .fade2 { animation: fadeUp 0.6s ease 0.25s both; }
+        .fade3 { animation: fadeUp 0.6s ease 0.4s both; }
+        .fade4 { animation: fadeUp 0.6s ease 0.55s both; }
+        @keyframes logo-pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.12); } }
+        .logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
+        @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+        .btn-submit { background: linear-gradient(90deg,#F0A500 0%,#FFD55A 40%,#F0A500 60%,#F0A500 100%); background-size:200% auto; animation: shimmer 3s linear infinite; }
+        @keyframes stepPulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(240,165,0,0.4); } 50% { transform:scale(1.08); box-shadow:0 0 0 6px rgba(240,165,0,0); } }
+        .step-active { animation: stepPulse 2s ease-in-out infinite; }
+      `}</style>
 
       <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all border border-white/10">
         <ArrowLeft size={16} />
@@ -157,7 +169,7 @@ const Inscription = () => {
       <div className="w-full max-w-lg">
 
         <Link to="/" className="flex items-center gap-3 mb-8 justify-center">
-          <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+          <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
             <Vote size={18} className="text-slate-900" />
           </div>
           <span className="text-white font-bold text-base">VotingApp</span>
@@ -166,7 +178,7 @@ const Inscription = () => {
         <div className="bg-slate-800 border border-white/10 rounded-2xl p-8">
 
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-extrabold text-white mb-1">Créer un compte</h2>
+            <h2 className="text-2xl font-extrabold text-white mb-1 fade1">Créer un compte</h2>
             <p className="text-slate-400 text-sm">Plateforme de Vote en Ligne</p>
           </div>
 

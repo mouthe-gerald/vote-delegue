@@ -13,6 +13,7 @@ import DashboardCandidat from './pages/candidat/DashboardCandidat'
 import ResultatsPage from './pages/ResultatsPage'
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
 import GestionEtudiants from './pages/admin/GestionEtudiants'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   return (
@@ -70,7 +71,7 @@ const App = () => {
 
        <Route path="/resultats" element={<ResultatsPage />} />
 
-          <Route path="*" element={<Navigate to="/connexion" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

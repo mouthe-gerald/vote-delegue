@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import usePageTitle from '../hooks/usePageTitle'
 import { useNavigate, Link } from 'react-router-dom'
 import { electionAPI, resultatAPI } from '../services/api'
 import {
@@ -17,6 +18,7 @@ const ResultatsPage = () => {
   const [loading, setLoading]           = useState(true)
   const [lastUpdate, setLastUpdate]     = useState(null)
   const navigate                        = useNavigate()
+  usePageTitle('Résultats')
 
   const COULEURS = ['#F0A500', '#3B82F6', '#10B981', '#8B5CF6', '#EF4444', '#06B6D4']
 

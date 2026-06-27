@@ -1,3 +1,4 @@
+import usePageTitle from '../../hooks/usePageTitle'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
@@ -23,6 +24,7 @@ const DashboardAdmin = () => {
     titre: '', description: '', date_debut: '', date_fin: '', annee_academique: '2025-2026'
   })
   const navigate = useNavigate()
+  usePageTitle('Dashboard Admin')
 
   useEffect(() => { chargerDonnees() }, [])
 

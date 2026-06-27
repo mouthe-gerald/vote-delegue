@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import usePageTitle from '../../hooks/usePageTitle'
 import { useAuth } from '../../context/AuthContext'
 import { User, Lock, Eye, EyeOff, Vote, Shield, BarChart2, Users, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -11,6 +12,7 @@ const Connexion = () => {
   const [erreur, setErreur]   = useState('')
   const { connexion }         = useAuth()
   const navigate              = useNavigate()
+  usePageTitle('Connexion')
 
   const handleSubmit = async (e) => {
     e.preventDefault()

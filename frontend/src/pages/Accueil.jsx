@@ -1,10 +1,12 @@
 import { useNavigate, Link } from 'react-router-dom'
+import usePageTitle from '../hooks/usePageTitle'
 import { useState, useEffect } from 'react'
 import { Shield, Vote, BarChart2, Users, Fingerprint, Mail, Phone, MapPin, ChevronRight, CheckCircle, Lock, Zap, Eye, Menu, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const Accueil = () => {
   const navigate = useNavigate()
+  usePageTitle('Accueil')
   const [menuOpen, setMenuOpen] = useState(false)
   const [contactForm, setContactForm] = useState({ nom: '', email: '', message: '' })
   const [contactLoading, setContactLoading] = useState(false)

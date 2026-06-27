@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import usePageTitle from '../../hooks/usePageTitle'
 import { authAPI } from '../../services/api'
 import {
   User, Mail, Lock, Eye, EyeOff, CheckCircle,
@@ -34,6 +35,7 @@ const Inscription = () => {
   const [otp, setOtp]           = useState(['', '', '', '', '', ''])
   const [empreinteOk, setEmpreinteOk] = useState(false)
   const navigate                      = useNavigate()
+  usePageTitle('Inscription')
 
   const [form, setForm] = useState({
     nom: '', prenom: '', matricule: 'CM-UDS-', email: '',

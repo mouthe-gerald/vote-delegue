@@ -101,6 +101,8 @@ const ResultatsPage = () => {
         .logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
         @keyframes trophy-bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
         .trophy-bounce { animation: trophy-bounce 2s ease-in-out infinite; }
+        @keyframes bar-grow { from { width:0; } to { width:var(--bar-width); } }
+        .bar-animated { animation: bar-grow 1s ease-out forwards; width: var(--bar-width); }
       `}</style>
 
       {/* Header */}
@@ -327,8 +329,8 @@ const ResultatsPage = () => {
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-2">
                             <div className="flex-1 bg-white/5 rounded-full h-1.5 min-w-16">
-                              <div className="bg-amber-500 h-1.5 rounded-full transition-all duration-500"
-                                style={{ width: `${r.pourcentage}%` }} />
+                              <div className="bg-amber-500 h-1.5 rounded-full bar-animated"
+                                style={{ '--bar-width': `${r.pourcentage}%` }} />
                             </div>
                             <span className="text-slate-300 text-xs w-10">{r.pourcentage}%</span>
                           </div>

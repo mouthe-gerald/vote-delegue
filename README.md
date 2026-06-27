@@ -69,3 +69,18 @@ npm run dev
 ## 📄 Licence
 
 Projet académique — IUT Fotso Victor de Bandjoun © 2025-2026
+
+## 📸 Captures d'écran
+
+**Page d'accueil**
+![Accueil](Capture%20d%E2%80%99%C3%A9cran%20du%202026-06-27%2018-42-43.png)
+
+**Page de connexion**
+![Connexion](Capture%20d%E2%80%99%C3%A9cran%20du%202026-06-27%2018-45-14.png)
+
+**Page d'inscription**
+![Inscription](Capture%20d%E2%80%99%C3%A9cran%20du%202026-06-27%2018-46-04.png)
+
+**Dashboard Administrateur**
+![Dashboard Admin](Capture%20d%E2%80%99%C3%A9cran%20du%202026-06-27%2018-47-52.png)
+

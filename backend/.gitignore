@@ -1,0 +1,25 @@
+# Variables d'environnement (SENSIBLE - ne jamais committer)
+.env
+.env.production
+.env.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# SSL
+ssl/
+
+# OS
+.DS_Store
+Thumbs.db

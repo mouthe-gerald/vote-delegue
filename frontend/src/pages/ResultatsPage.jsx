@@ -69,9 +69,19 @@ const ResultatsPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-900">
+      <style>{`
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .fade1 { animation: fadeUp 0.5s ease 0.1s both; }
+        .fade2 { animation: fadeUp 0.5s ease 0.25s both; }
+        .fade3 { animation: fadeUp 0.5s ease 0.4s both; }
+        @keyframes logo-pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.1); } }
+        .logo-pulse { animation: logo-pulse 2s ease-in-out infinite; }
+        @keyframes trophy-bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+        .trophy-bounce { animation: trophy-bounce 2s ease-in-out infinite; }
+      `}</style>
 
       {/* Header */}
-      <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between">
+      <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between fade1">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)}
             className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">

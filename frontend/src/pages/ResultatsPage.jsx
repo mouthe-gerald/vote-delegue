@@ -62,8 +62,31 @@ const ResultatsPage = () => {
   const elu = resultats.find(r => r.est_elu)
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-slate-900">
+      <style>{`
+        @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
+      `}</style>
+      <div className="h-14 bg-slate-950 border-b border-white/5 px-6 flex items-center gap-3">
+        <div className="skeleton h-8 w-8" />
+        <div className="skeleton h-5 w-40" />
+      </div>
+      <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col gap-4">
+        <div className="flex gap-3">
+          {[1,2].map(i => <div key={i} className="skeleton h-9 w-40" />)}
+        </div>
+        <div className="bg-slate-800 rounded-xl p-5 flex flex-col gap-4">
+          <div className="skeleton h-6 w-32" />
+          {[1,2,3].map(i => (
+            <div key={i} className="flex items-center gap-4">
+              <div className="skeleton h-8 w-8 rounded-full" />
+              <div className="skeleton h-5 flex-1" />
+              <div className="skeleton h-5 w-16" />
+            </div>
+          ))}
+        </div>
+        <div className="skeleton h-64 w-full" />
+      </div>
     </div>
   )
 

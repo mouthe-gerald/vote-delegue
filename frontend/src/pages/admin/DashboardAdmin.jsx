@@ -85,10 +85,43 @@ const DashboardAdmin = () => {
   ]
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-12 h-12 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-slate-400 text-sm">Chargement...</p>
+    <div className="min-h-screen bg-slate-900 flex">
+      <style>{`
+        @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
+      `}</style>
+      {/* Sidebar skeleton */}
+      <div className="hidden lg:flex flex-col w-64 bg-slate-950 border-r border-white/5 p-4 gap-3">
+        <div className="skeleton h-12 w-full mb-4" />
+        {[1,2,3,4,5].map(i => <div key={i} className="skeleton h-9 w-full" />)}
+      </div>
+      {/* Contenu skeleton */}
+      <div className="flex-1 p-6">
+        {/* Header skeleton */}
+        <div className="skeleton h-8 w-48 mb-6" />
+        {/* Stats cards skeleton */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="bg-slate-800 rounded-xl p-4 flex flex-col gap-3">
+              <div className="skeleton h-4 w-20" />
+              <div className="skeleton h-8 w-12" />
+              <div className="skeleton h-3 w-16" />
+            </div>
+          ))}
+        </div>
+        {/* Section principale skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 bg-slate-800 rounded-xl p-5 flex flex-col gap-4">
+            <div className="skeleton h-6 w-32" />
+            {[1,2,3].map(i => <div key={i} className="skeleton h-16 w-full" />)}
+          </div>
+          <div className="flex flex-col gap-6">
+            <div className="bg-slate-800 rounded-xl p-5 flex flex-col gap-3">
+              <div className="skeleton h-6 w-24" />
+              {[1,2,3].map(i => <div key={i} className="skeleton h-10 w-full" />)}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -52,8 +52,30 @@ const DashboardEtudiant = () => {
   ]
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-      <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-slate-900 flex">
+      <style>{`
+        @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
+      `}</style>
+      <div className="hidden lg:flex flex-col w-64 bg-slate-950 border-r border-white/5 p-4 gap-3">
+        <div className="skeleton h-12 w-full mb-4" />
+        {[1,2,3,4].map(i => <div key={i} className="skeleton h-9 w-full" />)}
+      </div>
+      <div className="flex-1 p-6">
+        <div className="skeleton h-8 w-48 mb-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          {[1,2,3].map(i => (
+            <div key={i} className="bg-slate-800 rounded-xl p-4 flex flex-col gap-3">
+              <div className="skeleton h-4 w-20" />
+              <div className="skeleton h-8 w-12" />
+            </div>
+          ))}
+        </div>
+        <div className="bg-slate-800 rounded-xl p-5 flex flex-col gap-4">
+          <div className="skeleton h-6 w-32" />
+          {[1,2,3].map(i => <div key={i} className="skeleton h-12 w-full" />)}
+        </div>
+      </div>
     </div>
   )
 

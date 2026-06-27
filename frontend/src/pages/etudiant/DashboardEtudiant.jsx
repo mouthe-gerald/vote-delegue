@@ -318,8 +318,15 @@ const DashboardEtudiant = () => {
                   </div>
                 )}
                 {profil?.a_vote && profil?.vote_tx_hash && (
-                  <div className="mt-4 p-3 bg-slate-700/50 rounded-xl border border-white/5">
-                    <p className="text-slate-500 text-xs mb-1">Hash Blockchain</p>
+                  <div className="mt-4 p-3 bg-slate-700/50 rounded-xl border border-white/5 hover:border-amber-500/30 transition-colors">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-slate-500 text-xs">Hash Blockchain</p>
+                      <a href={`https://sepolia.etherscan.io/tx/${profil.vote_tx_hash}`}
+                        target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1 bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full text-xs font-medium hover:bg-amber-500/25 transition-colors">
+                        ✓ Voir sur Etherscan
+                      </a>
+                    </div>
                     <p className="text-amber-400 font-mono text-xs break-all">{profil.vote_tx_hash}</p>
                   </div>
                 )}

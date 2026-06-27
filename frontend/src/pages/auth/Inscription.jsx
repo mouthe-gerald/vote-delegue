@@ -9,6 +9,21 @@ import toast from 'react-hot-toast'
 
 const ETAPES = ['Informations', 'Vérification Email', 'Empreinte Digitale']
 
+const getPasswordStrength = (pwd) => {
+  if (!pwd) return { score: 0, label: '', color: '' }
+  let score = 0
+  if (pwd.length >= 8) score++
+  if (pwd.length >= 12) score++
+  if (/[A-Z]/.test(pwd)) score++
+  if (/[0-9]/.test(pwd)) score++
+  if (/[^A-Za-z0-9]/.test(pwd)) score++
+  if (score <= 1) return { score, label: 'Très faible', color: '#EF4444' }
+  if (score === 2) return { score, label: 'Faible', color: '#F97316' }
+  if (score === 3) return { score, label: 'Moyen', color: '#F59E0B' }
+  if (score === 4) return { score, label: 'Fort', color: '#10B981' }
+  return { score, label: 'Très fort', color: '#3B82F6' }
+}
+
 const Inscription = () => {
   const [etape, setEtape]       = useState(0)
   const [loading, setLoading]   = useState(false)
@@ -305,6 +320,20 @@ const Inscription = () => {
                     {showPwd ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                 </div>
+                {form.mot_de_passe && (() => {
+                  const s = getPasswordStrength(form.mot_de_passe)
+                  return (
+                    <div className="mt-2">
+                      <div className="flex gap-1 mb-1">
+                        {[1,2,3,4,5].map(i => (
+                          <div key={i} className="flex-1 h-1 rounded-full transition-all duration-300"
+                            style={{ background: i <= s.score ? s.color : '#334155' }} />
+                        ))}
+                      </div>
+                      <p className="text-xs" style={{ color: s.color }}>{s.label}</p>
+                    </div>
+                  )
+                })()}
               </div>
 
               <div>

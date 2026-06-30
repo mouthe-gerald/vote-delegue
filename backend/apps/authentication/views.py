@@ -2,7 +2,7 @@ import base64
 import io
 import pickle
 import numpy as np
-import face_recognition
+# import face_recognition  # désactivé - remplacé par WebAuthn
 from PIL import Image
 import json
 import webauthn

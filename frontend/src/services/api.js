@@ -92,7 +92,7 @@ export const candidatureAPI = {
 
 export const voteAPI = {
   verifierDroit: (electionId) => api.get(`/votes/verifier/${electionId}/`),
-  voter:         (data)       => api.post('/votes/voter/', data),
+  voter:         (data)       => api.post('/votes/caster/', data),
   journal:       (electionId) => api.get(`/votes/journal/${electionId}/`),
 }
 

@@ -18,9 +18,9 @@ class ResultatsElectionView(APIView):
     def get(self, request, election_id):
         election = get_object_or_404(Election, pk=election_id)
 
-        if election.statut != StatutElection.RESULTATS_PUBLIES:
+        if election.statut not in [StatutElection.EN_COURS, StatutElection.CLOTUREE, StatutElection.RESULTATS_PUBLIES]:
             return Response(
-                {'erreur': 'Les résultats ne sont pas encore publiés.'},
+                {'erreur': 'Résultats non disponibles.'},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -41,15 +41,10 @@ class CalculerResultatsView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, election_id):
-        if request.user.role != Role.ADMINISTRATEUR:
-            return Response(
-                {'erreur': 'Accès réservé aux administrateurs.'},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
         election = get_object_or_404(Election, pk=election_id)
 
         if election.statut not in [
+            StatutElection.EN_COURS,
             StatutElection.CLOTUREE,
             StatutElection.RESULTATS_PUBLIES
         ]:

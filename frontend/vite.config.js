@@ -6,16 +6,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    allowedHosts: 'all',
-    https: {
-      key:  require('fs').readFileSync('/home/leslie/vote_delegue/ssl/key.pem'),
-      cert: require('fs').readFileSync('/home/leslie/vote_delegue/ssl/cert.pem'),
-    },
     proxy: {
       '/api': {
-        target: 'https://localhost:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
-        secure: false,
       }
     }
   },

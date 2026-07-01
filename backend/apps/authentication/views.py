@@ -32,9 +32,9 @@ from .serializers import (
 )
 from .email_service import envoyer_otp_email
 
-RP_ID   = '192.168.11.203'
-RP_NAME = 'Vote Délégué IUT'
-ORIGIN  = 'https://192.168.11.203:5173'
+RP_ID   = 'vps-dffda467.vps.ovh.net'
+RP_NAME = 'VotingApp'
+ORIGIN  = 'https://vps-dffda467.vps.ovh.net'
 
 
 def get_tokens(user):

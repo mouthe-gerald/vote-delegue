@@ -65,7 +65,8 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.connexion({ identifiant, mot_de_passe })
     localStorage.setItem('access_token',  data.tokens.access)
     localStorage.setItem('refresh_token', data.tokens.refresh)
-    setUser(data.utilisateur)
+    const { data: profilData } = await authAPI.profil()
+    setUser(profilData)
     return data
   }
 

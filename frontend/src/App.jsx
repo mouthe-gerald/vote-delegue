@@ -14,6 +14,7 @@ import ResultatsPage from './pages/ResultatsPage'
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs'
 import GestionEtudiants from './pages/admin/GestionEtudiants'
 import NotFound from './pages/NotFound'
+import MotDePasseOublie from './pages/auth/MotDePasseOublie'
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/" element={<Accueil />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
+          <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
 
           <Route path="/etudiant/dashboard" element={
             <ProtectedRoute roles={['ETUDIANT', 'CANDIDAT']}>

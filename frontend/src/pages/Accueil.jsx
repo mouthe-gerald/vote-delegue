@@ -132,7 +132,6 @@ const Accueil = () => {
           <div>
             <div className="fade1 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 mb-8">
               <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
-              <span className="text-amber-500 text-xs font-medium">Année académique 2025-2026</span>
             </div>
             <h1 className="fade2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-normal mb-6">
               Election<br />
@@ -302,7 +301,6 @@ const Accueil = () => {
           </div>
           <span className="text-white font-semibold text-sm">VotingApp</span>
         </div>
-        <p className="text-slate-600 text-xs">© 2025-2026 Plateforme de Vote en Ligne</p>
       </footer>
     </div>
   )

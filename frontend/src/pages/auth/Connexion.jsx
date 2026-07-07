@@ -123,7 +123,7 @@ const Connexion = () => {
                 <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
-                  placeholder="CM-UDS-24IUT0001 ou admin@email.com"
+                  placeholder="CM-UDS-XXIUTXXXX ou Adresse email"
                   value={form.identifiant}
                   onChange={e => setForm({...form, identifiant: e.target.value})}
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-white outline-none border transition-colors"

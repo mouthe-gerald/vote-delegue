@@ -5,7 +5,6 @@ import { Shield, Vote, BarChart2, Users, Fingerprint, Mail, Phone, MapPin, Chevr
 import toast from 'react-hot-toast'
 
 const Accueil = () => {
-  useEffect(() => { document.title = 'VotingApp - Accueil'; }, []);
 
   const navigate = useNavigate()
   usePageTitle('Accueil')

@@ -6,7 +6,6 @@ import { FileText, ArrowLeft, CheckCircle, Send, Camera, XCircle, AlertTriangle,
 import toast from 'react-hot-toast'
 
 const PageCandidature = () => {
-  useEffect(() => { document.title = 'VotingApp - Candidature'; }, []);
 
   const { user }                        = useAuth()
   const [election, setElection]         = useState(null)

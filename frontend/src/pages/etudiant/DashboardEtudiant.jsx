@@ -11,7 +11,6 @@ import {
 import toast from 'react-hot-toast'
 
 const DashboardEtudiant = () => {
-  useEffect(() => { document.title = 'VotingApp - Tableau de bord'; }, []);
 
   const { user, deconnexion }           = useAuth()
   const [elections, setElections]       = useState([])

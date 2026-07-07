@@ -6,7 +6,6 @@ import { User, Lock, Eye, EyeOff, Vote, Shield, BarChart2, Users, ArrowLeft } fr
 import toast from 'react-hot-toast'
 
 const Connexion = () => {
-  useEffect(() => { document.title = 'VotingApp - Connexion'; }, []);
 
   const [form, setForm]       = useState({ identifiant: '', mot_de_passe: '' })
   const [showPwd, setShowPwd] = useState(false)

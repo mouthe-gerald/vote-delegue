@@ -264,7 +264,7 @@ const Accueil = () => {
             <div className="flex flex-col gap-5">
               {[
                 {icon:MapPin,label:'Localisation',value:'IUT Fotso Victor de Bandjoun, Université de Dschang'},
-                {icon:Mail,label:'Email',value:'mickymil24@gmail.com'},
+                {icon:Mail,label:'Email',value:'votingapp@gmail.com'},
                 {icon:Phone,label:'Téléphone',value:'+237 657 771 065 / +237 694 215 183'},
               ].map((c,i) => (
                 <div key={i} className="flex gap-4 items-start group">

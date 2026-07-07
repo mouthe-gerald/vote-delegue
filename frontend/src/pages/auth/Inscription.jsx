@@ -26,6 +26,8 @@ const getPasswordStrength = (pwd) => {
 }
 
 const Inscription = () => {
+  useEffect(() => { document.title = 'VotingApp - Inscription'; }, []);
+
   const [etape, setEtape]       = useState(0)
   const [loading, setLoading]   = useState(false)
   const [showPwd, setShowPwd]   = useState(false)

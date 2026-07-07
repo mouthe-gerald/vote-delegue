@@ -6,6 +6,8 @@ import { Vote, User, CheckCircle, ArrowLeft, Fingerprint, Shield, AlertCircle } 
 import toast from 'react-hot-toast'
 
 const PageVote = () => {
+  useEffect(() => { document.title = 'VotingApp - Voter'; }, []);
+
   const { user }                      = useAuth()
   const [election, setElection]       = useState(null)
   const [candidats, setCandidats]     = useState([])

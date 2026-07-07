@@ -11,6 +11,8 @@ import { Trophy, ArrowLeft, User, Award, RefreshCw, Vote } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const ResultatsPage = () => {
+  useEffect(() => { document.title = 'VotingApp - Résultats'; }, []);
+
   const [elections, setElections]       = useState([])
   const [election, setElection]         = useState(null)
   const [resultats, setResultats]       = useState([])

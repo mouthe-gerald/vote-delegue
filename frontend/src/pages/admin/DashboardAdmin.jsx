@@ -11,6 +11,8 @@ import {
 import toast from 'react-hot-toast'
 
 const DashboardAdmin = () => {
+  useEffect(() => { document.title = 'VotingApp - Administration'; }, []);
+
   const { user, deconnexion }           = useAuth()
   const [elections, setElections]       = useState([])
   const [candidatures, setCandidatures] = useState([])

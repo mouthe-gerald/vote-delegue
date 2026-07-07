@@ -5,6 +5,8 @@ import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle, KeyRound, Vote } from 
 import toast from 'react-hot-toast'
 
 const MotDePasseOublie = () => {
+  useEffect(() => { document.title = 'VotingApp - Mot de passe oublié'; }, []);
+
   const [etape, setEtape]             = useState(0)
   const [identifiant, setIdentifiant] = useState('')
   const [email, setEmail]             = useState('')

@@ -9,7 +9,7 @@ class Vote(models.Model):
     id                 = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     electeur           = models.OneToOneField(Etudiant, on_delete=models.PROTECT,
                                               related_name='vote')
-    candidat           = models.ForeignKey(Candidature, on_delete=models.PROTECT,
+    candidat           = models.ForeignKey(Candidature, on_delete=models.PROTECT, null=True, blank=True,
                                            related_name='votes_recus')
     election           = models.ForeignKey(Election, on_delete=models.PROTECT,
                                            related_name='votes')

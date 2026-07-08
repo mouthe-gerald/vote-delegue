@@ -95,7 +95,7 @@ class CasterVoteView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if candidature.statut != StatutCandidature.VALIDEE:
+        if candidature and candidature.statut != StatutCandidature.VALIDEE:
             return Response(
                 {'erreur': 'Ce candidat n\'est pas validé.'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -110,7 +110,8 @@ class CasterVoteView(APIView):
             )
 
         # Générer un hash unique pour le vote
-        hash_data        = f"{etudiant.utilisateur.id}{election.id}{candidature.id}"
+        cand_id = candidature.id if candidature else "NUL"
+        hash_data        = f"{etudiant.utilisateur.id}{election.id}{cand_id}"
         transaction_hash = hashlib.sha256(hash_data.encode()).hexdigest()
         etudiant_hash    = hashlib.sha256(
             str(etudiant.utilisateur.id).encode()

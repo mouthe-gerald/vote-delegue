@@ -38,6 +38,15 @@ class ElectionCreateView(APIView):
             admin    = get_object_or_404(Administrateur,
                                          utilisateur=request.user)
             election = serializer.save(createur=admin)
+            # Créer automatiquement le candidat "Vote Nul"
+            Candidature.objects.create(
+                candidat        = request.user,
+                election        = election,
+                statut          = StatutCandidature.VALIDEE,
+                numero_candidat = 0,
+                programme       = 'Vote nul — aucun candidat ne me convient.',
+                slogan          = 'Vote Nul',
+            )
             return Response(
                 ElectionSerializer(election).data,
                 status=status.HTTP_201_CREATED

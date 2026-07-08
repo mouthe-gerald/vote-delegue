@@ -10,3 +10,4 @@ secrets.json
 node_modules/
 .vscode/
 .idea/
+backend/staticfiles/

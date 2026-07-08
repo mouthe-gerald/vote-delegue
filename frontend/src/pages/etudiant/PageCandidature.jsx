@@ -11,6 +11,7 @@ const PageCandidature = () => {
   const [election, setElection]         = useState(null)
   const [candidature, setCandidature]   = useState(null)
   const [programme, setProgramme]       = useState('')
+  const [programmeFichier, setProgrammeFichier] = useState(null)
   const [photo, setPhoto]               = useState(null)
   const [photoPreview, setPhotoPreview] = useState(null)
   const [loading, setLoading]           = useState(true)
@@ -48,6 +49,7 @@ const PageCandidature = () => {
       const formData = new FormData()
       formData.append('election', election.id)
       formData.append('programme', programme)
+      if (programmeFichier) formData.append('programme_fichier', programmeFichier)
       if (photo) formData.append('photo_campagne', photo)
       await candidatureAPI.soumettreFormData(formData)
       toast.success('Candidature soumise avec succès !')
@@ -199,10 +201,33 @@ const PageCandidature = () => {
                   <label className="text-slate-400 text-xs font-medium mb-2 block">
                     Programme électoral <span className="text-red-400">*</span>
                   </label>
+                  {/* Import fichier */}
+                  <div className="mb-3 p-3 bg-white/3 border border-white/10 rounded-xl">
+                    <p className="text-slate-400 text-xs mb-2">📎 Importer un fichier (PDF ou Word)</p>
+                    <input type="file" accept=".pdf,.doc,.docx"
+                      onChange={e => {
+                        const file = e.target.files[0]
+                        if (file) {
+                          if (file.size > 5 * 1024 * 1024) {
+                            toast.error('Fichier trop volumineux (max 5MB)')
+                            return
+                          }
+                          setProgrammeFichier(file)
+                          setProgramme(prev => prev || `[Fichier joint : ${file.name}]`)
+                        }
+                      }}
+                      className="w-full text-xs text-slate-400
+                                 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
+                                 file:text-xs file:font-medium file:bg-amber-500/15
+                                 file:text-amber-400 hover:file:bg-amber-500/25 cursor-pointer" />
+                    {programmeFichier && (
+                      <p className="text-emerald-400 text-xs mt-1">✓ {programmeFichier.name}</p>
+                    )}
+                  </div>
+                  <p className="text-slate-500 text-xs mb-2">ou écrire directement :</p>
                   <textarea value={programme} onChange={e => setProgramme(e.target.value)}
                     placeholder="Décrivez votre programme électoral..."
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white bg-white/5 border border-white/10 outline-none resize-none h-40 placeholder-slate-600 focus:border-amber-500/50 transition-colors"
-                    required />
+                    className="w-full px-4 py-3 rounded-xl text-sm text-white bg-white/5 border border-white/10 outline-none resize-none h-40 placeholder-slate-600 focus:border-amber-500/50 transition-colors" />
                   <p className="text-slate-600 text-xs mt-1">{programme.length} caractères</p>
                 </div>
 

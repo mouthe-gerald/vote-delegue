@@ -18,7 +18,8 @@ class Candidature(models.Model):
                                          related_name='candidatures')
     election         = models.ForeignKey(Election, on_delete=models.CASCADE,
                                          related_name='candidatures')
-    programme        = models.TextField()
+    programme        = models.TextField(blank=True, default='')
+    programme_fichier = models.FileField(upload_to='programmes/', null=True, blank=True)
     photo_campagne   = models.ImageField(upload_to='campagnes/', null=True, blank=True)
     numero_candidat  = models.PositiveIntegerField(null=True, blank=True)
     statut           = models.CharField(max_length=30, choices=StatutCandidature.choices,

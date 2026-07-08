@@ -205,6 +205,23 @@ const PageVote = () => {
                   </div>
                 </div>
               ))}
+              <div onClick={() => setSelectionne('NUL')} className={`bg-slate-800 border rounded-xl p-4 cursor-pointer transition-all ${selectionne === 'NUL' ? 'border-red-500/50 bg-red-500/5' : 'border-white/5 hover:border-white/15'}`}>
+                <div className="flex items-center gap-4">
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selectionne === 'NUL' ? 'border-red-500 bg-red-500' : 'border-slate-500'}`}>
+                    {selectionne === 'NUL' && <div className="w-2 h-2 bg-white rounded-full" />}
+                  </div>
+                  <div className="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">🚫</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold text-sm">Vote Nul</h3>
+                    <p className="text-slate-400 text-xs">Aucun candidat ne me convient</p>
+                  </div>
+                  {selectionne === 'NUL' && <CheckCircle size={20} className="text-red-500 flex-shrink-0" />}
+                </div>
+              </div>
+              {/* Vote nul */}
+              <div onClick={() => setSelectionne("NUL")} className={`bg-slate-800 border rounded-xl p-4 cursor-pointer transition-all ${selectionne === "NUL" ? "border-red-500/50 bg-red-500/5" : "border-white/5 hover:border-white/15"}`}><div className="flex items-center gap-4"><div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selectionne === "NUL" ? "border-red-500 bg-red-500" : "border-slate-500"}`}>{selectionne === "NUL" && <div className="w-2 h-2 bg-white rounded-full" />}</div><div className="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center"><span className="text-2xl">🚫</span></div><div className="flex-1"><h3 className="text-white font-bold text-sm">Vote Nul</h3><p className="text-slate-400 text-xs">Aucun candidat ne me convient</p></div>{selectionne === "NUL" && <CheckCircle size={20} className="text-red-500" />}</div></div>
             </div>
 
             <button disabled={!selectionne} onClick={() => setEtape('verification')}

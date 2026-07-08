@@ -128,8 +128,13 @@ const DashboardCandidat = () => {
           ))}
         </nav>
 
-        {/* Déconnexion */}
-        <div className="p-4 border-t border-white/5">
+        {/* Retour + Déconnexion */}
+        <div className="p-4 border-t border-white/5 flex flex-col gap-2">
+          <button onClick={() => navigate('/etudiant/dashboard')}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all w-full">
+            <ArrowLeft size={16} />
+            Dashboard étudiant
+          </button>
           <button onClick={handleDeconnexion}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/5 transition-all w-full">
             <LogOut size={16} />

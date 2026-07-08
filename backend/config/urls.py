@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/elections/',    include('apps.elections.urls')),
     path('api/candidatures/', include('apps.candidatures.urls')),
     path('api/votes/',        include('apps.votes.urls')),
+    path('api/notifications/', include('apps.notifications.urls')),
     path('api/resultats/',    include('apps.resultats.urls')),
     path('api/face/',         include('apps.reconnaissance_faciale.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

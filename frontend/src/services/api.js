@@ -96,6 +96,11 @@ export const voteAPI = {
   journal:       (electionId) => api.get(`/votes/journal/${electionId}/`),
 }
 
+export const notificationAPI = {
+  liste:       () => api.get('/notifications/'),
+  marquerLues: () => api.post('/notifications/'),
+}
+
 export const resultatAPI = {
   consulter: (electionId) => api.get(`/resultats/${electionId}/`),
   calculer:  (electionId) => api.post(`/resultats/${electionId}/calculer/`),

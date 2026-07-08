@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.candidatures',
     'apps.votes',
     'apps.resultats',
+    'apps.notifications',
     'apps.reconnaissance_faciale',
 ]
 

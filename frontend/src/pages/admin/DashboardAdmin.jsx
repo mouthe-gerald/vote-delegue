@@ -2,7 +2,7 @@ import usePageTitle from '../../hooks/usePageTitle'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { electionAPI, candidatureAPI, resultatAPI } from '../../services/api'
+import { electionAPI, candidatureAPI, resultatAPI, notificationAPI } from '../../services/api'
 import {
   Vote, Trophy, LogOut, Bell, BarChart2, CheckCircle, XCircle,
   Plus, Play, Square, Eye, Shield, TrendingUp, Award, RefreshCw,
@@ -15,6 +15,9 @@ const DashboardAdmin = () => {
   const { user, deconnexion }           = useAuth()
   const [elections, setElections]       = useState([])
   const [candidatures, setCandidatures] = useState([])
+  const [notifications, setNotifications] = useState([])
+  const [nonLues, setNonLues] = useState(0)
+  const [showNotifs, setShowNotifs] = useState(false)
   const [loading, setLoading]           = useState(true)
   const [showCreer, setShowCreer]       = useState(false)
   const [showAnnuler, setShowAnnuler]   = useState(false)
@@ -27,7 +30,21 @@ const DashboardAdmin = () => {
   const navigate = useNavigate()
   usePageTitle('Dashboard Admin')
 
-  useEffect(() => { chargerDonnees() }, [])
+  useEffect(() => { chargerDonnees(); chargerNotifications() }, [])
+
+  const chargerNotifications = async () => {
+    try {
+      const { data } = await notificationAPI.liste()
+      setNotifications(data.notifications || [])
+      setNonLues(data.non_lues || 0)
+    } catch {}
+  }
+
+  const marquerLues = async () => {
+    await notificationAPI.marquerLues()
+    setNonLues(0)
+    setNotifications(prev => prev.map(n => ({ ...n, lu: true })))
+  }
 
   const chargerDonnees = async () => {
     try {
@@ -224,7 +241,7 @@ const DashboardAdmin = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-slate-400 hover:text-white">
+            <button className="relative p-2 text-slate-400 hover:text-white" onClick={() => { setShowNotifs(!showNotifs); if (!showNotifs) marquerLues() }}>
               <Bell size={18} />
               {candidatures.length > 0 && (
                 <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
@@ -238,6 +255,40 @@ const DashboardAdmin = () => {
             </button>
           </div>
         </header>
+        {/* PANNEAU NOTIFICATIONS */}
+        {showNotifs && (
+          <div className="absolute top-16 right-4 w-80 bg-slate-800 border border-white/10 rounded-xl shadow-2xl z-50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+              <span className="text-white font-semibold text-sm">Notifications</span>
+              <button onClick={() => setShowNotifs(false)} className="text-slate-400 hover:text-white">
+                <X size={14} />
+              </button>
+            </div>
+            <div className="max-h-80 overflow-y-auto">
+              {notifications.length === 0 ? (
+                <div className="px-4 py-6 text-center text-slate-500 text-sm">
+                  Aucune notification
+                </div>
+              ) : (
+                notifications.map(n => (
+                  <div key={n.id} className={`px-4 py-3 border-b border-white/5 ${!n.lu ? 'bg-white/3' : ''}`}>
+                    <div className="flex items-start gap-3">
+                      <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
+                        n.type === 'CANDIDATURE' ? 'bg-amber-500' :
+                        n.type === 'VOTE' ? 'bg-emerald-500' : 'bg-blue-500'
+                      }`} />
+                      <div>
+                        <p className="text-white text-xs font-medium">{n.message}</p>
+                        <p className="text-slate-500 text-xs mt-0.5">{n.date}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
 
         {/* Body */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">

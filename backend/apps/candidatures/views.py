@@ -83,6 +83,10 @@ class ValiderCandidatureView(APIView):
         candidature.numero_candidat = nb + 1
         candidature.date_traitement = timezone.now()
         candidature.save()
+        # Mettre à jour le rôle de l'étudiant en CANDIDAT
+        etudiant_user = candidature.etudiant.utilisateur
+        etudiant_user.role = 'CANDIDAT'
+        etudiant_user.save()
         return Response(
             {'message': 'Candidature validée avec succès.',
              'numero_candidat': candidature.numero_candidat},

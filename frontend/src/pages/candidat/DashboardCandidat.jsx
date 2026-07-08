@@ -43,6 +43,7 @@ const DashboardCandidat = () => {
         }
         if (['CLOTUREE', 'RESULTATS_PUBLIES', 'EN_COURS'].includes(elecActive.statut)) {
           try {
+            await resultatAPI.calculer(elecActive.id).catch(() => {})
             const { data: res } = await resultatAPI.consulter(elecActive.id)
             const monResultat = res.resultats?.find(r =>
               r.candidat_nom === `${user?.prenom} ${user?.nom}`

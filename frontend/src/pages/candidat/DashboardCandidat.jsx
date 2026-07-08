@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { electionAPI, candidatureAPI, resultatAPI } from '../../services/api'
 import {
-  User, Award, BarChart2, FileText, Bell, LogOut, Settings,
-  CheckCircle, Clock, Edit, Save, Trophy, Vote, Menu, X,
-  ChevronRight, Hash, Mail, GraduationCap, Layers, Percent
+  User, Award, BarChart2, FileText, LogOut,
+  CheckCircle, Clock, XCircle, Trophy, Vote,
+  Mail, GraduationCap, Hash, Percent, Edit, Save, X
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import usePageTitle from '../../hooks/usePageTitle'
 
 const DashboardCandidat = () => {
   const { user, deconnexion }             = useAuth()
@@ -18,8 +19,8 @@ const DashboardCandidat = () => {
   const [programme, setProgramme]         = useState('')
   const [editProgramme, setEditProgramme] = useState(false)
   const [loading, setLoading]             = useState(true)
-  const [sidebarOpen, setSidebarOpen]     = useState(false)
   const navigate                          = useNavigate()
+  usePageTitle('Espace Candidat')
 
   useEffect(() => { chargerDonnees() }, [])
 
@@ -32,12 +33,20 @@ const DashboardCandidat = () => {
       if (elecActive) {
         setElection(elecActive)
         const { data: cands } = await candidatureAPI.liste(elecActive.id)
-        const maCandidature = cands.find(c => c.etudiant_nom === `${user?.prenom} ${user?.nom}`)
-        if (maCandidature) { setCandidature(maCandidature); setProgramme(maCandidature.programme || '') }
-        if (elecActive.statut === 'RESULTATS_PUBLIES') {
+        const maCandidature = cands.find(c =>
+          c.etudiant_nom === `${user?.prenom} ${user?.nom}` ||
+          c.etudiant_matricule === user?.matricule
+        )
+        if (maCandidature) {
+          setCandidature(maCandidature)
+          setProgramme(maCandidature.programme || '')
+        }
+        if (['CLOTUREE', 'RESULTATS_PUBLIES', 'EN_COURS'].includes(elecActive.statut)) {
           try {
             const { data: res } = await resultatAPI.consulter(elecActive.id)
-            const monResultat = res.resultats?.find(r => r.candidat_nom === `${user?.prenom} ${user?.nom}`)
+            const monResultat = res.resultats?.find(r =>
+              r.candidat_nom === `${user?.prenom} ${user?.nom}`
+            )
             setResultat(monResultat)
           } catch {}
         }
@@ -46,23 +55,27 @@ const DashboardCandidat = () => {
     finally { setLoading(false) }
   }
 
-  const sauvegarderProgramme = async () => { toast.success('Programme mis à jour !'); setEditProgramme(false) }
+  const sauvegarderProgramme = async () => {
+    toast.success('Programme mis à jour !')
+    setEditProgramme(false)
+  }
+
   const handleDeconnexion = async () => { await deconnexion(); navigate('/connexion') }
 
-  const statutConfig = {
-    EN_ATTENTE:      'bg-amber-500/15 text-amber-400 border-amber-500/20',
-    VALIDEE:         'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-    REJETEE:         'bg-red-500/15 text-red-400 border-red-500/20',
-    RETRAIT_DEMANDE: 'bg-orange-500/15 text-orange-400 border-orange-500/20',
-    RETIREE:         'bg-slate-500/15 text-slate-400 border-slate-500/20',
+  const getStatutBadge = (statut) => {
+    switch (statut) {
+      case 'VALIDEE':    return { label: 'Validée',    icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' }
+      case 'EN_ATTENTE': return { label: 'En attente', icon: Clock,        color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' }
+      case 'REJETEE':    return { label: 'Rejetée',    icon: XCircle,      color: 'text-red-400',     bg: 'bg-red-500/10 border-red-500/20' }
+      default:           return { label: statut,       icon: Clock,        color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' }
+    }
   }
 
   const menuItems = [
-    { id: 'dashboard',    label: 'Tableau de bord', icon: BarChart2 },
-    { id: 'profil',       label: 'Mon Profil',       icon: User },
-    { id: 'programme',    label: 'Mon Programme',    icon: FileText },
-    { id: 'statistiques', label: 'Statistiques',     icon: BarChart2 },
-    { id: 'resultats',    label: 'Résultats',        icon: Trophy },
+    { id: 'dashboard',   label: 'Tableau de bord', icon: BarChart2 },
+    { id: 'profil',      label: 'Mon Profil',       icon: User },
+    { id: 'programme',   label: 'Mon Programme',    icon: FileText },
+    { id: 'resultats',   label: 'Mes Résultats',    icon: Trophy },
   ]
 
   if (loading) return (
@@ -71,323 +84,316 @@ const DashboardCandidat = () => {
     </div>
   )
 
-  const SidebarContent = () => (
-    <>
-      <div className="p-5 border-b border-white/5">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
-            <Vote size={18} className="text-slate-900" />
-          </div>
-          <div>
-            <div className="text-white font-bold text-sm">VotingApp</div>
-            <div className="text-slate-500 text-xs">Espace candidat</div>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 bg-white/5 rounded-xl p-3">
-          <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-amber-500 font-bold text-sm">{user?.prenom?.[0]}{user?.nom?.[0]}</span>
-          </div>
-          <div className="min-w-0">
-            <p className="text-white font-bold text-sm truncate">{user?.prenom} {user?.nom}</p>
-            {candidature && (
-              <span className={`text-xs px-2 py-0.5 rounded-full border ${statutConfig[candidature.statut] || ''}`}>
-                {candidature.statut?.replace('_', ' ')}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <nav className="flex-1 p-3 flex flex-col gap-1">
-        {menuItems.map(item => (
-          <button key={item.id}
-            onClick={() => { setActiveMenu(item.id); setSidebarOpen(false) }}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left transition-all ${
-              activeMenu === item.id
-                ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
-            }`}>
-            <item.icon size={15} /> {item.label}
-          </button>
-        ))}
-        <button onClick={() => navigate('/etudiant/dashboard')}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left text-slate-500 hover:text-white hover:bg-white/5 transition-all mt-2 border-t border-white/5 pt-4">
-          <ChevronRight size={15} className="rotate-180" /> Espace étudiant
-        </button>
-      </nav>
-
-      <div className="p-3 border-t border-white/5">
-        <button onClick={handleDeconnexion}
-          className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 text-sm">
-          <LogOut size={14} /> Déconnexion
-        </button>
-      </div>
-    </>
-  )
+  const statutInfo = candidature ? getStatutBadge(candidature.statut) : null
 
   return (
     <div className="min-h-screen bg-slate-900 flex">
+      {/* SIDEBAR */}
+      <aside className="w-64 bg-slate-950 border-r border-white/5 flex flex-col fixed h-full z-10">
+        {/* Logo */}
+        <div className="p-6 border-b border-white/5">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
+              <Vote size={18} className="text-slate-900" />
+            </div>
+            <span className="text-white font-bold">VotingApp</span>
+          </div>
+          {/* Infos candidat */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-amber-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-amber-500 font-bold text-sm">
+                {user?.prenom?.[0]}{user?.nom?.[0]}
+              </span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-white text-sm font-semibold truncate">{user?.prenom} {user?.nom}</p>
+              <p className="text-amber-500 text-xs font-medium">Candidat</p>
+            </div>
+          </div>
+        </div>
 
-      {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-60 bg-slate-950 border-r border-white/5 flex-shrink-0">
-        <SidebarContent />
+        {/* Navigation */}
+        <nav className="flex-1 p-4 flex flex-col gap-1">
+          {menuItems.map(item => (
+            <button key={item.id} onClick={() => setActiveMenu(item.id)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                activeMenu === item.id
+                  ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+              }`}>
+              <item.icon size={16} />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        {/* Déconnexion */}
+        <div className="p-4 border-t border-white/5">
+          <button onClick={handleDeconnexion}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/5 transition-all w-full">
+            <LogOut size={16} />
+            Déconnexion
+          </button>
+        </div>
       </aside>
 
-      {/* Sidebar mobile */}
-      {sidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-64 bg-slate-950 border-r border-white/5 flex flex-col z-10">
-            <button onClick={() => setSidebarOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white">
-              <X size={18} />
-            </button>
-            <SidebarContent />
-          </aside>
-        </div>
-      )}
+      {/* CONTENU PRINCIPAL */}
+      <main className="ml-64 flex-1 p-8">
 
-      {/* Main */}
-      <div className="flex-1 flex flex-col min-w-0">
+        {/* ── TABLEAU DE BORD ── */}
+        {activeMenu === 'dashboard' && (
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-2">Tableau de bord</h1>
+            <p className="text-slate-400 text-sm mb-8">Bienvenue dans votre espace candidat</p>
 
-        {/* Topbar */}
-        <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <button className="lg:hidden text-slate-400 hover:text-white" onClick={() => setSidebarOpen(true)}>
-              <Menu size={20} />
-            </button>
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-5 bg-amber-500 rounded-full" />
-              <h1 className="text-white font-bold text-sm">
-                {menuItems.find(m => m.id === activeMenu)?.label || 'Dashboard'}
-              </h1>
+            {/* Statut candidature */}
+            {candidature && statutInfo && (
+              <div className={`flex items-center gap-3 px-5 py-4 rounded-xl border mb-6 ${statutInfo.bg}`}>
+                <statutInfo.icon size={20} className={statutInfo.color} />
+                <div>
+                  <p className="text-white text-sm font-semibold">Candidature {statutInfo.label}</p>
+                  <p className="text-slate-400 text-xs">{election?.titre}</p>
+                </div>
+                <span className={`ml-auto text-xs font-bold px-3 py-1 rounded-full border ${statutInfo.bg} ${statutInfo.color}`}>
+                  {statutInfo.label}
+                </span>
+              </div>
+            )}
+
+            {/* Cartes résumé */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 bg-amber-500/15 rounded-lg flex items-center justify-center">
+                    <Hash size={16} className="text-amber-500" />
+                  </div>
+                  <span className="text-slate-400 text-sm">Numéro</span>
+                </div>
+                <p className="text-3xl font-bold text-white">{candidature?.candidat_numero || '—'}</p>
+                <p className="text-slate-500 text-xs mt-1">Ordre de candidature</p>
+              </div>
+
+              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 bg-emerald-500/15 rounded-lg flex items-center justify-center">
+                    <Vote size={16} className="text-emerald-500" />
+                  </div>
+                  <span className="text-slate-400 text-sm">Votes reçus</span>
+                </div>
+                <p className="text-3xl font-bold text-white">{resultat?.nb_voix ?? '—'}</p>
+                <p className="text-slate-500 text-xs mt-1">Total des votes</p>
+              </div>
+
+              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 bg-blue-500/15 rounded-lg flex items-center justify-center">
+                    <Percent size={16} className="text-blue-400" />
+                  </div>
+                  <span className="text-slate-400 text-sm">Pourcentage</span>
+                </div>
+                <p className="text-3xl font-bold text-white">
+                  {resultat ? `${resultat.pourcentage}%` : '—'}
+                </p>
+                <p className="text-slate-500 text-xs mt-1">Part des votes</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 text-slate-400 text-xs">
-              <Clock size={12} />
-              {election?.titre || 'Aucune élection'}
-            </div>
-            <button className="p-2 text-slate-400 hover:text-white">
-              <Bell size={16} />
-            </button>
-          </div>
-        </header>
 
-        {/* Body */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
-
-          {/* DASHBOARD */}
-          {activeMenu === 'dashboard' && (
-            <div className="flex flex-col gap-5">
-
-              {/* Bannière élu */}
-              {resultat?.est_elu && (
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-5 flex items-center gap-4">
-                  <Trophy size={32} className="text-amber-500 flex-shrink-0" />
+            {/* Élu ou non */}
+            {resultat && (
+              <div className={`rounded-xl border p-5 ${
+                resultat.est_elu
+                  ? 'bg-amber-500/10 border-amber-500/30'
+                  : 'bg-slate-800/50 border-white/5'
+              }`}>
+                <div className="flex items-center gap-3">
+                  <Trophy size={22} className={resultat.est_elu ? 'text-amber-500' : 'text-slate-500'} />
                   <div>
-                    <p className="text-amber-400 font-bold">🏆 Félicitations — Vous êtes élu(e) !</p>
-                    <p className="text-slate-400 text-sm">Vous avez été élu(e) délégué(e) de classe.</p>
+                    <p className="text-white font-bold">
+                      {resultat.est_elu ? '🎉 Vous êtes élu(e) délégué(e) !' : 'Résultats disponibles'}
+                    </p>
+                    <p className="text-slate-400 text-sm">
+                      {resultat.est_elu
+                        ? 'Félicitations pour votre élection !'
+                        : `Vous avez obtenu ${resultat.nb_voix} voix (${resultat.pourcentage}%)`}
+                    </p>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
+          </div>
+        )}
 
-              {/* Hero */}
-              <div className="bg-slate-800 border border-white/5 rounded-xl p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-slate-400 text-xs mb-1">Bonjour</p>
-                  <h2 className="text-white font-extrabold text-xl mb-1">{user?.prenom} {user?.nom} 🎯</h2>
-                  <p className="text-slate-400 text-sm">{election?.titre || 'Aucune élection active'}</p>
-                  {election && (
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${election.statut === 'EN_COURS' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                      <span className="text-slate-400 text-xs">{election.statut.replace('_', ' ')}</span>
+        {/* ── MON PROFIL ── */}
+        {activeMenu === 'profil' && (
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-2">Mon Profil</h1>
+            <p className="text-slate-400 text-sm mb-8">Vos informations personnelles</p>
+
+            <div className="bg-slate-800/50 border border-white/5 rounded-xl p-6">
+              {/* Avatar */}
+              <div className="flex items-center gap-5 mb-8 pb-6 border-b border-white/5">
+                {candidature?.candidat_photo
+                  ? <img src={candidature.candidat_photo} className="w-20 h-20 rounded-full object-cover border-2 border-amber-500/30" />
+                  : (
+                    <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-amber-500 font-bold text-2xl">
+                        {user?.prenom?.[0]}{user?.nom?.[0]}
+                      </span>
                     </div>
+                  )
+                }
+                <div>
+                  <h2 className="text-white font-bold text-xl">{user?.prenom} {user?.nom}</h2>
+                  <p className="text-amber-500 text-sm font-medium">Candidat</p>
+                  {candidature?.candidat_numero && (
+                    <span className="inline-block mt-1 text-xs bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">
+                      N°{candidature.candidat_numero}
+                    </span>
                   )}
-                </div>
-                <div className="w-14 h-14 bg-amber-500/15 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Award size={28} className="text-amber-500" />
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Infos */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { label: 'Votes reçus',    value: resultat?.nb_voix ?? '—',                     icon: Vote,       color: '#F0A500' },
-                  { label: 'Pourcentage',    value: resultat ? `${resultat.pourcentage}%` : '—',  icon: Percent,    color: '#10B981' },
-                  { label: 'Statut élection', value: election?.statut?.replace('_', ' ') || '—', icon: Clock,      color: '#3B82F6' },
-                  { label: 'Candidature',    value: candidature?.statut?.replace('_', ' ') || '—', icon: CheckCircle, color: '#8B5CF6' },
-                ].map((s, i) => (
-                  <div key={i} className="bg-slate-800 border border-white/5 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}20` }}>
-                        <s.icon size={15} style={{ color: s.color }} />
-                      </div>
+                  { icon: Hash,          label: 'Matricule',  value: user?.matricule },
+                  { icon: Mail,          label: 'Email',      value: user?.email },
+                  { icon: GraduationCap, label: 'Filière',    value: candidature?.etudiant_filiere || user?.profil?.filiere },
+                  { icon: Award,         label: 'Niveau',     value: user?.profil?.niveau },
+                ].map((info, i) => (
+                  <div key={i} className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <info.icon size={14} className="text-slate-500" />
+                      <span className="text-slate-500 text-xs">{info.label}</span>
                     </div>
-                    <p className="text-white font-extrabold text-xl">{s.value}</p>
-                    <p className="text-slate-500 text-xs mt-0.5">{s.label}</p>
+                    <p className="text-white text-sm font-medium">{info.value || '—'}</p>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
 
-          {/* PROFIL */}
-          {activeMenu === 'profil' && (
-            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden max-w-lg">
-              <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
-                <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h3 className="text-white font-bold text-sm">Mon Profil</h3>
-              </div>
-              <div className="p-5">
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="w-14 h-14 bg-amber-500/15 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-amber-500 font-bold text-xl">{user?.prenom?.[0]}{user?.nom?.[0]}</span>
-                  </div>
-                  <div>
-                    <p className="text-white font-bold">{user?.prenom} {user?.nom}</p>
-                    <p className="text-slate-400 text-xs">Candidat</p>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {[
-                    { icon: Hash,          label: 'Matricule', value: user?.matricule },
-                    { icon: Mail,          label: 'Email',     value: user?.email },
-                    { icon: GraduationCap, label: 'Filière',   value: user?.profil?.filiere },
-                    { icon: Layers,        label: 'Niveau',    value: user?.profil?.niveau },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 py-2.5 border-b border-white/5 last:border-0">
-                      <div className="w-7 h-7 bg-white/5 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <item.icon size={12} className="text-slate-400" />
-                      </div>
-                      <span className="text-slate-500 text-xs w-20 flex-shrink-0">{item.label}</span>
-                      <span className="text-white text-xs font-medium truncate">{item.value || '—'}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* PROGRAMME */}
-          {activeMenu === 'programme' && (
-            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden max-w-2xl">
-              <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h3 className="text-white font-bold text-sm">Mon Programme Électoral</h3>
-                </div>
-                <button onClick={() => editProgramme ? sauvegarderProgramme() : setEditProgramme(true)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    editProgramme
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
-                      : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10'
-                  }`}>
-                  {editProgramme ? <><Save size={12} /> Enregistrer</> : <><Edit size={12} /> Modifier</>}
-                </button>
-              </div>
-              <div className="p-5">
-                {editProgramme ? (
-                  <textarea value={programme} onChange={e => setProgramme(e.target.value)}
-                    placeholder="Décrivez votre programme électoral..."
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white bg-white/5 border border-white/10 outline-none resize-none h-48 placeholder-slate-600 focus:border-amber-500/50 transition-colors" />
-                ) : (
-                  <div className="min-h-32">
-                    {programme
-                      ? <p className="text-slate-300 text-sm leading-relaxed">{programme}</p>
-                      : <p className="text-slate-600 text-sm text-center mt-10">Aucun programme. Cliquez sur "Modifier".</p>
-                    }
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* STATISTIQUES */}
-          {activeMenu === 'statistiques' && (
-            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden max-w-xl">
-              <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
-                <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h3 className="text-white font-bold text-sm">Statistiques des votes</h3>
-              </div>
-              <div className="p-5">
-                {resultat ? (
-                  <>
-                    <div className="grid grid-cols-3 gap-3 mb-5">
-                      {[
-                        { label: 'Votes',       value: resultat.nb_voix,           color: '#F0A500' },
-                        { label: 'Pourcentage', value: `${resultat.pourcentage}%`, color: '#10B981' },
-                        { label: 'Statut',      value: resultat.est_elu ? '🏆 Élu' : 'Candidat', color: '#3B82F6' },
-                      ].map((s, i) => (
-                        <div key={i} className="bg-white/5 rounded-xl p-3 text-center">
-                          <p className="font-extrabold text-lg" style={{ color: s.color }}>{s.value}</p>
-                          <p className="text-slate-500 text-xs mt-0.5">{s.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-400 text-xs">Part des votes</span>
-                        <span className="text-amber-400 font-bold text-xs">{resultat.pourcentage}%</span>
-                      </div>
-                      <div className="w-full bg-white/5 rounded-full h-2">
-                        <div className="bg-amber-500 h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${resultat.pourcentage}%` }} />
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-center py-10">
-                    <BarChart2 size={32} className="text-slate-600 mx-auto mb-3" />
-                    <p className="text-slate-500 text-sm">Statistiques disponibles après la publication des résultats.</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* RESULTATS */}
-          {activeMenu === 'resultats' && (
-            <div className="flex flex-col gap-4 max-w-xl">
-              {resultat ? (
-                <>
-                  {resultat.est_elu && (
-                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-6 text-center">
-                      <Trophy size={40} className="text-amber-500 mx-auto mb-3" />
-                      <h2 className="text-white font-extrabold text-xl mb-1">Félicitations ! 🎉</h2>
-                      <p className="text-slate-400 text-sm">Vous avez été élu(e) délégué(e) de classe !</p>
-                    </div>
-                  )}
-                  <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden">
-                    <div className="px-5 py-4 border-b border-white/5 flex items-center gap-2">
-                      <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                      <h3 className="text-white font-bold text-sm">Résultats finaux</h3>
-                    </div>
-                    <div className="p-5 flex flex-col gap-3">
-                      {[
-                        { label: 'Votes obtenus', value: resultat.nb_voix },
-                        { label: 'Pourcentage',   value: `${resultat.pourcentage}%` },
-                        { label: 'Statut final',  value: resultat.est_elu ? '🏆 Élu(e)' : 'Non élu(e)' },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between py-2.5 border-b border-white/5 last:border-0">
-                          <span className="text-slate-400 text-sm">{item.label}</span>
-                          <span className="text-white font-bold text-sm">{item.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="bg-slate-800 border border-white/5 rounded-xl p-10 text-center">
-                  <Trophy size={36} className="text-slate-600 mx-auto mb-3" />
-                  <p className="text-slate-400 font-bold mb-1">Résultats non disponibles</p>
-                  <p className="text-slate-600 text-sm">Disponibles après la clôture de l'élection.</p>
+              {/* Statut candidature */}
+              {candidature && statutInfo && (
+                <div className={`mt-4 flex items-center gap-3 px-4 py-3 rounded-lg border ${statutInfo.bg}`}>
+                  <statutInfo.icon size={16} className={statutInfo.color} />
+                  <span className={`text-sm font-medium ${statutInfo.color}`}>
+                    Candidature {statutInfo.label}
+                  </span>
                 </div>
               )}
             </div>
-          )}
-        </main>
-      </div>
+          </div>
+        )}
+
+        {/* ── MON PROGRAMME ── */}
+        {activeMenu === 'programme' && (
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-2">Mon Programme</h1>
+            <p className="text-slate-400 text-sm mb-8">Votre programme électoral</p>
+
+            <div className="bg-slate-800/50 border border-white/5 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-white font-semibold">Programme électoral</h2>
+                {!editProgramme
+                  ? <button onClick={() => setEditProgramme(true)}
+                      className="flex items-center gap-2 text-amber-500 text-sm hover:text-amber-400 transition-colors">
+                      <Edit size={14} /> Modifier
+                    </button>
+                  : <div className="flex gap-2">
+                      <button onClick={sauvegarderProgramme}
+                        className="flex items-center gap-1 bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-amber-400 transition-colors">
+                        <Save size={12} /> Sauvegarder
+                      </button>
+                      <button onClick={() => setEditProgramme(false)}
+                        className="flex items-center gap-1 text-slate-400 text-xs px-3 py-1.5 rounded-lg hover:text-white transition-colors">
+                        <X size={12} /> Annuler
+                      </button>
+                    </div>
+                }
+              </div>
+
+              {editProgramme
+                ? <textarea value={programme} onChange={e => setProgramme(e.target.value)} rows={10}
+                    className="w-full bg-slate-900/50 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-amber-500/50 resize-none"
+                    placeholder="Rédigez votre programme électoral..." />
+                : <div className="bg-slate-900/50 rounded-lg px-4 py-3 min-h-32">
+                    {programme
+                      ? <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{programme}</p>
+                      : <p className="text-slate-500 text-sm italic">Aucun programme rédigé. Cliquez sur Modifier pour en ajouter un.</p>
+                    }
+                  </div>
+              }
+            </div>
+          </div>
+        )}
+
+        {/* ── MES RÉSULTATS ── */}
+        {activeMenu === 'resultats' && (
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-2">Mes Résultats</h1>
+            <p className="text-slate-400 text-sm mb-8">Vos résultats dans l'élection</p>
+
+            {resultat ? (
+              <div className="flex flex-col gap-4">
+                {/* Carte principale */}
+                <div className={`rounded-xl border p-6 ${
+                  resultat.est_elu ? 'bg-amber-500/10 border-amber-500/30' : 'bg-slate-800/50 border-white/5'
+                }`}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center ${
+                      resultat.est_elu ? 'bg-amber-500' : 'bg-slate-700'
+                    }`}>
+                      <Trophy size={24} className={resultat.est_elu ? 'text-slate-900' : 'text-slate-400'} />
+                    </div>
+                    <div>
+                      <h2 className="text-white font-bold text-lg">
+                        {resultat.est_elu ? '🎉 Élu(e) délégué(e) !' : 'Résultats de l\'élection'}
+                      </h2>
+                      <p className="text-slate-400 text-sm">{election?.titre}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
+                      <p className="text-3xl font-bold text-white">{resultat.nb_voix}</p>
+                      <p className="text-slate-400 text-xs mt-1">Votes reçus</p>
+                    </div>
+                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
+                      <p className="text-3xl font-bold text-amber-500">{resultat.pourcentage}%</p>
+                      <p className="text-slate-400 text-xs mt-1">Pourcentage</p>
+                    </div>
+                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
+                      <p className="text-3xl font-bold text-white">N°{candidature?.candidat_numero}</p>
+                      <p className="text-slate-400 text-xs mt-1">Numéro ordre</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Barre de progression */}
+                <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-slate-400 text-sm">Part des votes</span>
+                    <span className="text-white font-bold">{resultat.pourcentage}%</span>
+                  </div>
+                  <div className="w-full bg-slate-700 rounded-full h-3">
+                    <div className="bg-amber-500 h-3 rounded-full transition-all duration-500"
+                      style={{ width: `${resultat.pourcentage}%` }} />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-8 text-center">
+                <BarChart2 size={40} className="text-slate-600 mx-auto mb-3" />
+                <p className="text-slate-400 text-sm">
+                  {election?.statut === 'EN_COURS'
+                    ? "L'élection est en cours. Les résultats seront disponibles après la clôture."
+                    : "Aucun résultat disponible pour le moment."}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+      </main>
     </div>
   )
 }

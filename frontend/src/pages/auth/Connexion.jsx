@@ -23,7 +23,6 @@ const Connexion = () => {
       const data = await connexion(form.identifiant, form.mot_de_passe)
       toast.success('Connexion réussie !')
       if (data.role === 'ADMINISTRATEUR')  navigate('/admin/dashboard')
-      else if (data.role === 'CANDIDAT')   navigate('/candidat/dashboard')
       else                                 navigate('/etudiant/dashboard')
     } catch (err) {
       const msg = err.response?.data?.erreur ||

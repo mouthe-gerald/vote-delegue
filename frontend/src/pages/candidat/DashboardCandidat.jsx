@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { electionAPI, candidatureAPI, resultatAPI } from '../../services/api'
 import {
-  User, Award, BarChart2, FileText, LogOut,
+  User, Award, BarChart2, FileText, LogOut, ArrowLeft,
   CheckCircle, Clock, XCircle, Trophy, Vote,
   Mail, GraduationCap, Hash, Percent, Edit, Save, X
 } from 'lucide-react'

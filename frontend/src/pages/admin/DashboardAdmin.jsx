@@ -15,6 +15,7 @@ const DashboardAdmin = () => {
   const { user, deconnexion }           = useAuth()
   const [elections, setElections]       = useState([])
   const [candidatures, setCandidatures] = useState([])
+  const [toutesLesCandidatures, setToutesLesCandidatures] = useState([])
   const [notifications, setNotifications] = useState([])
   const [nonLues, setNonLues] = useState(0)
   const [showNotifs, setShowNotifs] = useState(false)
@@ -53,6 +54,14 @@ const DashboardAdmin = () => {
       ])
       setElections(elecs)
       setCandidatures(cands)
+      // Charger toutes les candidatures pour le compteur
+      const elecActive = elections.find(e => ['EN_COURS', 'PLANIFIEE'].includes(e.statut))
+      if (elecActive) {
+        try {
+          const { data: toutesLescands } = await candidatureAPI.liste(elecActive.id)
+          setToutesLesCandidatures(toutesLescands.filter(c => c.numero_candidat !== 0))
+        } catch {}
+      }
     } catch { toast.error('Erreur de chargement.') }
     finally { setLoading(false) }
   }
@@ -311,7 +320,7 @@ const DashboardAdmin = () => {
             {[
               { label: 'Élections',        value: elections.length,                                                icon: Vote,       color: '#F0A500' },
               { label: 'En cours',         value: elections.filter(e => e.statut === 'EN_COURS').length,          icon: TrendingUp, color: '#10B981' },
-              { label: 'Candidatures',     value: candidatures.length,                                            icon: Users,      color: '#3B82F6' },
+              { label: 'Candidatures',     value: toutesLesCandidatures.length,                                            icon: Users,      color: '#3B82F6' },
               { label: 'Résultats publiés', value: elections.filter(e => e.statut === 'RESULTATS_PUBLIES').length, icon: Trophy,     color: '#8B5CF6' },
             ].map((s, i) => (
               <div key={i} className="card-anim bg-slate-800 border border-white/5 rounded-xl p-4">

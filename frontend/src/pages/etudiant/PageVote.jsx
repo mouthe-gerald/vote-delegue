@@ -228,7 +228,7 @@ const PageVote = () => {
                 {erreur}
               </div>
             )}
-            <button onClick={confirmerVote}
+            <button onClick={verifierEmpreinte}
               className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2">
               <span>👆</span> Confirmer avec mon empreinte
             </button>

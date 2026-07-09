@@ -205,3 +205,61 @@ const PageVote = () => {
                   </div>
                 </div>
               ))}
+            </div>
+            <button disabled={!selectionne} onClick={() => setEtape('verification')}
+              className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed">
+              <Vote size={16} /> Confirmer ma sélection
+            </button>
+          </>
+        )}
+
+        {/* ÉTAPE VÉRIFICATION */}
+        {etape === 'verification' && (
+          <div className="flex flex-col items-center gap-6 py-6">
+            <div className="w-20 h-20 bg-amber-500/15 rounded-full flex items-center justify-center">
+              <span className="text-4xl">👆</span>
+            </div>
+            <div className="text-center">
+              <h2 className="text-white font-bold text-lg mb-2">Vérification biométrique</h2>
+              <p className="text-slate-400 text-sm">Placez votre doigt sur le capteur pour confirmer votre vote</p>
+            </div>
+            {erreur && (
+              <div className="w-full bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-4 text-sm">
+                {erreur}
+              </div>
+            )}
+            <button onClick={confirmerVote}
+              className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all flex items-center justify-center gap-2">
+              <span>👆</span> Confirmer avec mon empreinte
+            </button>
+            <button onClick={() => setEtape('selection')}
+              className="text-slate-400 text-sm hover:text-white transition-colors">
+              ← Revenir à la sélection
+            </button>
+          </div>
+        )}
+
+        {/* ÉTAPE SUCCÈS */}
+        {etape === 'succes' && (
+          <div className="flex flex-col items-center gap-6 py-6 text-center">
+            <div className="w-20 h-20 bg-emerald-500/15 rounded-full flex items-center justify-center">
+              <CheckCircle size={40} className="text-emerald-500" />
+            </div>
+            <div>
+              <h2 className="text-white font-bold text-xl mb-2">Vote enregistré !</h2>
+              <p className="text-slate-400 text-sm">Votre vote a été enregistré avec succès sur la blockchain.</p>
+              {txHash && (
+                <div className="mt-4 bg-white/5 rounded-xl p-3">
+                  <p className="text-slate-500 text-xs mb-1">Hash de transaction</p>
+                  <p className="text-amber-400 text-xs font-mono break-all">{txHash}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default PageVote

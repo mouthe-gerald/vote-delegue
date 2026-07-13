@@ -86,38 +86,38 @@ const Accueil = () => {
       `}</style>
 
       {/* NAVBAR */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 border-b-2 border-amber-500 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur-md shadow-lg' : 'bg-slate-900'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 border-b-2 border-amber-500 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={18} className="text-slate-900" />
             </div>
-            <span className="text-white font-bold text-base">VotingApp</span>
+            <span className="text-gray-900 font-bold text-base">VotingApp</span>
           </div>
           <div className="hidden md:flex items-center gap-6">
-            <a href="#apropos" className="nav-link text-slate-400 hover:text-white text-sm transition-colors">À propos</a>
-            <a href="#fonctionnalites" className="nav-link text-slate-400 hover:text-white text-sm transition-colors">Fonctionnalités</a>
-            <a href="#contact" className="nav-link text-slate-400 hover:text-white text-sm transition-colors">Contact</a>
-            <Link to="/resultats" className="nav-link text-slate-400 hover:text-white text-sm transition-colors">Résultats</Link>
+            <a href="#apropos" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">À propos</a>
+            <a href="#fonctionnalites" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Fonctionnalités</a>
+            <a href="#contact" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Contact</a>
+            <Link to="/resultats" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Résultats</Link>
             <button onClick={() => navigate('/inscription')}
               className="btn-inscrire text-amber-500 border border-amber-500 px-4 py-2 rounded-lg text-sm font-semibold hover:text-slate-900 transition-all duration-200">
               <span>S'inscrire</span>
             </button>
             <button onClick={() => navigate('/connexion')}
-              className="btn-connecter text-white px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">
+              className="btn-connecter text-gray-900 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">
               <span>Se connecter</span>
             </button>
           </div>
-          <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="md:hidden text-gray-900" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
         {menuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700 px-4 py-4 flex flex-col gap-3 slide-down">
-            <a href="#apropos" className="text-slate-300 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>À propos</a>
-            <a href="#fonctionnalites" className="text-slate-300 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Fonctionnalités</a>
-            <a href="#contact" className="text-slate-300 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Contact</a>
-            <Link to="/resultats" className="text-slate-300 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Résultats</Link>
+          <div className="md:hidden bg-gray-50 border-t border-slate-700 px-4 py-4 flex flex-col gap-3 slide-down">
+            <a href="#apropos" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>À propos</a>
+            <a href="#fonctionnalites" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Fonctionnalités</a>
+            <a href="#contact" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Contact</a>
+            <Link to="/resultats" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Résultats</Link>
             <div className="flex gap-3 pt-2">
               <button onClick={() => navigate('/inscription')} className="flex-1 text-amber-500 border border-amber-500 py-2 rounded-lg text-sm font-semibold">S'inscrire</button>
               <button onClick={() => navigate('/connexion')} className="flex-1 shimmer-btn text-slate-900 py-2 rounded-lg text-sm font-bold">Se connecter</button>
@@ -127,18 +127,18 @@ const Accueil = () => {
       </nav>
 
       {/* HERO */}
-      <section className="min-h-screen bg-slate-900 flex items-center pt-16 relative">
+      <section className="min-h-screen bg-white flex items-center pt-16 relative">
         <div className="absolute inset-0" style={{backgroundImage:'radial-gradient(circle at 20% 50%, rgba(21,101,192,0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(240,165,0,0.1) 0%, transparent 40%)'}} />
         <div className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           <div>
             <div className="fade1 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 mb-8">
               <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
             </div>
-            <h1 className="fade2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-normal mb-6">
+            <h1 className="fade2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-normal mb-6">
               Election<br />
               <span className="text-amber-500">Transparente</span>
             </h1>
-            <p className="fade3 text-slate-400 text-lg leading-relaxed mb-8 max-w-lg">
+            <p className="fade3 text-gray-500 text-lg leading-relaxed mb-8 max-w-lg">
               Plateforme officielle de vote électronique sécurisée par la blockchain.
             </p>
             <div className="fade4 flex flex-wrap gap-4 mb-10">
@@ -147,23 +147,23 @@ const Accueil = () => {
                 Accéder à la plateforme <ChevronRight size={16} />
               </button>
               <button onClick={() => navigate('/resultats')}
-                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-white border border-white/20 hover:bg-white/10 hover:border-white/40 hover:scale-105 transition-all duration-200">
+                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-gray-900 border border-white/20 hover:bg-gray-100 hover:border-white/40 hover:scale-105 transition-all duration-200">
                 Voir les résultats
               </button>
             </div>
-            <div className="fade5 flex gap-8 pt-8 border-t border-white/10">
+            <div className="fade5 flex gap-8 pt-8 border-t border-gray-300">
               {[{value:'100%',label:'Sécurisé'},{value:'Blockchain',label:'Immuable'},{value:'Temps réel',label:'Résultats'}].map((s,i) => (
                 <div key={i} className="group cursor-default">
                   <div className="text-amber-500 font-bold text-lg group-hover:scale-110 transition-transform duration-200 inline-block">{s.value}</div>
-                  <div className="text-slate-500 text-xs">{s.label}</div>
+                  <div className="text-gray-400 text-xs">{s.label}</div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="fade3 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+          <div className="fade3 bg-gray-100 border border-gray-300 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1 h-5 bg-amber-500 rounded-full" />
-              <span className="text-white font-semibold text-sm">Fonctionnalités clés</span>
+              <span className="text-gray-900 font-semibold text-sm">Fonctionnalités clés</span>
             </div>
             <div className="flex flex-col gap-3">
               {[
@@ -173,13 +173,13 @@ const Accueil = () => {
                 {icon:BarChart2,label:'Résultats en temps réel',desc:'Visualisation instantanée',color:'#F59E0B'},
                 {icon:Mail,label:'Vérification OTP',desc:"Email sécurisé à l'inscription",color:'#EF4444'},
               ].map((f,i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/8 hover:border-white/15 transition-all duration-200 cursor-default group">
+                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-white/8 hover:border-gray-300 transition-all duration-200 cursor-default group">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200" style={{background:`${f.color}20`}}>
                     <f.icon size={16} style={{color:f.color}} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-xs font-semibold">{f.label}</div>
-                    <div className="text-slate-500 text-xs">{f.desc}</div>
+                    <div className="text-gray-900 text-xs font-semibold">{f.label}</div>
+                    <div className="text-gray-400 text-xs">{f.desc}</div>
                   </div>
                   <CheckCircle size={14} className="text-emerald-500 flex-shrink-0 group-hover:scale-110 transition-transform duration-200" />
                 </div>
@@ -194,12 +194,12 @@ const Accueil = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-1 h-8 bg-amber-500 rounded-full" />
-            <span className="text-slate-500 text-xs font-semibold tracking-widest uppercase">À propos</span>
+            <span className="text-gray-400 text-xs font-semibold tracking-widest uppercase">À propos</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
             Une plateforme conçue pour<br className="hidden sm:block" />un vote transparent et automatisé
           </h2>
-          <p className="text-slate-500 text-lg max-w-xl leading-relaxed mb-14">
+          <p className="text-gray-400 text-lg max-w-xl leading-relaxed mb-14">
             Développée dans le cadre d'un Projet de Fin d'Études (PFE) en Licence Génie Informatique.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -213,7 +213,7 @@ const Accueil = () => {
                   <c.icon size={22} style={{color:c.color}} />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 mb-2">{c.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{c.desc}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{c.desc}</p>
               </div>
             ))}
           </div>
@@ -225,10 +225,10 @@ const Accueil = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-1 h-8 bg-amber-500 rounded-full" />
-            <span className="text-slate-500 text-xs font-semibold tracking-widest uppercase">Fonctionnalités</span>
+            <span className="text-gray-400 text-xs font-semibold tracking-widest uppercase">Fonctionnalités</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Tout ce dont vous avez besoin</h2>
-          <p className="text-slate-500 text-lg max-w-md leading-relaxed mb-14">Une suite complète d'outils pour organiser, sécuriser et analyser les élections.</p>
+          <p className="text-gray-400 text-lg max-w-md leading-relaxed mb-14">Une suite complète d'outils pour organiser, sécuriser et analyser les élections.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {icon:Fingerprint,color:'#3B82F6',title:'Biométrie WebAuthn',desc:"Enregistrez votre empreinte digitale lors de l'inscription. Vérifiée à chaque vote."},
@@ -244,7 +244,7 @@ const Accueil = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-amber-600 transition-colors duration-200">{f.title}</h3>
-                  <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
+                  <p className="text-gray-400 text-xs leading-relaxed">{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -253,15 +253,15 @@ const Accueil = () => {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="bg-slate-900 py-24 px-4">
+      <section id="contact" className="bg-white py-24 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-1 h-8 bg-amber-500 rounded-full" />
-              <span className="text-slate-500 text-xs font-semibold tracking-widest uppercase">Contact</span>
+              <span className="text-gray-400 text-xs font-semibold tracking-widest uppercase">Contact</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Une question ?<br />Contactez-nous</h2>
-            <p className="text-slate-400 text-base leading-relaxed mb-10">L'équipe de développement est disponible pour toute question relative à la plateforme.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Une question ?<br />Contactez-nous</h2>
+            <p className="text-gray-500 text-base leading-relaxed mb-10">L'équipe de développement est disponible pour toute question relative à la plateforme.</p>
             <div className="flex flex-col gap-5">
               {[
                 {icon:MapPin,label:'Localisation',value:'IUT Fotso Victor de Bandjoun, Université de Dschang'},
@@ -273,19 +273,19 @@ const Accueil = () => {
                     <c.icon size={16} className="text-amber-500" />
                   </div>
                   <div>
-                    <div className="text-slate-500 text-xs mb-1">{c.label}</div>
-                    <div className="text-white text-sm font-medium">{c.value}</div>
+                    <div className="text-gray-400 text-xs mb-1">{c.label}</div>
+                    <div className="text-gray-900 text-sm font-medium">{c.value}</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <form onSubmit={handleContact} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300">
-            <h3 className="text-white font-bold text-base mb-5">Envoyer un message</h3>
+          <form onSubmit={handleContact} className="bg-gray-100 border border-gray-300 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300">
+            <h3 className="text-gray-900 font-bold text-base mb-5">Envoyer un message</h3>
             <div className="flex flex-col gap-4">
-              <input placeholder="Votre nom" value={contactForm.nom} onChange={e => setContactForm({...contactForm,nom:e.target.value})} className="border border-white/15 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder-slate-500 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
-              <input placeholder="Votre email" type="email" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="border border-white/15 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder-slate-500 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
-              <textarea placeholder="Votre message" rows={5} value={contactForm.message} onChange={e => setContactForm({...contactForm,message:e.target.value})} className="border border-white/15 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder-slate-500 resize-none focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <input placeholder="Votre nom" value={contactForm.nom} onChange={e => setContactForm({...contactForm,nom:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <input placeholder="Votre email" type="email" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <textarea placeholder="Votre message" rows={5} value={contactForm.message} onChange={e => setContactForm({...contactForm,message:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 resize-none focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
               <button type="submit" disabled={contactLoading} className="shimmer-btn w-full text-slate-900 py-3 rounded-lg font-bold text-sm hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2">
                 {contactLoading ? <div className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" /> : 'Envoyer le message'}
               </button>
@@ -295,12 +295,12 @@ const Accueil = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-slate-950 border-t border-white/5 py-8 px-4 text-center">
+      <footer className="bg-gray-100 border-t border-gray-200 py-8 px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="w-6 h-6 bg-amber-500 rounded-md flex items-center justify-center">
             <Vote size={12} className="text-slate-900" />
           </div>
-          <span className="text-white font-semibold text-sm">VotingApp</span>
+          <span className="text-gray-900 font-semibold text-sm">VotingApp</span>
         </div>
       </footer>
     </div>

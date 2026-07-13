@@ -74,38 +74,38 @@ const PageVote = () => {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   if (etape === 'confirmation') return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <div className="bg-slate-800 border border-white/5 rounded-2xl p-8 text-center max-w-lg w-full">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-center max-w-lg w-full">
         <div className="w-20 h-20 bg-emerald-500/15 rounded-full flex items-center justify-center mx-auto mb-5">
           <CheckCircle size={40} className="text-emerald-500" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Vote enregistré !</h2>
-        <p className="text-slate-400 text-sm mb-6">Votre vote a été sécurisé par la blockchain.</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Vote enregistré !</h2>
+        <p className="text-gray-500 text-sm mb-6">Votre vote a été sécurisé par la blockchain.</p>
 
-        <div className="bg-slate-900 border border-white/5 rounded-xl p-5 mb-6 text-left">
+        <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 text-left">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
             <span className="text-emerald-400 text-sm font-semibold">Transaction confirmée</span>
           </div>
           <div className="flex flex-col gap-3">
             <div>
-              <p className="text-slate-500 text-xs mb-1">Hash de transaction</p>
+              <p className="text-gray-400 text-xs mb-1">Hash de transaction</p>
               <p className="text-amber-400 font-mono text-xs break-all">{txHash}</p>
             </div>
-            <div className="flex justify-between pt-3 border-t border-white/5">
+            <div className="flex justify-between pt-3 border-t border-gray-200">
               {[
-                { label: 'Réseau',   value: 'Ethereum Local', color: 'text-white' },
+                { label: 'Réseau',   value: 'Ethereum Local', color: 'text-gray-900' },
                 { label: 'Statut',   value: '✓ Confirmé',     color: 'text-emerald-400' },
                 { label: 'Anonymat', value: '✓ Garanti',      color: 'text-blue-400' },
               ].map((item, i) => (
                 <div key={i}>
-                  <p className="text-slate-500 text-xs">{item.label}</p>
+                  <p className="text-gray-400 text-xs">{item.label}</p>
                   <p className={`text-xs font-medium ${item.color}`}>{item.value}</p>
                 </div>
               ))}
@@ -122,20 +122,20 @@ const PageVote = () => {
   )
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-white">
 
       {/* Header */}
-      <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between">
+      <header className="bg-gray-100 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate('/etudiant/dashboard')}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-all">
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 bg-amber-500 rounded-full" />
             <div>
-              <h1 className="text-white font-bold text-sm">Vote — {election?.titre}</h1>
-              <p className="text-slate-500 text-xs">Sélectionnez un candidat et confirmez</p>
+              <h1 className="text-gray-900 font-bold text-sm">Vote — {election?.titre}</h1>
+              <p className="text-gray-400 text-xs">Sélectionnez un candidat et confirmez</p>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@ const PageVote = () => {
 
             <div className="flex items-center gap-2 mb-4">
               <div className="w-1 h-5 bg-amber-500 rounded-full" />
-              <h2 className="text-white font-bold text-sm">
+              <h2 className="text-gray-900 font-bold text-sm">
                 {candidats.length} candidat(s) — {election?.titre}
               </h2>
             </div>
@@ -167,10 +167,10 @@ const PageVote = () => {
             <div className="flex flex-col gap-3 mb-6">
               {candidats.map(candidat => (
                 <div key={candidat.id} onClick={() => setSelectionne(candidat.id)}
-                  className={`bg-slate-800 border rounded-xl p-4 cursor-pointer transition-all ${
+                  className={`bg-gray-50 border rounded-xl p-4 cursor-pointer transition-all ${
                     selectionne === candidat.id
                       ? 'border-amber-500/50 bg-amber-500/5'
-                      : 'border-white/5 hover:border-white/15'
+                      : 'border-gray-200 hover:border-gray-300'
                   }`}>
                   <div className="flex items-center gap-4">
                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
@@ -179,10 +179,10 @@ const PageVote = () => {
                       {selectionne === candidat.id && <div className="w-2 h-2 bg-white rounded-full" />}
                     </div>
 
-                    <div className="w-14 h-14 bg-white/5 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
+                    <div className="w-14 h-14 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
                       {candidat.candidat_photo
                         ? <img src={candidat.candidat_photo} alt={candidat.etudiant_nom} className="w-full h-full object-cover" />
-                        : <User size={24} className="text-slate-500" />
+                        : <User size={24} className="text-gray-400" />
                       }
                     </div>
 
@@ -191,11 +191,11 @@ const PageVote = () => {
                         <span className="bg-amber-500/15 text-amber-400 border border-amber-500/20 text-xs font-bold px-2 py-0.5 rounded-full">
                           N°{candidat.candidat_numero}
                         </span>
-                        <h3 className="text-white font-bold text-sm">{candidat.etudiant_nom}</h3>
+                        <h3 className="text-gray-900 font-bold text-sm">{candidat.etudiant_nom}</h3>
                       </div>
-                      <p className="text-slate-400 text-xs">{candidat.etudiant_filiere}</p>
+                      <p className="text-gray-500 text-xs">{candidat.etudiant_filiere}</p>
                       {candidat.programme && (
-                        <p className="text-slate-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">{candidat.programme}</p>
+                        <p className="text-gray-400 text-xs mt-1.5 line-clamp-2 leading-relaxed">{candidat.programme}</p>
                       )}
                     </div>
 
@@ -220,8 +220,8 @@ const PageVote = () => {
               <span className="text-4xl">👆</span>
             </div>
             <div className="text-center">
-              <h2 className="text-white font-bold text-lg mb-2">Vérification biométrique</h2>
-              <p className="text-slate-400 text-sm">Placez votre doigt sur le capteur pour confirmer votre vote</p>
+              <h2 className="text-gray-900 font-bold text-lg mb-2">Vérification biométrique</h2>
+              <p className="text-gray-500 text-sm">Placez votre doigt sur le capteur pour confirmer votre vote</p>
             </div>
             {erreur && (
               <div className="w-full bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl p-4 text-sm">
@@ -233,7 +233,7 @@ const PageVote = () => {
               <span>👆</span> Confirmer avec mon empreinte
             </button>
             <button onClick={() => setEtape('selection')}
-              className="text-slate-400 text-sm hover:text-white transition-colors">
+              className="text-gray-500 text-sm hover:text-gray-900 transition-colors">
               ← Revenir à la sélection
             </button>
           </div>
@@ -246,11 +246,11 @@ const PageVote = () => {
               <CheckCircle size={40} className="text-emerald-500" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-xl mb-2">Vote enregistré !</h2>
-              <p className="text-slate-400 text-sm">Votre vote a été enregistré avec succès sur la blockchain.</p>
+              <h2 className="text-gray-900 font-bold text-xl mb-2">Vote enregistré !</h2>
+              <p className="text-gray-500 text-sm">Votre vote a été enregistré avec succès sur la blockchain.</p>
               {txHash && (
-                <div className="mt-4 bg-white/5 rounded-xl p-3">
-                  <p className="text-slate-500 text-xs mb-1">Hash de transaction</p>
+                <div className="mt-4 bg-gray-100 rounded-xl p-3">
+                  <p className="text-gray-400 text-xs mb-1">Hash de transaction</p>
                   <p className="text-amber-400 text-xs font-mono break-all">{txHash}</p>
                 </div>
               )}

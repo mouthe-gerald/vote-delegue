@@ -7,7 +7,7 @@ const NotFound = () => {
   usePageTitle('Page introuvable')
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
         @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-16px); } }
@@ -27,7 +27,7 @@ const NotFound = () => {
           <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
             <Vote size={20} className="text-slate-900" />
           </div>
-          <span className="text-white font-bold text-lg">VotingApp</span>
+          <span className="text-gray-900 font-bold text-lg">VotingApp</span>
         </div>
 
         {/* 404 */}
@@ -37,8 +37,8 @@ const NotFound = () => {
 
         {/* Message */}
         <div className="fade2 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-3">Page introuvable</h2>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Page introuvable</h2>
+          <p className="text-gray-500 text-sm leading-relaxed">
             La page que vous recherchez n'existe pas ou a été déplacée.
           </p>
         </div>
@@ -46,7 +46,7 @@ const NotFound = () => {
         {/* Boutons */}
         <div className="fade3 flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={() => navigate(-1)}
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-200 text-sm font-medium">
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-gray-900 border border-white/20 hover:bg-gray-100 hover:border-white/40 transition-all duration-200 text-sm font-medium">
             <ArrowLeft size={16} />
             Retour
           </button>

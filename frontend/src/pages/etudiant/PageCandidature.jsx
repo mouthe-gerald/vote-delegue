@@ -73,29 +73,29 @@ const PageCandidature = () => {
     VALIDEE:         { color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20', msg: '✅ Candidature validée ! Vous apparaissez dans la liste.' },
     REJETEE:         { color: 'bg-red-500/15 text-red-400 border-red-500/20',         msg: '❌ Candidature rejetée.' },
     RETRAIT_DEMANDE: { color: 'bg-orange-500/15 text-orange-400 border-orange-500/20', msg: '⏳ Demande de retrait en attente.' },
-    RETIREE:         { color: 'bg-slate-500/15 text-slate-400 border-slate-500/20',   msg: 'Candidature retirée.' },
+    RETIREE:         { color: 'bg-slate-500/15 text-gray-500 border-slate-500/20',   msg: 'Candidature retirée.' },
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-white">
 
       {/* Header */}
-      <header className="bg-slate-950 border-b border-white/5 px-4 sm:px-6 h-14 flex items-center gap-3">
+      <header className="bg-gray-100 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center gap-3">
         <button onClick={() => navigate('/etudiant/dashboard')}
-          className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+          className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-all">
           <ArrowLeft size={16} />
         </button>
         <div className="flex items-center gap-2">
           <div className="w-1 h-5 bg-amber-500 rounded-full" />
           <div>
-            <h1 className="text-white font-bold text-sm">Ma Candidature</h1>
-            <p className="text-slate-500 text-xs">{election?.titre || 'Aucune élection active'}</p>
+            <h1 className="text-gray-900 font-bold text-sm">Ma Candidature</h1>
+            <p className="text-gray-400 text-xs">{election?.titre || 'Aucune élection active'}</p>
           </div>
         </div>
       </header>
@@ -121,7 +121,7 @@ const PageCandidature = () => {
             </div>
 
             {/* Photo + Programme */}
-            <div className="bg-slate-800 border border-white/5 rounded-xl overflow-hidden">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
               {candidature.candidat_photo && (
                 <img src={candidature.candidat_photo} alt="Photo campagne"
                   className="w-full h-48 object-cover" />
@@ -129,9 +129,9 @@ const PageCandidature = () => {
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h3 className="text-white font-bold text-sm">Programme Électoral</h3>
+                  <h3 className="text-gray-900 font-bold text-sm">Programme Électoral</h3>
                 </div>
-                <p className="text-slate-300 text-sm leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed">
                   {candidature.programme || 'Aucun programme défini.'}
                 </p>
               </div>
@@ -147,23 +147,23 @@ const PageCandidature = () => {
           </div>
 
         ) : (
-          <div className="bg-slate-800 border border-white/5 rounded-xl p-6">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
 
             {/* Titre */}
             <div className="text-center mb-6">
               <div className="w-14 h-14 bg-amber-500/15 rounded-2xl flex items-center justify-center mx-auto mb-3">
                 <FileText size={26} className="text-amber-500" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-1">Déposer ma candidature</h2>
-              <p className="text-slate-400 text-sm">
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Déposer ma candidature</h2>
+              <p className="text-gray-500 text-sm">
                 {election ? `Pour : ${election.titre}` : 'Aucune élection disponible.'}
               </p>
             </div>
 
             {!election ? (
               <div className="text-center py-6">
-                <Clock size={32} className="text-slate-600 mx-auto mb-3" />
-                <p className="text-slate-400 text-sm">Aucune élection ouverte aux candidatures.</p>
+                <Clock size={32} className="text-gray-500 mx-auto mb-3" />
+                <p className="text-gray-500 text-sm">Aucune élection ouverte aux candidatures.</p>
               </div>
             ) : (
               <form onSubmit={handleSoumettre} className="flex flex-col gap-5">
@@ -175,22 +175,22 @@ const PageCandidature = () => {
                   </div>
                   <div>
                     <p className="text-amber-400 text-xs font-semibold mb-0.5">Candidat</p>
-                    <p className="text-white font-bold text-sm">{user?.prenom} {user?.nom}</p>
-                    <p className="text-slate-400 text-xs">{user?.profil?.filiere} — {user?.profil?.niveau}</p>
+                    <p className="text-gray-900 font-bold text-sm">{user?.prenom} {user?.nom}</p>
+                    <p className="text-gray-500 text-xs">{user?.profil?.filiere} — {user?.profil?.niveau}</p>
                   </div>
                 </div>
 
                 {/* Photo */}
                 <div>
-                  <label className="text-slate-400 text-xs font-medium mb-2 flex items-center gap-1.5">
+                  <label className="text-gray-500 text-xs font-medium mb-2 flex items-center gap-1.5">
                     <Camera size={13} /> Photo de campagne (optionnelle)
                   </label>
                   {photoPreview && (
                     <img src={photoPreview} alt="Aperçu"
-                      className="w-24 h-24 rounded-xl object-cover border border-white/10 mb-3" />
+                      className="w-24 h-24 rounded-xl object-cover border border-gray-300 mb-3" />
                   )}
                   <input type="file" accept="image/*" onChange={handlePhotoChange}
-                    className="w-full text-xs text-slate-400
+                    className="w-full text-xs text-gray-500
                                file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
                                file:text-xs file:font-medium file:bg-amber-500/15
                                file:text-amber-400 hover:file:bg-amber-500/25 cursor-pointer" />
@@ -198,12 +198,12 @@ const PageCandidature = () => {
 
                 {/* Programme */}
                 <div>
-                  <label className="text-slate-400 text-xs font-medium mb-2 block">
+                  <label className="text-gray-500 text-xs font-medium mb-2 block">
                     Programme électoral <span className="text-red-400">*</span>
                   </label>
                   {/* Import fichier */}
-                  <div className="mb-3 p-3 bg-white/3 border border-white/10 rounded-xl">
-                    <p className="text-slate-400 text-xs mb-2">📎 Importer un fichier (PDF ou Word)</p>
+                  <div className="mb-3 p-3 bg-gray-50 border border-gray-300 rounded-xl">
+                    <p className="text-gray-500 text-xs mb-2">📎 Importer un fichier (PDF ou Word)</p>
                     <input type="file" accept=".pdf,.doc,.docx"
                       onChange={e => {
                         const file = e.target.files[0]
@@ -216,7 +216,7 @@ const PageCandidature = () => {
                           setProgramme(prev => prev || `[Fichier joint : ${file.name}]`)
                         }
                       }}
-                      className="w-full text-xs text-slate-400
+                      className="w-full text-xs text-gray-500
                                  file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
                                  file:text-xs file:font-medium file:bg-amber-500/15
                                  file:text-amber-400 hover:file:bg-amber-500/25 cursor-pointer" />
@@ -224,11 +224,11 @@ const PageCandidature = () => {
                       <p className="text-emerald-400 text-xs mt-1">✓ {programmeFichier.name}</p>
                     )}
                   </div>
-                  <p className="text-slate-500 text-xs mb-2">ou écrire directement :</p>
+                  <p className="text-gray-400 text-xs mb-2">ou écrire directement :</p>
                   <textarea value={programme} onChange={e => setProgramme(e.target.value)}
                     placeholder="Décrivez votre programme électoral..."
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white bg-white/5 border border-white/10 outline-none resize-none h-40 placeholder-slate-600 focus:border-amber-500/50 transition-colors" />
-                  <p className="text-slate-600 text-xs mt-1">{programme.length} caractères</p>
+                    className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none resize-none h-40 placeholder-gray-400 focus:border-amber-500/50 transition-colors" />
+                  <p className="text-gray-500 text-xs mt-1">{programme.length} caractères</p>
                 </div>
 
                 <button type="submit" disabled={submitting}
@@ -246,26 +246,26 @@ const PageCandidature = () => {
       {/* Modal retrait */}
       {showRetrait && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-red-500/15 rounded-xl flex items-center justify-center">
                 <AlertTriangle size={18} className="text-red-400" />
               </div>
               <div>
-                <h3 className="text-white font-bold">Demande de retrait</h3>
-                <p className="text-slate-400 text-xs">Soumise à l'administrateur pour approbation.</p>
+                <h3 className="text-gray-900 font-bold">Demande de retrait</h3>
+                <p className="text-gray-500 text-xs">Soumise à l'administrateur pour approbation.</p>
               </div>
             </div>
             <textarea value={motifRetrait} onChange={e => setMotifRetrait(e.target.value)}
               placeholder="Expliquez votre motif..."
-              className="w-full px-4 py-3 rounded-xl text-sm text-white bg-white/5 border border-white/10 outline-none resize-none h-28 mb-4 placeholder-slate-600" />
+              className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none resize-none h-28 mb-4 placeholder-gray-400" />
             <div className="flex gap-3">
               <button onClick={() => setShowRetrait(false)}
-                className="flex-1 py-3 rounded-xl text-slate-300 bg-white/5 border border-white/10 text-sm font-medium">
+                className="flex-1 py-3 rounded-xl text-gray-600 bg-gray-100 border border-gray-300 text-sm font-medium">
                 Annuler
               </button>
               <button onClick={handleDemanderRetrait}
-                className="flex-1 py-3 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-500">
+                className="flex-1 py-3 rounded-xl bg-red-600 text-gray-900 text-sm font-bold hover:bg-red-500">
                 Envoyer
               </button>
             </div>

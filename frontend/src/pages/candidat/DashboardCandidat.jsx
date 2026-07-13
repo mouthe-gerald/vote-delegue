@@ -68,7 +68,7 @@ const DashboardCandidat = () => {
       case 'VALIDEE':    return { label: 'Validée',    icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' }
       case 'EN_ATTENTE': return { label: 'En attente', icon: Clock,        color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' }
       case 'REJETEE':    return { label: 'Rejetée',    icon: XCircle,      color: 'text-red-400',     bg: 'bg-red-500/10 border-red-500/20' }
-      default:           return { label: statut,       icon: Clock,        color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' }
+      default:           return { label: statut,       icon: Clock,        color: 'text-gray-500',   bg: 'bg-slate-500/10 border-slate-500/20' }
     }
   }
 
@@ -80,7 +80,7 @@ const DashboardCandidat = () => {
   ]
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="w-10 h-10 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
@@ -88,16 +88,16 @@ const DashboardCandidat = () => {
   const statutInfo = candidature ? getStatutBadge(candidature.statut) : null
 
   return (
-    <div className="min-h-screen bg-slate-900 flex">
+    <div className="min-h-screen bg-white flex">
       {/* SIDEBAR */}
-      <aside className="w-64 bg-slate-950 border-r border-white/5 flex flex-col fixed h-full z-10">
+      <aside className="w-64 bg-gray-100 border-r border-gray-200 flex flex-col fixed h-full z-10">
         {/* Logo */}
-        <div className="p-6 border-b border-white/5">
+        <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
-            <span className="text-white font-bold">VotingApp</span>
+            <span className="text-gray-900 font-bold">VotingApp</span>
           </div>
           {/* Infos candidat */}
           <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ const DashboardCandidat = () => {
               </span>
             </div>
             <div className="min-w-0">
-              <p className="text-white text-sm font-semibold truncate">{user?.prenom} {user?.nom}</p>
+              <p className="text-gray-900 text-sm font-semibold truncate">{user?.prenom} {user?.nom}</p>
               <p className="text-amber-500 text-xs font-medium">Candidat</p>
             </div>
           </div>
@@ -120,7 +120,7 @@ const DashboardCandidat = () => {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeMenu === item.id
                   ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
               }`}>
               <item.icon size={16} />
               {item.label}
@@ -129,14 +129,14 @@ const DashboardCandidat = () => {
         </nav>
 
         {/* Retour + Déconnexion */}
-        <div className="p-4 border-t border-white/5 flex flex-col gap-2">
+        <div className="p-4 border-t border-gray-200 flex flex-col gap-2">
           <button onClick={() => navigate('/etudiant/dashboard')}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all w-full">
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all w-full">
             <ArrowLeft size={16} />
             Dashboard étudiant
           </button>
           <button onClick={handleDeconnexion}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/5 transition-all w-full">
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-500 hover:text-red-400 hover:bg-red-500/5 transition-all w-full">
             <LogOut size={16} />
             Déconnexion
           </button>
@@ -149,16 +149,16 @@ const DashboardCandidat = () => {
         {/* ── TABLEAU DE BORD ── */}
         {activeMenu === 'dashboard' && (
           <div>
-            <h1 className="text-2xl font-bold text-white mb-2">Tableau de bord</h1>
-            <p className="text-slate-400 text-sm mb-8">Bienvenue dans votre espace candidat</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
+            <p className="text-gray-500 text-sm mb-8">Bienvenue dans votre espace candidat</p>
 
             {/* Statut candidature */}
             {candidature && statutInfo && (
               <div className={`flex items-center gap-3 px-5 py-4 rounded-xl border mb-6 ${statutInfo.bg}`}>
                 <statutInfo.icon size={20} className={statutInfo.color} />
                 <div>
-                  <p className="text-white text-sm font-semibold">Candidature {statutInfo.label}</p>
-                  <p className="text-slate-400 text-xs">{election?.titre}</p>
+                  <p className="text-gray-900 text-sm font-semibold">Candidature {statutInfo.label}</p>
+                  <p className="text-gray-500 text-xs">{election?.titre}</p>
                 </div>
                 <span className={`ml-auto text-xs font-bold px-3 py-1 rounded-full border ${statutInfo.bg} ${statutInfo.color}`}>
                   {statutInfo.label}
@@ -168,39 +168,39 @@ const DashboardCandidat = () => {
 
             {/* Cartes résumé */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+              <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 bg-amber-500/15 rounded-lg flex items-center justify-center">
                     <Hash size={16} className="text-amber-500" />
                   </div>
-                  <span className="text-slate-400 text-sm">Numéro</span>
+                  <span className="text-gray-500 text-sm">Numéro</span>
                 </div>
-                <p className="text-3xl font-bold text-white">{candidature?.candidat_numero || '—'}</p>
-                <p className="text-slate-500 text-xs mt-1">Ordre de candidature</p>
+                <p className="text-3xl font-bold text-gray-900">{candidature?.candidat_numero || '—'}</p>
+                <p className="text-gray-400 text-xs mt-1">Ordre de candidature</p>
               </div>
 
-              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+              <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 bg-emerald-500/15 rounded-lg flex items-center justify-center">
                     <Vote size={16} className="text-emerald-500" />
                   </div>
-                  <span className="text-slate-400 text-sm">Votes reçus</span>
+                  <span className="text-gray-500 text-sm">Votes reçus</span>
                 </div>
-                <p className="text-3xl font-bold text-white">{resultat?.nb_voix ?? '—'}</p>
-                <p className="text-slate-500 text-xs mt-1">Total des votes</p>
+                <p className="text-3xl font-bold text-gray-900">{resultat?.nb_voix ?? '—'}</p>
+                <p className="text-gray-400 text-xs mt-1">Total des votes</p>
               </div>
 
-              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+              <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 bg-blue-500/15 rounded-lg flex items-center justify-center">
                     <Percent size={16} className="text-blue-400" />
                   </div>
-                  <span className="text-slate-400 text-sm">Pourcentage</span>
+                  <span className="text-gray-500 text-sm">Pourcentage</span>
                 </div>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-3xl font-bold text-gray-900">
                   {resultat ? `${resultat.pourcentage}%` : '—'}
                 </p>
-                <p className="text-slate-500 text-xs mt-1">Part des votes</p>
+                <p className="text-gray-400 text-xs mt-1">Part des votes</p>
               </div>
             </div>
 
@@ -209,15 +209,15 @@ const DashboardCandidat = () => {
               <div className={`rounded-xl border p-5 ${
                 resultat.est_elu
                   ? 'bg-amber-500/10 border-amber-500/30'
-                  : 'bg-slate-800/50 border-white/5'
+                  : 'bg-gray-50/50 border-gray-200'
               }`}>
                 <div className="flex items-center gap-3">
-                  <Trophy size={22} className={resultat.est_elu ? 'text-amber-500' : 'text-slate-500'} />
+                  <Trophy size={22} className={resultat.est_elu ? 'text-amber-500' : 'text-gray-400'} />
                   <div>
-                    <p className="text-white font-bold">
+                    <p className="text-gray-900 font-bold">
                       {resultat.est_elu ? '🎉 Vous êtes élu(e) délégué(e) !' : 'Résultats disponibles'}
                     </p>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-gray-500 text-sm">
                       {resultat.est_elu
                         ? 'Félicitations pour votre élection !'
                         : `Vous avez obtenu ${resultat.nb_voix} voix (${resultat.pourcentage}%)`}
@@ -232,12 +232,12 @@ const DashboardCandidat = () => {
         {/* ── MON PROFIL ── */}
         {activeMenu === 'profil' && (
           <div>
-            <h1 className="text-2xl font-bold text-white mb-2">Mon Profil</h1>
-            <p className="text-slate-400 text-sm mb-8">Vos informations personnelles</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Mon Profil</h1>
+            <p className="text-gray-500 text-sm mb-8">Vos informations personnelles</p>
 
-            <div className="bg-slate-800/50 border border-white/5 rounded-xl p-6">
+            <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-6">
               {/* Avatar */}
-              <div className="flex items-center gap-5 mb-8 pb-6 border-b border-white/5">
+              <div className="flex items-center gap-5 mb-8 pb-6 border-b border-gray-200">
                 {candidature?.candidat_photo
                   ? <img src={candidature.candidat_photo} className="w-20 h-20 rounded-full object-cover border-2 border-amber-500/30" />
                   : (
@@ -249,7 +249,7 @@ const DashboardCandidat = () => {
                   )
                 }
                 <div>
-                  <h2 className="text-white font-bold text-xl">{user?.prenom} {user?.nom}</h2>
+                  <h2 className="text-gray-900 font-bold text-xl">{user?.prenom} {user?.nom}</h2>
                   <p className="text-amber-500 text-sm font-medium">Candidat</p>
                   {candidature?.candidat_numero && (
                     <span className="inline-block mt-1 text-xs bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">
@@ -267,12 +267,12 @@ const DashboardCandidat = () => {
                   { icon: GraduationCap, label: 'Filière',    value: candidature?.etudiant_filiere || user?.profil?.filiere },
                   { icon: Award,         label: 'Niveau',     value: user?.profil?.niveau },
                 ].map((info, i) => (
-                  <div key={i} className="bg-slate-900/50 rounded-lg p-4">
+                  <div key={i} className="bg-gray-1000 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-1">
-                      <info.icon size={14} className="text-slate-500" />
-                      <span className="text-slate-500 text-xs">{info.label}</span>
+                      <info.icon size={14} className="text-gray-400" />
+                      <span className="text-gray-400 text-xs">{info.label}</span>
                     </div>
-                    <p className="text-white text-sm font-medium">{info.value || '—'}</p>
+                    <p className="text-gray-900 text-sm font-medium">{info.value || '—'}</p>
                   </div>
                 ))}
               </div>
@@ -293,12 +293,12 @@ const DashboardCandidat = () => {
         {/* ── MON PROGRAMME ── */}
         {activeMenu === 'programme' && (
           <div>
-            <h1 className="text-2xl font-bold text-white mb-2">Mon Programme</h1>
-            <p className="text-slate-400 text-sm mb-8">Votre programme électoral</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Mon Programme</h1>
+            <p className="text-gray-500 text-sm mb-8">Votre programme électoral</p>
 
-            <div className="bg-slate-800/50 border border-white/5 rounded-xl p-6">
+            <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-white font-semibold">Programme électoral</h2>
+                <h2 className="text-gray-900 font-semibold">Programme électoral</h2>
                 {!editProgramme
                   ? <button onClick={() => setEditProgramme(true)}
                       className="flex items-center gap-2 text-amber-500 text-sm hover:text-amber-400 transition-colors">
@@ -310,7 +310,7 @@ const DashboardCandidat = () => {
                         <Save size={12} /> Sauvegarder
                       </button>
                       <button onClick={() => setEditProgramme(false)}
-                        className="flex items-center gap-1 text-slate-400 text-xs px-3 py-1.5 rounded-lg hover:text-white transition-colors">
+                        className="flex items-center gap-1 text-gray-500 text-xs px-3 py-1.5 rounded-lg hover:text-gray-900 transition-colors">
                         <X size={12} /> Annuler
                       </button>
                     </div>
@@ -319,12 +319,12 @@ const DashboardCandidat = () => {
 
               {editProgramme
                 ? <textarea value={programme} onChange={e => setProgramme(e.target.value)} rows={10}
-                    className="w-full bg-slate-900/50 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none focus:border-amber-500/50 resize-none"
+                    className="w-full bg-gray-1000 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none focus:border-amber-500/50 resize-none"
                     placeholder="Rédigez votre programme électoral..." />
-                : <div className="bg-slate-900/50 rounded-lg px-4 py-3 min-h-32">
+                : <div className="bg-gray-1000 rounded-lg px-4 py-3 min-h-32">
                     {programme
-                      ? <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{programme}</p>
-                      : <p className="text-slate-500 text-sm italic">Aucun programme rédigé. Cliquez sur Modifier pour en ajouter un.</p>
+                      ? <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{programme}</p>
+                      : <p className="text-gray-400 text-sm italic">Aucun programme rédigé. Cliquez sur Modifier pour en ajouter un.</p>
                     }
                   </div>
               }
@@ -335,61 +335,61 @@ const DashboardCandidat = () => {
         {/* ── MES RÉSULTATS ── */}
         {activeMenu === 'resultats' && (
           <div>
-            <h1 className="text-2xl font-bold text-white mb-2">Mes Résultats</h1>
-            <p className="text-slate-400 text-sm mb-8">Vos résultats dans l'élection</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Mes Résultats</h1>
+            <p className="text-gray-500 text-sm mb-8">Vos résultats dans l'élection</p>
 
             {resultat ? (
               <div className="flex flex-col gap-4">
                 {/* Carte principale */}
                 <div className={`rounded-xl border p-6 ${
-                  resultat.est_elu ? 'bg-amber-500/10 border-amber-500/30' : 'bg-slate-800/50 border-white/5'
+                  resultat.est_elu ? 'bg-amber-500/10 border-amber-500/30' : 'bg-gray-50/50 border-gray-200'
                 }`}>
                   <div className="flex items-center gap-4 mb-6">
                     <div className={`w-14 h-14 rounded-full flex items-center justify-center ${
-                      resultat.est_elu ? 'bg-amber-500' : 'bg-slate-700'
+                      resultat.est_elu ? 'bg-amber-500' : 'bg-gray-200'
                     }`}>
-                      <Trophy size={24} className={resultat.est_elu ? 'text-slate-900' : 'text-slate-400'} />
+                      <Trophy size={24} className={resultat.est_elu ? 'text-slate-900' : 'text-gray-500'} />
                     </div>
                     <div>
-                      <h2 className="text-white font-bold text-lg">
+                      <h2 className="text-gray-900 font-bold text-lg">
                         {resultat.est_elu ? '🎉 Élu(e) délégué(e) !' : 'Résultats de l\'élection'}
                       </h2>
-                      <p className="text-slate-400 text-sm">{election?.titre}</p>
+                      <p className="text-gray-500 text-sm">{election?.titre}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
-                      <p className="text-3xl font-bold text-white">{resultat.nb_voix}</p>
-                      <p className="text-slate-400 text-xs mt-1">Votes reçus</p>
+                    <div className="bg-gray-1000 rounded-lg p-4 text-center">
+                      <p className="text-3xl font-bold text-gray-900">{resultat.nb_voix}</p>
+                      <p className="text-gray-500 text-xs mt-1">Votes reçus</p>
                     </div>
-                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
+                    <div className="bg-gray-1000 rounded-lg p-4 text-center">
                       <p className="text-3xl font-bold text-amber-500">{resultat.pourcentage}%</p>
-                      <p className="text-slate-400 text-xs mt-1">Pourcentage</p>
+                      <p className="text-gray-500 text-xs mt-1">Pourcentage</p>
                     </div>
-                    <div className="bg-slate-900/50 rounded-lg p-4 text-center">
-                      <p className="text-3xl font-bold text-white">N°{candidature?.candidat_numero}</p>
-                      <p className="text-slate-400 text-xs mt-1">Numéro ordre</p>
+                    <div className="bg-gray-1000 rounded-lg p-4 text-center">
+                      <p className="text-3xl font-bold text-gray-900">N°{candidature?.candidat_numero}</p>
+                      <p className="text-gray-500 text-xs mt-1">Numéro ordre</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Barre de progression */}
-                <div className="bg-slate-800/50 border border-white/5 rounded-xl p-5">
+                <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-5">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-slate-400 text-sm">Part des votes</span>
-                    <span className="text-white font-bold">{resultat.pourcentage}%</span>
+                    <span className="text-gray-500 text-sm">Part des votes</span>
+                    <span className="text-gray-900 font-bold">{resultat.pourcentage}%</span>
                   </div>
-                  <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="w-full bg-gray-200 rounded-full h-3">
                     <div className="bg-amber-500 h-3 rounded-full transition-all duration-500"
                       style={{ width: `${resultat.pourcentage}%` }} />
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-800/50 border border-white/5 rounded-xl p-8 text-center">
-                <BarChart2 size={40} className="text-slate-600 mx-auto mb-3" />
-                <p className="text-slate-400 text-sm">
+              <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-8 text-center">
+                <BarChart2 size={40} className="text-gray-500 mx-auto mb-3" />
+                <p className="text-gray-500 text-sm">
                   {election?.statut === 'EN_COURS'
                     ? "L'élection est en cours. Les résultats seront disponibles après la clôture."
                     : "Aucun résultat disponible pour le moment."}

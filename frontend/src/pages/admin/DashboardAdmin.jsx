@@ -99,9 +99,9 @@ const DashboardAdmin = () => {
   }
 
   const statutConfig = {
-    PLANIFIEE:         { label: 'Planifiée',         color: 'bg-blue-500/15 text-blue-400 border-blue-500/30' },
+    PLANIFIEE:         { label: 'Planifiée',         color: 'bg-slate-8000/15 text-blue-400 border-blue-500/30' },
     EN_COURS:          { label: 'En cours',           color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' },
-    CLOTUREE:          { label: 'Clôturée',           color: 'bg-slate-500/15 text-gray-500 border-slate-500/30' },
+    CLOTUREE:          { label: 'Clôturée',           color: 'bg-slate-500/15 text-slate-500 border-slate-500/30' },
     RESULTATS_PUBLIES: { label: 'Résultats publiés',  color: 'bg-purple-500/15 text-purple-400 border-purple-500/30' },
     ANNULEE:           { label: 'Annulée',            color: 'bg-red-500/15 text-red-400 border-red-500/30' },
   }
@@ -114,13 +114,13 @@ const DashboardAdmin = () => {
   ]
 
   if (loading) return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-white shadow-sm flex">
       <style>{`
         @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
         .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
       `}</style>
       {/* Sidebar skeleton */}
-      <div className="hidden lg:flex flex-col w-64 bg-blue-50 border-r border-gray-200 p-4 gap-3">
+      <div className="hidden lg:flex flex-col w-64 bg-slate-800 border-r border-slate-200 p-4 gap-3">
         <div className="skeleton h-12 w-full mb-4" />
         {[1,2,3,4,5].map(i => <div key={i} className="skeleton h-9 w-full" />)}
       </div>
@@ -131,7 +131,7 @@ const DashboardAdmin = () => {
         {/* Stats cards skeleton */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[1,2,3,4].map(i => (
-            <div key={i} className="bg-white rounded-xl p-4 flex flex-col gap-3">
+            <div key={i} className="bg-white shadow-sm rounded-xl p-4 flex flex-col gap-3">
               <div className="skeleton h-4 w-20" />
               <div className="skeleton h-8 w-12" />
               <div className="skeleton h-3 w-16" />
@@ -140,12 +140,12 @@ const DashboardAdmin = () => {
         </div>
         {/* Section principale skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-xl p-5 flex flex-col gap-4">
+          <div className="lg:col-span-2 bg-white shadow-sm rounded-xl p-5 flex flex-col gap-4">
             <div className="skeleton h-6 w-32" />
             {[1,2,3].map(i => <div key={i} className="skeleton h-16 w-full" />)}
           </div>
           <div className="flex flex-col gap-6">
-            <div className="bg-white rounded-xl p-5 flex flex-col gap-3">
+            <div className="bg-white shadow-sm rounded-xl p-5 flex flex-col gap-3">
               <div className="skeleton h-6 w-24" />
               {[1,2,3].map(i => <div key={i} className="skeleton h-10 w-full" />)}
             </div>
@@ -156,18 +156,18 @@ const DashboardAdmin = () => {
   )
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-white shadow-sm flex">
 
       {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-64 bg-blue-50 border-r border-gray-200">
-        <div className="p-6 border-b border-gray-200">
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-800 border-r border-slate-200">
+        <div className="p-6 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
             <div>
-              <div className="text-gray-800 font-bold text-sm">VotingApp</div>
-              <div className="text-gray-400 text-xs">Administration</div>
+              <div className="text-slate-700 font-bold text-sm">VotingApp</div>
+              <div className="text-slate-400 text-xs">Administration</div>
             </div>
           </div>
         </div>
@@ -175,21 +175,21 @@ const DashboardAdmin = () => {
         <nav className="flex-1 p-4 flex flex-col gap-1">
           {navLinks.map((l, i) => (
             <button key={i} onClick={l.action}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-blue-50 transition-all text-sm w-full text-left">
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-800 transition-all text-sm w-full text-left">
               <l.icon size={16} />
               {l.label}
             </button>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-slate-200">
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
             <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center text-amber-500 text-xs font-bold">
               {user?.prenom?.[0]}{user?.nom?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-gray-800 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
-              <div className="text-gray-400 text-xs">Administrateur</div>
+              <div className="text-slate-700 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
+              <div className="text-slate-400 text-xs">Administrateur</div>
             </div>
           </div>
           <button onClick={handleDeconnexion}
@@ -203,27 +203,27 @@ const DashboardAdmin = () => {
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-72 bg-blue-50 border-r border-gray-200 flex flex-col z-10">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+          <aside className="relative w-72 bg-slate-800 border-r border-slate-200 flex flex-col z-10">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
                   <Vote size={18} className="text-slate-900" />
                 </div>
-                <span className="text-gray-800 font-bold">VotingApp</span>
+                <span className="text-slate-700 font-bold">VotingApp</span>
               </div>
-              <button onClick={() => setSidebarOpen(false)} className="text-gray-500">
+              <button onClick={() => setSidebarOpen(false)} className="text-slate-500">
                 <X size={20} />
               </button>
             </div>
             <nav className="flex-1 p-4 flex flex-col gap-1">
               {navLinks.map((l, i) => (
                 <button key={i} onClick={l.action}
-                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-blue-50 transition-all text-sm w-full text-left">
+                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-800 transition-all text-sm w-full text-left">
                   <l.icon size={16} /> {l.label}
                 </button>
               ))}
             </nav>
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-slate-200">
               <button onClick={handleDeconnexion}
                 className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 text-sm">
                 <LogOut size={14} /> Déconnexion
@@ -237,23 +237,23 @@ const DashboardAdmin = () => {
       <div className="flex-1 flex flex-col min-w-0">
 
         {/* Topbar */}
-        <header className="bg-blue-50 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
+        <header className="bg-slate-800 border-b border-slate-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button className="lg:hidden text-gray-500 hover:text-gray-800" onClick={() => setSidebarOpen(true)}>
+            <button className="lg:hidden text-slate-500 hover:text-slate-700" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} />
             </button>
             <div>
-              <h1 className="text-gray-800 font-bold text-sm">Tableau de bord</h1>
-              <p className="text-gray-400 text-xs hidden sm:block">
+              <h1 className="text-slate-700 font-bold text-sm">Tableau de bord</h1>
+              <p className="text-slate-400 text-xs hidden sm:block">
                 {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-gray-500 hover:text-gray-800" onClick={() => { setShowNotifs(!showNotifs); if (!showNotifs) marquerLues() }}>
+            <button className="relative p-2 text-slate-500 hover:text-slate-700" onClick={() => { setShowNotifs(!showNotifs); if (!showNotifs) marquerLues() }}>
               <Bell size={18} />
               {candidatures.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-gray-800 text-xs flex items-center justify-center">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-slate-700 text-xs flex items-center justify-center">
                   {candidatures.length}
                 </span>
               )}
@@ -266,29 +266,29 @@ const DashboardAdmin = () => {
         </header>
         {/* PANNEAU NOTIFICATIONS */}
         {showNotifs && (
-          <div className="absolute top-16 right-4 w-80 bg-white border border-gray-300 rounded-xl shadow-2xl z-50">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-300">
-              <span className="text-gray-800 font-semibold text-sm">Notifications</span>
-              <button onClick={() => setShowNotifs(false)} className="text-gray-500 hover:text-gray-800">
+          <div className="absolute top-16 right-4 w-80 bg-white shadow-sm border border-slate-200 rounded-xl shadow-2xl z-50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+              <span className="text-slate-700 font-semibold text-sm">Notifications</span>
+              <button onClick={() => setShowNotifs(false)} className="text-slate-500 hover:text-slate-700">
                 <X size={14} />
               </button>
             </div>
             <div className="max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
-                <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                <div className="px-4 py-6 text-center text-slate-400 text-sm">
                   Aucune notification
                 </div>
               ) : (
                 notifications.map(n => (
-                  <div key={n.id} className={`px-4 py-3 border-b border-gray-200 ${!n.lu ? 'bg-white' : ''}`}>
+                  <div key={n.id} className={`px-4 py-3 border-b border-slate-200 ${!n.lu ? 'bg-white shadow-sm' : ''}`}>
                     <div className="flex items-start gap-3">
                       <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
                         n.type === 'CANDIDATURE' ? 'bg-amber-500' :
-                        n.type === 'VOTE' ? 'bg-emerald-500' : 'bg-blue-500'
+                        n.type === 'VOTE' ? 'bg-emerald-500' : 'bg-slate-8000'
                       }`} />
                       <div>
-                        <p className="text-gray-800 text-xs font-medium">{n.message}</p>
-                        <p className="text-gray-400 text-xs mt-0.5">{n.date}</p>
+                        <p className="text-slate-700 text-xs font-medium">{n.message}</p>
+                        <p className="text-slate-400 text-xs mt-0.5">{n.date}</p>
                       </div>
                     </div>
                   </div>
@@ -323,14 +323,14 @@ const DashboardAdmin = () => {
               { label: 'Candidatures',     value: toutesLesCandidatures.length,                                            icon: Users,      color: '#3B82F6' },
               { label: 'Résultats publiés', value: elections.filter(e => e.statut === 'RESULTATS_PUBLIES').length, icon: Trophy,     color: '#8B5CF6' },
             ].map((s, i) => (
-              <div key={i} className="card-anim bg-white border border-gray-200 rounded-xl p-4">
+              <div key={i} className="card-anim bg-white shadow-sm border border-slate-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}20` }}>
                     <s.icon size={16} style={{ color: s.color }} />
                   </div>
-                  <span className="text-2xl font-extrabold text-gray-800">{s.value}</span>
+                  <span className="text-2xl font-extrabold text-slate-700">{s.value}</span>
                 </div>
-                <p className="text-gray-500 text-xs">{s.label}</p>
+                <p className="text-slate-500 text-xs">{s.label}</p>
               </div>
             ))}
           </div>
@@ -338,30 +338,30 @@ const DashboardAdmin = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 fade3">
 
             {/* Élections */}
-            <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="lg:col-span-2 bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-800 font-bold text-sm">Gestion des Élections</h2>
+                  <h2 className="text-slate-700 font-bold text-sm">Gestion des Élections</h2>
                 </div>
-                <button onClick={chargerDonnees} className="text-gray-400 hover:text-gray-800 transition-colors">
+                <button onClick={chargerDonnees} className="text-slate-400 hover:text-slate-700 transition-colors">
                   <RefreshCw size={14} />
                 </button>
               </div>
               <div className="p-4 flex flex-col gap-3 max-h-96 overflow-y-auto">
                 {elections.length === 0 ? (
                   <div className="text-center py-10">
-                    <Vote size={32} className="text-gray-500 mx-auto mb-3" />
-                    <p className="text-gray-400 text-sm">Aucune élection. Créez-en une !</p>
+                    <Vote size={32} className="text-slate-500 mx-auto mb-3" />
+                    <p className="text-slate-400 text-sm">Aucune élection. Créez-en une !</p>
                   </div>
                 ) : elections.map(election => {
                   const s = statutConfig[election.statut] || statutConfig.PLANIFIEE
                   return (
-                    <div key={election.id} className="bg-blue-100/50 border border-gray-200 rounded-xl p-4">
+                    <div key={election.id} className="bg-slate-100/50 border border-slate-200 rounded-xl p-4">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-gray-800 font-semibold text-sm truncate mb-1">{election.titre}</h3>
-                          <p className="text-gray-400 text-xs">
+                          <h3 className="text-slate-700 font-semibold text-sm truncate mb-1">{election.titre}</h3>
+                          <p className="text-slate-400 text-xs">
                             {new Date(election.date_debut).toLocaleDateString('fr-FR')} → {new Date(election.date_fin).toLocaleDateString('fr-FR')}
                           </p>
                           {election.statut === 'ANNULEE' && election.motif_annulation && (
@@ -381,7 +381,7 @@ const DashboardAdmin = () => {
                         )}
                         {election.statut === 'EN_COURS' && (
                           <button onClick={() => cloturerElection(election.id)}
-                            className="flex items-center gap-1 px-3 py-1.5 bg-slate-500/15 text-gray-500 rounded-lg text-xs font-medium hover:bg-slate-500/25 border border-slate-500/20">
+                            className="flex items-center gap-1 px-3 py-1.5 bg-slate-500/15 text-slate-500 rounded-lg text-xs font-medium hover:bg-slate-500/25 border border-slate-500/20">
                             <Square size={10} /> Clôturer
                           </button>
                         )}
@@ -393,7 +393,7 @@ const DashboardAdmin = () => {
                         )}
                         {election.statut === 'RESULTATS_PUBLIES' && (
                           <button onClick={() => navigate('/resultats')}
-                            className="flex items-center gap-1 px-3 py-1.5 bg-blue-500/15 text-blue-400 rounded-lg text-xs font-medium hover:bg-blue-500/25 border border-blue-500/20">
+                            className="flex items-center gap-1 px-3 py-1.5 bg-slate-8000/15 text-blue-400 rounded-lg text-xs font-medium hover:bg-slate-8000/25 border border-blue-500/20">
                             <BarChart2 size={10} /> Résultats
                           </button>
                         )}
@@ -420,14 +420,14 @@ const DashboardAdmin = () => {
             <div className="flex flex-col gap-4">
 
               {/* Résumé */}
-              <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-800 font-bold text-sm">Résumé</h2>
+                  <h2 className="text-slate-700 font-bold text-sm">Résumé</h2>
                 </div>
                 <div className="flex flex-col gap-3">
                   {[
-                    { label: 'Planifiées',       value: elections.filter(e => e.statut === 'PLANIFIEE').length,         color: 'bg-blue-500' },
+                    { label: 'Planifiées',       value: elections.filter(e => e.statut === 'PLANIFIEE').length,         color: 'bg-slate-8000' },
                     { label: 'En cours',         value: elections.filter(e => e.statut === 'EN_COURS').length,          color: 'bg-emerald-500' },
                     { label: 'Clôturées',        value: elections.filter(e => e.statut === 'CLOTUREE').length,          color: 'bg-slate-400' },
                     { label: 'Publiées',         value: elections.filter(e => e.statut === 'RESULTATS_PUBLIES').length, color: 'bg-purple-500' },
@@ -436,19 +436,19 @@ const DashboardAdmin = () => {
                     <div key={i} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full ${item.color}`} />
-                        <span className="text-gray-500 text-xs">{item.label}</span>
+                        <span className="text-slate-500 text-xs">{item.label}</span>
                       </div>
-                      <span className="text-gray-800 text-xs font-bold">{item.value}</span>
+                      <span className="text-slate-700 text-xs font-bold">{item.value}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Actions rapides */}
-              <div className="bg-white border border-gray-200 rounded-xl p-5">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-800 font-bold text-sm">Actions rapides</h2>
+                  <h2 className="text-slate-700 font-bold text-sm">Actions rapides</h2>
                 </div>
                 <div className="flex flex-col gap-2">
                   {[
@@ -457,12 +457,12 @@ const DashboardAdmin = () => {
                     { label: 'Voir les résultats',   icon: Award,  action: () => navigate('/resultats') },
                   ].map((a, i) => (
                     <button key={i} onClick={a.action}
-                      className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white hover:bg-white/8 border border-gray-200 transition-all group">
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white shadow-sm hover:bg-white shadow-sm/8 border border-slate-200 transition-all group">
                       <div className="flex items-center gap-2">
                         <a.icon size={14} className="text-amber-500" />
-                        <span className="text-gray-600 text-xs">{a.label}</span>
+                        <span className="text-slate-600 text-xs">{a.label}</span>
                       </div>
-                      <ChevronRight size={12} className="text-gray-500 group-hover:text-gray-500 transition-colors" />
+                      <ChevronRight size={12} className="text-slate-500 group-hover:text-slate-500 transition-colors" />
                     </button>
                   ))}
                 </div>
@@ -472,26 +472,26 @@ const DashboardAdmin = () => {
 
           {/* Candidatures */}
           {candidatures.length > 0 && (
-            <div className="mt-6 bg-white border border-gray-200 rounded-xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-3">
+            <div className="mt-6 bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-slate-200 flex items-center gap-3">
                 <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h2 className="text-gray-800 font-bold text-sm">Candidatures en attente</h2>
-                <span className="bg-red-500 text-gray-800 text-xs px-2 py-0.5 rounded-full">{candidatures.length}</span>
+                <h2 className="text-slate-700 font-bold text-sm">Candidatures en attente</h2>
+                <span className="bg-red-500 text-slate-700 text-xs px-2 py-0.5 rounded-full">{candidatures.length}</span>
               </div>
               <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {candidatures.map(cand => (
-                  <div key={cand.id} className="bg-blue-100/50 border border-gray-200 rounded-xl p-4">
+                  <div key={cand.id} className="bg-slate-100/50 border border-slate-200 rounded-xl p-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-9 h-9 bg-amber-500/15 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Users size={15} className="text-amber-500" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-gray-800 text-sm font-medium truncate">{cand.etudiant_nom}</p>
-                        <p className="text-gray-400 text-xs">{cand.etudiant_filiere}</p>
+                        <p className="text-slate-700 text-sm font-medium truncate">{cand.etudiant_nom}</p>
+                        <p className="text-slate-400 text-xs">{cand.etudiant_filiere}</p>
                       </div>
                     </div>
                     {cand.programme && (
-                      <p className="text-gray-500 text-xs mb-3 line-clamp-2 bg-blue-100/30 p-2 rounded-lg">{cand.programme}</p>
+                      <p className="text-slate-500 text-xs mb-3 line-clamp-2 bg-slate-100/30 p-2 rounded-lg">{cand.programme}</p>
                     )}
                     <div className="flex gap-2">
                       <button onClick={() => validerCandidature(cand.id)}
@@ -514,47 +514,47 @@ const DashboardAdmin = () => {
       {/* Modal créer élection */}
       {showCreer && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-gray-800 font-bold text-lg">Créer une élection</h3>
-              <button onClick={() => setShowCreer(false)} className="text-gray-500 hover:text-gray-800"><X size={20} /></button>
+              <h3 className="text-slate-700 font-bold text-lg">Créer une élection</h3>
+              <button onClick={() => setShowCreer(false)} className="text-slate-500 hover:text-slate-700"><X size={20} /></button>
             </div>
             <form onSubmit={creerElection} className="flex flex-col gap-4">
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Titre</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Titre</label>
                 <input placeholder="Titre de l'élection" value={formElection.titre}
                   onChange={e => setFormElection({...formElection, titre: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400" required />
               </div>
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Description</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Description</label>
                 <textarea placeholder="Description (optionnel)" value={formElection.description}
                   onChange={e => setFormElection({...formElection, description: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none resize-none h-20 placeholder-gray-400" />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none resize-none h-20 placeholder-gray-400" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Date début</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Date début</label>
                   <input type="datetime-local" value={formElection.date_debut}
                     onChange={e => setFormElection({...formElection, date_debut: e.target.value})}
-                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none" required />
+                    className="w-full px-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none" required />
                 </div>
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Date fin</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Date fin</label>
                   <input type="datetime-local" value={formElection.date_fin}
                     onChange={e => setFormElection({...formElection, date_fin: e.target.value})}
-                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none" required />
+                    className="w-full px-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none" required />
                 </div>
               </div>
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Année académique</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Année académique</label>
                 <input placeholder="2025-2026" value={formElection.annee_academique}
                   onChange={e => setFormElection({...formElection, annee_academique: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400" required />
               </div>
               <div className="flex gap-3 mt-2">
                 <button type="button" onClick={() => setShowCreer(false)}
-                  className="flex-1 py-3 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium hover:bg-blue-50">
+                  className="flex-1 py-3 rounded-xl text-slate-600 bg-slate-800 border border-slate-200 text-sm font-medium hover:bg-slate-800">
                   Annuler
                 </button>
                 <button type="submit"
@@ -570,14 +570,14 @@ const DashboardAdmin = () => {
       {/* Modal annuler élection */}
       {showAnnuler && electionAnnuler && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-red-500/15 rounded-xl flex items-center justify-center">
                 <Ban size={20} className="text-red-400" />
               </div>
               <div>
-                <h3 className="text-gray-800 font-bold">Annuler l'élection</h3>
-                <p className="text-gray-500 text-xs">{electionAnnuler.titre}</p>
+                <h3 className="text-slate-700 font-bold">Annuler l'élection</h3>
+                <p className="text-slate-500 text-xs">{electionAnnuler.titre}</p>
               </div>
             </div>
             <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-4 text-red-400 text-xs">
@@ -585,14 +585,14 @@ const DashboardAdmin = () => {
             </div>
             <textarea placeholder="Motif d'annulation (obligatoire)..."
               value={motifAnnulation} onChange={e => setMotifAnnulation(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none resize-none h-24 mb-4 placeholder-gray-400" />
+              className="w-full px-4 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none resize-none h-24 mb-4 placeholder-gray-400" />
             <div className="flex gap-3">
               <button onClick={() => { setShowAnnuler(false); setMotifAnnulation(''); setElectionAnnuler(null) }}
-                className="flex-1 py-3 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium hover:bg-blue-50">
+                className="flex-1 py-3 rounded-xl text-slate-600 bg-slate-800 border border-slate-200 text-sm font-medium hover:bg-slate-800">
                 Annuler
               </button>
               <button onClick={confirmerAnnulation}
-                className="flex-1 py-3 rounded-xl bg-red-600 text-gray-800 text-sm font-bold hover:bg-red-500">
+                className="flex-1 py-3 rounded-xl bg-red-600 text-slate-700 text-sm font-bold hover:bg-red-500">
                 Confirmer
               </button>
             </div>

@@ -61,7 +61,7 @@ const MotDePasseOublie = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12"
+    <div className="min-h-screen bg-white shadow-sm flex items-center justify-center px-4 py-12"
       style={{ backgroundImage: 'radial-gradient(circle at 60% 40%, rgba(21,101,192,0.2) 0%, transparent 50%)' }}>
 
       <div className="w-full max-w-md">
@@ -71,10 +71,10 @@ const MotDePasseOublie = () => {
           <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
             <Vote size={18} className="text-slate-900" />
           </div>
-          <span className="text-gray-800 font-bold">VotingApp</span>
+          <span className="text-slate-700 font-bold">VotingApp</span>
         </Link>
 
-        <div className="bg-white border border-gray-300 rounded-2xl p-8">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-2xl p-8">
 
           {/* Étape 0 — Identifiant */}
           {etape === 0 && (
@@ -83,8 +83,8 @@ const MotDePasseOublie = () => {
                 <div className="w-14 h-14 bg-amber-500/15 rounded-2xl flex items-center justify-center mx-auto mb-3">
                   <KeyRound size={26} className="text-amber-500" />
                 </div>
-                <h2 className="text-xl font-extrabold text-gray-800 mb-1">Mot de passe oublié</h2>
-                <p className="text-gray-500 text-sm">Entrez votre matricule ou email pour recevoir un code.</p>
+                <h2 className="text-xl font-extrabold text-slate-700 mb-1">Mot de passe oublié</h2>
+                <p className="text-slate-500 text-sm">Entrez votre matricule ou email pour recevoir un code.</p>
               </div>
 
               {erreur && (
@@ -95,12 +95,12 @@ const MotDePasseOublie = () => {
 
               <form onSubmit={envoyerCode} className="flex flex-col gap-4">
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Matricule ou Email</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Matricule ou Email</label>
                   <div className="relative">
-                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input type="text" placeholder="CM-UDS-24IUT0001 ou email@..."
                       value={identifiant} onChange={e => setIdentifiant(e.target.value)}
-                      className="w-full pl-9 pr-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
+                      className="w-full pl-9 pr-4 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
                       required />
                   </div>
                 </div>
@@ -118,11 +118,11 @@ const MotDePasseOublie = () => {
           {etape === 1 && (
             <>
               <div className="text-center mb-6">
-                <div className="w-14 h-14 bg-blue-500/15 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <div className="w-14 h-14 bg-slate-8000/15 rounded-2xl flex items-center justify-center mx-auto mb-3">
                   <Mail size={26} className="text-blue-400" />
                 </div>
-                <h2 className="text-xl font-extrabold text-gray-800 mb-1">Réinitialiser</h2>
-                <p className="text-gray-500 text-sm">
+                <h2 className="text-xl font-extrabold text-slate-700 mb-1">Réinitialiser</h2>
+                <p className="text-slate-500 text-sm">
                   Code envoyé à <span className="text-amber-500 font-medium">{email}</span>
                 </p>
               </div>
@@ -135,41 +135,41 @@ const MotDePasseOublie = () => {
 
               <form onSubmit={reinitialiser} className="flex flex-col gap-4">
                 <div>
-                  <label className="text-gray-500 text-xs mb-2 block text-center">Code de vérification</label>
+                  <label className="text-slate-500 text-xs mb-2 block text-center">Code de vérification</label>
                   <div className="flex justify-center gap-2">
                     {otp.map((digit, i) => (
                       <input key={i} id={`otp-mdp-${i}`} type="text" maxLength={1} value={digit}
                         onChange={e => handleOtpChange(i, e.target.value)}
-                        className="w-11 h-12 text-center text-xl font-bold text-gray-800 bg-blue-50 border border-gray-300 rounded-xl outline-none focus:border-amber-500 transition-colors" />
+                        className="w-11 h-12 text-center text-xl font-bold text-slate-700 bg-slate-800 border border-slate-200 rounded-xl outline-none focus:border-amber-500 transition-colors" />
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Nouveau mot de passe</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Nouveau mot de passe</label>
                   <div className="relative">
-                    <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input type={showPwd ? 'text' : 'password'} placeholder="Min. 8 caractères"
                       value={nouveauMdp} onChange={e => setNouveauMdp(e.target.value)}
-                      className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
+                      className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
                       required />
                     <button type="button" onClick={() => setShowPwd(!showPwd)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                       {showPwd ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Confirmer le mot de passe</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Confirmer le mot de passe</label>
                   <div className="relative">
-                    <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input type={showPwd2 ? 'text' : 'password'} placeholder="Répétez le mot de passe"
                       value={confirmMdp} onChange={e => setConfirmMdp(e.target.value)}
-                      className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
+                      className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors"
                       required />
                     <button type="button" onClick={() => setShowPwd2(!showPwd2)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                       {showPwd2 ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
                   </div>
@@ -191,8 +191,8 @@ const MotDePasseOublie = () => {
               <div className="w-20 h-20 bg-emerald-500/15 rounded-full flex items-center justify-center">
                 <CheckCircle size={40} className="text-emerald-500" />
               </div>
-              <h2 className="text-xl font-extrabold text-gray-800">Mot de passe réinitialisé !</h2>
-              <p className="text-gray-500 text-sm">Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.</p>
+              <h2 className="text-xl font-extrabold text-slate-700">Mot de passe réinitialisé !</h2>
+              <p className="text-slate-500 text-sm">Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.</p>
               <button onClick={() => navigate('/connexion')}
                 className="w-full bg-amber-500 text-slate-900 py-3.5 rounded-xl font-bold text-sm hover:bg-amber-400 transition-all">
                 Se connecter
@@ -203,7 +203,7 @@ const MotDePasseOublie = () => {
           {etape < 2 && (
             <div className="mt-5 text-center">
               <Link to="/connexion"
-                className="flex items-center justify-center gap-2 text-gray-400 text-sm hover:text-gray-600 transition-colors">
+                className="flex items-center justify-center gap-2 text-slate-400 text-sm hover:text-slate-600 transition-colors">
                 <ArrowLeft size={14} /> Retour à la connexion
               </Link>
             </div>

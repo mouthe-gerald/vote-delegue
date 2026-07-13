@@ -35,7 +35,7 @@ const Connexion = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex relative">
+    <div className="min-h-screen bg-white shadow-sm flex relative">
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
         .fade1 { animation: fadeUp 0.6s ease 0.1s both; }
@@ -48,26 +48,26 @@ const Connexion = () => {
         @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
         .btn-submit { background: linear-gradient(90deg,#F0A500 0%,#FFD55A 40%,#F0A500 60%,#F0A500 100%); background-size:200% auto; animation: shimmer 3s linear infinite; }
       `}</style>
-      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all border border-gray-300">
+      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-800 text-slate-500 hover:text-slate-700 transition-all border border-slate-200">
         <ArrowLeft size={16} />
       </Link>
 
       {/* Panneau gauche — branding (desktop only) */}
-      <div className="hidden lg:flex flex-col justify-between w-2/5 bg-blue-50 border-r border-gray-200 p-12">
+      <div className="hidden lg:flex flex-col justify-between w-2/5 bg-slate-800 border-r border-slate-200 p-12">
         <div>
           <Link to="/" className="flex items-center gap-3 mb-16 fade1">
             <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={20} className="text-slate-900" />
             </div>
-            <span className="text-gray-800 font-bold text-lg">VotingApp</span>
+            <span className="text-slate-700 font-bold text-lg">VotingApp</span>
           </Link>
 
-          <h1 className="text-3xl font-extrabold text-gray-800 leading-tight mb-4 fade2">
+          <h1 className="text-3xl font-extrabold text-slate-700 leading-tight mb-4 fade2">
             Bienvenue sur la<br />
             <span className="text-amber-500">plateforme officielle</span><br />
             de vote
           </h1>
-          <p className="text-gray-500 text-sm leading-relaxed fade3">
+          <p className="text-slate-500 text-sm leading-relaxed fade3">
             Connectez-vous pour accéder à votre espace et participer au processus électoral sécurisé.
           </p>
         </div>
@@ -83,12 +83,12 @@ const Connexion = () => {
               <div className="w-8 h-8 bg-amber-500/15 rounded-lg flex items-center justify-center">
                 <f.icon size={15} className="text-amber-500" />
               </div>
-              <span className="text-gray-500 text-sm">{f.label}</span>
+              <span className="text-slate-500 text-sm">{f.label}</span>
             </div>
           ))}
         </div>
 
-        <p className="text-gray-500 text-xs">© 2025-2026 VotingApp</p>
+        <p className="text-slate-500 text-xs">© 2025-2026 VotingApp</p>
       </div>
 
       {/* Panneau droit — formulaire */}
@@ -101,12 +101,12 @@ const Connexion = () => {
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
-            <span className="text-gray-800 font-bold">VotingApp</span>
+            <span className="text-slate-700 font-bold">VotingApp</span>
           </Link>
 
           <div className="mb-8 fade1">
-            <h2 className="text-2xl font-extrabold text-gray-800 mb-2">Connexion</h2>
-            <p className="text-gray-500 text-sm">Entrez vos identifiants pour accéder à votre espace.</p>
+            <h2 className="text-2xl font-extrabold text-slate-700 mb-2">Connexion</h2>
+            <p className="text-slate-500 text-sm">Entrez vos identifiants pour accéder à votre espace.</p>
           </div>
 
           {erreur && (
@@ -118,15 +118,15 @@ const Connexion = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 fade2">
             <div>
-              <label className="text-gray-500 text-xs font-medium mb-2 block">Matricule ou Email</label>
+              <label className="text-slate-500 text-xs font-medium mb-2 block">Matricule ou Email</label>
               <div className="relative">
-                <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="CM-UDS-XXIUTXXXX ou Adresse email"
                   value={form.identifiant}
                   onChange={e => setForm({...form, identifiant: e.target.value})}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-gray-800 outline-none border transition-colors"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-slate-700 outline-none border transition-colors"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     borderColor: 'rgba(255,255,255,0.1)',
@@ -137,15 +137,15 @@ const Connexion = () => {
             </div>
 
             <div>
-              <label className="text-gray-500 text-xs font-medium mb-2 block">Mot de passe</label>
+              <label className="text-slate-500 text-xs font-medium mb-2 block">Mot de passe</label>
               <div className="relative">
-                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showPwd ? 'text' : 'password'}
                   placeholder="••••••••"
                   value={form.mot_de_passe}
                   onChange={e => setForm({...form, mot_de_passe: e.target.value})}
-                  className="w-full pl-11 pr-12 py-3.5 rounded-xl text-sm text-gray-800 outline-none border transition-colors"
+                  className="w-full pl-11 pr-12 py-3.5 rounded-xl text-sm text-slate-700 outline-none border transition-colors"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     borderColor: 'rgba(255,255,255,0.1)',
@@ -153,7 +153,7 @@ const Connexion = () => {
                   required
                 />
                 <button type="button" onClick={() => setShowPwd(!showPwd)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                   {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -169,16 +169,16 @@ const Connexion = () => {
           </form>
 
           <div className="flex flex-col items-center gap-3 mt-6 fade3">
-            <p className="text-gray-400 text-sm">
+            <p className="text-slate-400 text-sm">
               Pas encore de compte ?{' '}
               <Link to="/inscription" className="text-amber-500 font-semibold hover:text-amber-400">
                 S'inscrire
               </Link>
             </p>
-            <Link to="/resultats" className="text-gray-500 text-sm hover:text-gray-500 transition-colors">
+            <Link to="/resultats" className="text-slate-500 text-sm hover:text-slate-500 transition-colors">
               Voir les résultats sans connexion →
             </Link>
-            <Link to="/mot-de-passe-oublie" className="text-gray-500 text-sm hover:text-gray-500 transition-colors">
+            <Link to="/mot-de-passe-oublie" className="text-slate-500 text-sm hover:text-slate-500 transition-colors">
               Mot de passe oublié ?
             </Link>
           </div>

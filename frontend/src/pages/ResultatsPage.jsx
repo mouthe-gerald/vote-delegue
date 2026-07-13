@@ -65,12 +65,12 @@ const ResultatsPage = () => {
   const elu = resultats.find(r => r.est_elu)
 
   if (loading) return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white shadow-sm">
       <style>{`
         @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
         .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
       `}</style>
-      <div className="h-14 bg-blue-50 border-b border-gray-200 px-6 flex items-center gap-3">
+      <div className="h-14 bg-slate-800 border-b border-slate-200 px-6 flex items-center gap-3">
         <div className="skeleton h-8 w-8" />
         <div className="skeleton h-5 w-40" />
       </div>
@@ -78,7 +78,7 @@ const ResultatsPage = () => {
         <div className="flex gap-3">
           {[1,2].map(i => <div key={i} className="skeleton h-9 w-40" />)}
         </div>
-        <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
+        <div className="bg-white shadow-sm rounded-xl p-5 flex flex-col gap-4">
           <div className="skeleton h-6 w-32" />
           {[1,2,3].map(i => (
             <div key={i} className="flex items-center gap-4">
@@ -94,7 +94,7 @@ const ResultatsPage = () => {
   )
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white shadow-sm">
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         .fade1 { animation: fadeUp 0.5s ease 0.1s both; }
@@ -109,16 +109,16 @@ const ResultatsPage = () => {
       `}</style>
 
       {/* Header */}
-      <header className="bg-blue-50 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between fade1">
+      <header className="bg-slate-800 border-b border-slate-200 px-4 sm:px-6 h-14 flex items-center justify-between fade1">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all">
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-800 text-slate-500 hover:text-slate-700 transition-all">
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 bg-amber-500 rounded-full" />
             <div>
-              <h1 className="text-gray-800 font-bold text-sm">Résultats de l'Élection</h1>
+              <h1 className="text-slate-700 font-bold text-sm">Résultats de l'Élection</h1>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ const ResultatsPage = () => {
             </div>
           )}
           <button onClick={() => election && chargerResultats(election)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all">
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-800 text-slate-500 hover:text-slate-700 transition-all">
             <RefreshCw size={14} />
           </button>
           <Link to="/" className="flex items-center gap-2 bg-amber-500 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-amber-400 transition-all">
@@ -143,14 +143,14 @@ const ResultatsPage = () => {
 
         {/* Sélecteur élection */}
         {elections.length > 1 && (
-          <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-4 mb-6">
             <div className="flex gap-2 flex-wrap">
               {elections.map(e => (
                 <button key={e.id} onClick={() => chargerResultats(e)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     election?.id === e.id
                       ? 'bg-amber-500 text-slate-900'
-                      : 'bg-blue-50 text-gray-500 hover:bg-blue-50 border border-gray-300'
+                      : 'bg-slate-800 text-slate-500 hover:bg-slate-800 border border-slate-200'
                   }`}>
                   {e.titre}
                 </button>
@@ -162,15 +162,15 @@ const ResultatsPage = () => {
         {election ? (
           <>
             {/* Info élection */}
-            <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-5 mb-6">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-amber-500/15 rounded-xl flex items-center justify-center">
                     <Trophy size={24} className="text-amber-500" />
                   </div>
                   <div>
-                    <h2 className="text-gray-800 font-bold text-lg">{election.titre}</h2>
-                    <p className="text-gray-500 text-sm">{election.annee_academique}</p>
+                    <h2 className="text-slate-700 font-bold text-lg">{election.titre}</h2>
+                    <p className="text-slate-500 text-sm">{election.annee_academique}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -179,7 +179,7 @@ const ResultatsPage = () => {
                       ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20'
                       : election.statut === 'CLOTUREE'
                       ? 'bg-amber-500/15 text-amber-400 border-amber-500/20'
-                      : 'bg-blue-500/15 text-blue-400 border-blue-500/20'
+                      : 'bg-slate-8000/15 text-blue-400 border-blue-500/20'
                   }`}>
                     {election.statut === 'EN_COURS' && <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />}
                     {election.statut === 'EN_COURS' ? 'En cours — temps réel' : election.statut === 'CLOTUREE' ? 'Élection clôturée — Résultats finaux' : 'Résultats officiels'}
@@ -205,8 +205,8 @@ const ResultatsPage = () => {
                     <p className="text-amber-400 text-xs font-semibold mb-1">
                       {election.statut === 'EN_COURS' ? '🏆 EN TÊTE' : '🏆 DÉLÉGUÉ ÉLU'}
                     </p>
-                    <h3 className="text-gray-800 font-bold text-xl">{elu.candidat_nom}</h3>
-                    <p className="text-gray-500 text-sm">{elu.nb_voix} votes — {elu.pourcentage}%</p>
+                    <h3 className="text-slate-700 font-bold text-xl">{elu.candidat_nom}</h3>
+                    <p className="text-slate-500 text-sm">{elu.nb_voix} votes — {elu.pourcentage}%</p>
                   </div>
                 </div>
               </div>
@@ -214,10 +214,10 @@ const ResultatsPage = () => {
 
             {/* Graphique barres */}
             {dataGraphique.length > 0 && totalVotants > 0 && (
-              <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-5 mb-6">
                 <div className="flex items-center gap-2 mb-5">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h3 className="text-gray-800 font-bold text-sm">Résultats du scrutin</h3>
+                  <h3 className="text-slate-700 font-bold text-sm">Résultats du scrutin</h3>
                   {election.statut === 'EN_COURS' && (
                     <span className="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full ml-1">
                       Temps réel
@@ -233,10 +233,10 @@ const ResultatsPage = () => {
                       if (active && payload?.length) {
                         const d = payload[0].payload
                         return (
-                          <div className="bg-blue-100 border border-gray-300 rounded-xl p-3 shadow-xl">
-                            <p className="text-gray-800 font-bold text-sm mb-1">{d.nomComplet}</p>
+                          <div className="bg-slate-100 border border-slate-200 rounded-xl p-3 shadow-xl">
+                            <p className="text-slate-700 font-bold text-sm mb-1">{d.nomComplet}</p>
                             <p className="text-amber-400 text-xs">{d.voix} votes</p>
-                            <p className="text-gray-500 text-xs">{d.pourcentage}%</p>
+                            <p className="text-slate-500 text-xs">{d.pourcentage}%</p>
                           </div>
                         )
                       }
@@ -254,10 +254,10 @@ const ResultatsPage = () => {
 
             {/* Graphique courbe */}
             {dataGraphique.length > 0 && totalVotants > 0 && (
-              <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-5 mb-6">
                 <div className="flex items-center gap-2 mb-5">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h3 className="text-gray-800 font-bold text-sm">Évolution — Courbe comparative</h3>
+                  <h3 className="text-slate-700 font-bold text-sm">Évolution — Courbe comparative</h3>
                 </div>
                 <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={dataGraphique} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
@@ -268,8 +268,8 @@ const ResultatsPage = () => {
                       if (active && payload?.length) {
                         const d = payload[0].payload
                         return (
-                          <div className="bg-blue-100 border border-gray-300 rounded-xl p-3 shadow-xl">
-                            <p className="text-gray-800 font-bold text-sm mb-1">{d.nomComplet}</p>
+                          <div className="bg-slate-100 border border-slate-200 rounded-xl p-3 shadow-xl">
+                            <p className="text-slate-700 font-bold text-sm mb-1">{d.nomComplet}</p>
                             <p className="text-amber-400 text-xs">{d.voix} votes</p>
                             <p className="text-blue-400 text-xs">{d.pourcentage}%</p>
                           </div>
@@ -288,54 +288,54 @@ const ResultatsPage = () => {
             )}
 
             {/* Tableau */}
-            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h3 className="text-gray-800 font-bold text-sm">Tableau des résultats</h3>
+                  <h3 className="text-slate-700 font-bold text-sm">Tableau des résultats</h3>
                 </div>
-                <span className="text-gray-500 text-xs">{totalVotants} votant(s)</span>
+                <span className="text-slate-500 text-xs">{totalVotants} votant(s)</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-200">
+                    <tr className="border-b border-slate-200">
                       {['Rang', 'Candidat', 'Votes', 'Pourcentage', 'Statut'].map(h => (
-                        <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-gray-400">{h}</th>
+                        <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-slate-400">{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {resultats.length === 0 ? (
-                      <tr><td colSpan={5} className="px-5 py-10 text-center text-gray-400 text-sm">
+                      <tr><td colSpan={5} className="px-5 py-10 text-center text-slate-400 text-sm">
                         Aucun vote exprimé pour le moment.
                       </td></tr>
                     ) : resultats.map((r, i) => (
-                      <tr key={r.id} className={`border-t border-gray-200 transition-colors ${r.est_elu ? 'bg-amber-500/5' : 'hover:bg-white'}`}>
+                      <tr key={r.id} className={`border-t border-slate-200 transition-colors ${r.est_elu ? 'bg-amber-500/5' : 'hover:bg-white shadow-sm'}`}>
                         <td className="px-5 py-3.5">
                           <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                            i === 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-blue-50 text-gray-400'
+                            i === 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-slate-800 text-slate-400'
                           }`}>{i + 1}</span>
                         </td>
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0">
                               {r.candidat_photo
                                 ? <img src={r.candidat_photo} alt={r.candidat_nom} className="w-full h-full rounded-lg object-cover" />
-                                : <User size={14} className="text-gray-500" />
+                                : <User size={14} className="text-slate-500" />
                               }
                             </div>
-                            <span className="text-gray-800 text-sm font-medium">{r.candidat_nom}</span>
+                            <span className="text-slate-700 text-sm font-medium">{r.candidat_nom}</span>
                           </div>
                         </td>
-                        <td className="px-5 py-3.5 text-gray-800 font-bold text-sm">{r.nb_voix}</td>
+                        <td className="px-5 py-3.5 text-slate-700 font-bold text-sm">{r.nb_voix}</td>
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-blue-50 rounded-full h-1.5 min-w-16">
+                            <div className="flex-1 bg-slate-800 rounded-full h-1.5 min-w-16">
                               <div className="bg-amber-500 h-1.5 rounded-full bar-animated"
                                 style={{ '--bar-width': `${r.pourcentage}%` }} />
                             </div>
-                            <span className="text-gray-600 text-xs w-10">{r.pourcentage}%</span>
+                            <span className="text-slate-600 text-xs w-10">{r.pourcentage}%</span>
                           </div>
                         </td>
                         <td className="px-5 py-3.5">
@@ -343,7 +343,7 @@ const ResultatsPage = () => {
                             ? <span className="bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full text-xs font-medium">
                                 {election.statut === 'EN_COURS' ? '🏆 En tête' : '🏆 Élu'}
                               </span>
-                            : <span className="bg-blue-50 text-gray-400 border border-gray-300 px-2.5 py-1 rounded-full text-xs">
+                            : <span className="bg-slate-800 text-slate-400 border border-slate-200 px-2.5 py-1 rounded-full text-xs">
                                 Candidat
                               </span>
                           }
@@ -357,11 +357,11 @@ const ResultatsPage = () => {
           </>
         ) : (
           <div className="text-center py-20">
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Trophy size={32} className="text-gray-500" />
+            <div className="w-16 h-16 bg-white shadow-sm rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Trophy size={32} className="text-slate-500" />
             </div>
-            <h3 className="text-gray-500 font-bold text-lg mb-2">Aucun résultat disponible</h3>
-            <p className="text-gray-400 text-sm">Les résultats seront publiés après la clôture de l'élection.</p>
+            <h3 className="text-slate-500 font-bold text-lg mb-2">Aucun résultat disponible</h3>
+            <p className="text-slate-400 text-sm">Les résultats seront publiés après la clôture de l'élection.</p>
           </div>
         )}
       </div>

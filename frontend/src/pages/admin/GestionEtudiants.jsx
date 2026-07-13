@@ -68,25 +68,25 @@ const GestionEtudiants = () => {
   const nbNonInscrits = etudiants.filter(e => !e.est_inscrit).length
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white shadow-sm">
 
       {/* Header */}
-      <header className="bg-blue-50 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between">
+      <header className="bg-slate-800 border-b border-slate-200 px-4 sm:px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate('/admin/dashboard')}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all">
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-800 text-slate-500 hover:text-slate-700 transition-all">
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 bg-amber-500 rounded-full" />
-            <h1 className="text-gray-800 font-bold text-sm">Étudiants Autorisés</h1>
+            <h1 className="text-slate-700 font-bold text-sm">Étudiants Autorisés</h1>
           </div>
         </div>
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input type="text" placeholder="Rechercher..."
             value={recherche} onChange={e => setRecherche(e.target.value)}
-            className="pl-9 pr-4 py-2 bg-blue-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none placeholder-gray-400 w-48 sm:w-64 focus:border-amber-500/50 transition-colors" />
+            className="pl-9 pr-4 py-2 bg-slate-800 border border-slate-200 rounded-lg text-slate-700 text-sm outline-none placeholder-gray-400 w-48 sm:w-64 focus:border-amber-500/50 transition-colors" />
         </div>
       </header>
 
@@ -99,9 +99,9 @@ const GestionEtudiants = () => {
             { label: 'Inscrits',    value: nbInscrits,       color: '#10B981' },
             { label: 'Non inscrits', value: nbNonInscrits,   color: '#3B82F6' },
           ].map((s, i) => (
-            <div key={i} className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <div key={i} className="bg-white shadow-sm border border-slate-200 rounded-xl p-4 text-center">
               <div className="text-2xl font-extrabold mb-1" style={{ color: s.color }}>{s.value}</div>
-              <div className="text-gray-500 text-xs">{s.label}</div>
+              <div className="text-slate-500 text-xs">{s.label}</div>
             </div>
           ))}
         </div>
@@ -109,8 +109,8 @@ const GestionEtudiants = () => {
         {/* Actions */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div>
-            <h2 className="text-gray-800 font-bold text-sm">Liste des étudiants autorisés</h2>
-            <p className="text-gray-400 text-xs mt-0.5">{etudiants.length} étudiant(s) enregistré(s)</p>
+            <h2 className="text-slate-700 font-bold text-sm">Liste des étudiants autorisés</h2>
+            <p className="text-slate-400 text-xs mt-0.5">{etudiants.length} étudiant(s) enregistré(s)</p>
           </div>
           <div className="flex gap-3">
             <input type="file" accept=".xlsx,.xls" ref={fileRef} onChange={importerExcel} className="hidden" />
@@ -126,42 +126,42 @@ const GestionEtudiants = () => {
         </div>
 
         {/* Info format Excel */}
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 mb-5 text-blue-400 text-xs">
+        <div className="bg-slate-8000/10 border border-blue-500/20 rounded-xl p-3 mb-5 text-blue-400 text-xs">
           📋 Format Excel : <strong>matricule | nom | prénom | filière | niveau | année académique</strong> (ligne 1 = en-têtes)
         </div>
 
         {/* Tableau */}
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold">Matricule</th>
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold">Nom & Prénom</th>
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold hidden sm:table-cell">Filière</th>
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold hidden md:table-cell">Niveau</th>
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold">Statut</th>
-                  <th className="text-left px-5 py-3.5 text-gray-400 text-xs font-semibold">Action</th>
+                <tr className="border-b border-slate-200">
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold">Matricule</th>
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold">Nom & Prénom</th>
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold hidden sm:table-cell">Filière</th>
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold hidden md:table-cell">Niveau</th>
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold">Statut</th>
+                  <th className="text-left px-5 py-3.5 text-slate-400 text-xs font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
-                  <tr><td colSpan={6} className="text-center py-12 text-gray-400 text-sm">Chargement...</td></tr>
+                  <tr><td colSpan={6} className="text-center py-12 text-slate-400 text-sm">Chargement...</td></tr>
                 ) : filtres.length === 0 ? (
                   <tr><td colSpan={6} className="text-center py-12">
-                    <Users size={32} className="text-gray-500 mx-auto mb-2" />
-                    <p className="text-gray-400 text-sm">Aucun étudiant trouvé</p>
+                    <Users size={32} className="text-slate-500 mx-auto mb-2" />
+                    <p className="text-slate-400 text-sm">Aucun étudiant trouvé</p>
                   </td></tr>
                 ) : filtres.map(e => (
-                  <tr key={e.id} className="border-t border-gray-200 hover:bg-white transition-colors">
-                    <td className="px-5 py-3.5 text-gray-600 text-xs font-mono">{e.matricule}</td>
-                    <td className="px-5 py-3.5 text-gray-800 text-sm font-medium">{e.prenom} {e.nom}</td>
-                    <td className="px-5 py-3.5 text-gray-500 text-xs hidden sm:table-cell">{e.filiere}</td>
-                    <td className="px-5 py-3.5 text-gray-500 text-xs hidden md:table-cell">{e.niveau}</td>
+                  <tr key={e.id} className="border-t border-slate-200 hover:bg-white shadow-sm transition-colors">
+                    <td className="px-5 py-3.5 text-slate-600 text-xs font-mono">{e.matricule}</td>
+                    <td className="px-5 py-3.5 text-slate-700 text-sm font-medium">{e.prenom} {e.nom}</td>
+                    <td className="px-5 py-3.5 text-slate-500 text-xs hidden sm:table-cell">{e.filiere}</td>
+                    <td className="px-5 py-3.5 text-slate-500 text-xs hidden md:table-cell">{e.niveau}</td>
                     <td className="px-5 py-3.5">
                       {e.est_inscrit
                         ? <span className="flex items-center gap-1 text-emerald-400 text-xs"><CheckCircle size={12} /> Inscrit</span>
-                        : <span className="flex items-center gap-1 text-gray-400 text-xs"><XCircle size={12} /> Non inscrit</span>
+                        : <span className="flex items-center gap-1 text-slate-400 text-xs"><XCircle size={12} /> Non inscrit</span>
                       }
                     </td>
                     <td className="px-5 py-3.5">
@@ -181,47 +181,47 @@ const GestionEtudiants = () => {
       {/* Modal ajout */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-gray-800 font-bold">Ajouter un étudiant</h3>
-              <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-800"><X size={18} /></button>
+              <h3 className="text-slate-700 font-bold">Ajouter un étudiant</h3>
+              <button onClick={() => setShowForm(false)} className="text-slate-500 hover:text-slate-700"><X size={18} /></button>
             </div>
             <form onSubmit={ajouter} className="flex flex-col gap-4">
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Matricule</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Matricule</label>
                 <div className="relative">
-                  <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input placeholder="CM-UDS-24IUT0001" value={form.matricule}
                     onChange={e => { const v = e.target.value; if (v.startsWith('CM-UDS-')) setForm({...form, matricule: v}) }}
-                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400" required />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Prénom</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Prénom</label>
                   <div className="relative">
-                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input placeholder="Prénom" value={form.prenom}
                       onChange={e => setForm({...form, prenom: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400" required />
                   </div>
                 </div>
                 <div>
-                  <label className="text-gray-500 text-xs mb-1.5 block">Nom</label>
+                  <label className="text-slate-500 text-xs mb-1.5 block">Nom</label>
                   <div className="relative">
-                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input placeholder="Nom" value={form.nom}
                       onChange={e => setForm({...form, nom: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-800 border border-slate-200 outline-none placeholder-gray-400" required />
                   </div>
                 </div>
               </div>
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Filière</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Filière</label>
                 <div className="relative">
-                  <BookOpen size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <BookOpen size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <select value={form.filiere} onChange={e => setForm({...form, filiere: e.target.value})}
-                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-100 border border-gray-300 outline-none appearance-none" required>
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-100 border border-slate-200 outline-none appearance-none" required>
                     <option value="">Choisir une filière</option>
                       <option>Génie Informatique GI</option>
                       <option>Batiment BAT</option>
@@ -242,11 +242,11 @@ const GestionEtudiants = () => {
                 </div>
               </div>
               <div>
-                <label className="text-gray-500 text-xs mb-1.5 block">Niveau</label>
+                <label className="text-slate-500 text-xs mb-1.5 block">Niveau</label>
                 <div className="relative">
-                  <GraduationCap size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <GraduationCap size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <select value={form.niveau} onChange={e => setForm({...form, niveau: e.target.value})}
-                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-100 border border-gray-300 outline-none appearance-none" required>
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-slate-700 bg-slate-100 border border-slate-200 outline-none appearance-none" required>
                     <option value="">Choisir un niveau</option>
                       <option>Licence 1</option>
                       <option>Licence 2</option>
@@ -258,7 +258,7 @@ const GestionEtudiants = () => {
               </div>
               <div className="flex gap-3 mt-2">
                 <button type="button" onClick={() => setShowForm(false)}
-                  className="flex-1 py-3 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium">
+                  className="flex-1 py-3 rounded-xl text-slate-600 bg-slate-800 border border-slate-200 text-sm font-medium">
                   Annuler
                 </button>
                 <button type="submit"
@@ -274,9 +274,9 @@ const GestionEtudiants = () => {
       {/* Modal Confirmation Suppression */}
       {confirmDelete && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-sm p-6 relative">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-2xl w-full max-w-sm p-6 relative">
             <button onClick={() => setConfirmDelete(null)}
-              className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg text-gray-500 hover:text-gray-800 hover:bg-blue-50 transition-colors">
+              className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-800 transition-colors">
               <X size={16} />
             </button>
 
@@ -286,19 +286,19 @@ const GestionEtudiants = () => {
               </div>
 
               <div>
-                <h3 className="text-gray-800 font-bold text-base mb-2">Supprimer l'étudiant</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  Voulez-vous supprimer <span className="text-gray-800 font-semibold">{confirmDelete.prenom} {confirmDelete.nom}</span> ({confirmDelete.matricule}) de la liste des étudiants autorisés ?
+                <h3 className="text-slate-700 font-bold text-base mb-2">Supprimer l'étudiant</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Voulez-vous supprimer <span className="text-slate-700 font-semibold">{confirmDelete.prenom} {confirmDelete.nom}</span> ({confirmDelete.matricule}) de la liste des étudiants autorisés ?
                 </p>
               </div>
 
               <div className="flex gap-3 w-full mt-2">
                 <button onClick={() => setConfirmDelete(null)}
-                  className="flex-1 py-2.5 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium hover:bg-blue-50 transition-colors">
+                  className="flex-1 py-2.5 rounded-xl text-slate-600 bg-slate-800 border border-slate-200 text-sm font-medium hover:bg-slate-800 transition-colors">
                   Annuler
                 </button>
                 <button onClick={() => supprimer(confirmDelete.id)}
-                  className="flex-1 py-2.5 rounded-xl bg-red-500 text-gray-800 text-sm font-bold hover:bg-red-600 transition-colors">
+                  className="flex-1 py-2.5 rounded-xl bg-red-500 text-slate-700 text-sm font-bold hover:bg-red-600 transition-colors">
                   Supprimer
                 </button>
               </div>

@@ -59,7 +59,7 @@ const DashboardEtudiant = () => {
         @keyframes skeleton-wave { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
         .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
       `}</style>
-      <div className="hidden lg:flex flex-col w-64 bg-gray-100 border-r border-gray-200 p-4 gap-3">
+      <div className="hidden lg:flex flex-col w-64 bg-blue-50 border-r border-gray-200 p-4 gap-3">
         <div className="skeleton h-12 w-full mb-4" />
         {[1,2,3,4].map(i => <div key={i} className="skeleton h-9 w-full" />)}
       </div>
@@ -67,13 +67,13 @@ const DashboardEtudiant = () => {
         <div className="skeleton h-8 w-48 mb-6" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[1,2,3].map(i => (
-            <div key={i} className="bg-gray-50 rounded-xl p-4 flex flex-col gap-3">
+            <div key={i} className="bg-white rounded-xl p-4 flex flex-col gap-3">
               <div className="skeleton h-4 w-20" />
               <div className="skeleton h-8 w-12" />
             </div>
           ))}
         </div>
-        <div className="bg-gray-50 rounded-xl p-5 flex flex-col gap-4">
+        <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
           <div className="skeleton h-6 w-32" />
           {[1,2,3].map(i => <div key={i} className="skeleton h-12 w-full" />)}
         </div>
@@ -85,14 +85,14 @@ const DashboardEtudiant = () => {
     <div className="min-h-screen bg-white flex">
 
       {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-60 bg-gray-100 border-r border-gray-200 flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-60 bg-blue-50 border-r border-gray-200 flex-shrink-0">
         <div className="p-5 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
             <div>
-              <div className="text-gray-900 font-bold text-sm">VotingApp</div>
+              <div className="text-gray-800 font-bold text-sm">VotingApp</div>
               <div className="text-gray-400 text-xs">Espace étudiant</div>
             </div>
           </div>
@@ -105,7 +105,7 @@ const DashboardEtudiant = () => {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left transition-all ${
                 activeMenu === item.id
                   ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-gray-500 hover:text-gray-800 hover:bg-blue-50'
               }`}>
               <item.icon size={15} />
               {item.label}
@@ -128,7 +128,7 @@ const DashboardEtudiant = () => {
               {user?.prenom?.[0]}{user?.nom?.[0]}
             </div>
             <div className="min-w-0">
-              <div className="text-gray-900 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
+              <div className="text-gray-800 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
               <div className="text-gray-400 text-xs truncate">{user?.matricule}</div>
             </div>
           </div>
@@ -143,13 +143,13 @@ const DashboardEtudiant = () => {
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-64 bg-gray-100 border-r border-gray-200 flex flex-col z-10">
+          <aside className="relative w-64 bg-blue-50 border-r border-gray-200 flex flex-col z-10">
             <div className="p-5 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
                   <Vote size={18} className="text-slate-900" />
                 </div>
-                <span className="text-gray-900 font-bold text-sm">VotingApp</span>
+                <span className="text-gray-800 font-bold text-sm">VotingApp</span>
               </div>
               <button onClick={() => setSidebarOpen(false)} className="text-gray-500"><X size={18} /></button>
             </div>
@@ -158,7 +158,7 @@ const DashboardEtudiant = () => {
                 <button key={item.id}
                   onClick={() => { setActiveMenu(item.id); item.action && item.action(); setSidebarOpen(false) }}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm w-full text-left transition-all ${
-                    activeMenu === item.id ? 'bg-amber-500/15 text-amber-400' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                    activeMenu === item.id ? 'bg-amber-500/15 text-amber-400' : 'text-gray-500 hover:text-gray-800 hover:bg-blue-50'
                   }`}>
                   <item.icon size={15} /> {item.label}
                 </button>
@@ -184,24 +184,24 @@ const DashboardEtudiant = () => {
       <div className="flex-1 flex flex-col min-w-0">
 
         {/* Topbar */}
-        <header className="bg-gray-100 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
+        <header className="bg-blue-50 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button className="lg:hidden text-gray-500 hover:text-gray-900" onClick={() => setSidebarOpen(true)}>
+            <button className="lg:hidden text-gray-500 hover:text-gray-800" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} />
             </button>
-            <h1 className="text-gray-900 font-bold text-sm">
+            <h1 className="text-gray-800 font-bold text-sm">
               {menuItems.find(m => m.id === activeMenu)?.label || 'Tableau de bord'}
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-gray-500 hover:text-gray-900">
+            <button className="relative p-2 text-gray-500 hover:text-gray-800">
               <Bell size={16} />
             </button>
-            <div className="hidden sm:flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1.5">
+            <div className="hidden sm:flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-1.5">
               <div className="w-6 h-6 bg-amber-500/20 rounded-md flex items-center justify-center text-amber-500 text-xs font-bold">
                 {user?.prenom?.[0]}
               </div>
-              <span className="text-gray-900 text-xs font-medium">{user?.prenom}</span>
+              <span className="text-gray-800 text-xs font-medium">{user?.prenom}</span>
             </div>
           </div>
         </header>
@@ -233,14 +233,14 @@ const DashboardEtudiant = () => {
               { icon: Clock,  label: 'Élection',    value: elections.find(e => e.statut === 'EN_COURS') ? 'En cours' : elections.find(e => e.statut === 'PLANIFIEE') ? 'Planifiée' : 'Aucune', color: '#10B981' },
               { icon: Shield, label: 'Sécurité',    value: 'Blockchain ✓', color: '#3B82F6' },
             ].map((s, i) => (
-              <div key={i} className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <div key={i} className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${s.color}20` }}>
                     <s.icon size={16} style={{ color: s.color }} />
                   </div>
                   <div>
                     <p className="text-gray-500 text-xs">{s.label}</p>
-                    <p className="text-gray-900 font-bold text-sm">{s.value}</p>
+                    <p className="text-gray-800 font-bold text-sm">{s.value}</p>
                   </div>
                 </div>
               </div>
@@ -250,10 +250,10 @@ const DashboardEtudiant = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
             {/* Profil */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-2">
                 <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h3 className="text-gray-900 font-bold text-sm">Mon Profil</h3>
+                <h3 className="text-gray-800 font-bold text-sm">Mon Profil</h3>
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-4 mb-5">
@@ -261,7 +261,7 @@ const DashboardEtudiant = () => {
                     <span className="text-amber-500 font-bold text-xl">{user?.prenom?.[0]}{user?.nom?.[0]}</span>
                   </div>
                   <div>
-                    <p className="text-gray-900 font-bold">{user?.prenom} {user?.nom}</p>
+                    <p className="text-gray-800 font-bold">{user?.prenom} {user?.nom}</p>
                     <p className="text-gray-500 text-xs">{profil?.filiere || '—'}</p>
                   </div>
                 </div>
@@ -273,11 +273,11 @@ const DashboardEtudiant = () => {
                     { icon: Mail,          label: 'Email',     value: user?.email },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 py-2 border-b border-gray-200 last:border-0">
-                      <div className="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
                         <item.icon size={12} className="text-gray-500" />
                       </div>
                       <span className="text-gray-500 text-xs w-20 flex-shrink-0">{item.label}</span>
-                      <span className="text-gray-900 text-xs font-medium truncate">{item.value || '—'}</span>
+                      <span className="text-gray-800 text-xs font-medium truncate">{item.value || '—'}</span>
                     </div>
                   ))}
                 </div>
@@ -285,10 +285,10 @@ const DashboardEtudiant = () => {
             </div>
 
             {/* Vote */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-2">
                 <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h3 className="text-gray-900 font-bold text-sm">Action de Vote</h3>
+                <h3 className="text-gray-800 font-bold text-sm">Action de Vote</h3>
               </div>
               <div className="p-5">
                 {droitVote ? (
@@ -312,7 +312,7 @@ const DashboardEtudiant = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center mb-3">
+                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
                       <Calendar size={22} className="text-gray-400" />
                     </div>
                     <p className="text-gray-500 text-sm">Aucune élection en cours</p>
@@ -320,7 +320,7 @@ const DashboardEtudiant = () => {
                   </div>
                 )}
                 {profil?.a_vote && profil?.vote_tx_hash && (
-                  <div className="mt-4 p-3 bg-gray-200/50 rounded-xl border border-gray-200 hover:border-amber-500/30 transition-colors">
+                  <div className="mt-4 p-3 bg-blue-100/50 rounded-xl border border-gray-200 hover:border-amber-500/30 transition-colors">
                     <div className="flex items-center justify-between mb-1">
                       <p className="text-gray-400 text-xs">Hash Blockchain</p>
                       <a href={`https://sepolia.etherscan.io/tx/${profil.vote_tx_hash}`}

@@ -48,21 +48,21 @@ const Connexion = () => {
         @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
         .btn-submit { background: linear-gradient(90deg,#F0A500 0%,#FFD55A 40%,#F0A500 60%,#F0A500 100%); background-size:200% auto; animation: shimmer 3s linear infinite; }
       `}</style>
-      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-all border border-gray-300">
+      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all border border-gray-300">
         <ArrowLeft size={16} />
       </Link>
 
       {/* Panneau gauche — branding (desktop only) */}
-      <div className="hidden lg:flex flex-col justify-between w-2/5 bg-gray-100 border-r border-gray-200 p-12">
+      <div className="hidden lg:flex flex-col justify-between w-2/5 bg-blue-50 border-r border-gray-200 p-12">
         <div>
           <Link to="/" className="flex items-center gap-3 mb-16 fade1">
             <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={20} className="text-slate-900" />
             </div>
-            <span className="text-gray-900 font-bold text-lg">VotingApp</span>
+            <span className="text-gray-800 font-bold text-lg">VotingApp</span>
           </Link>
 
-          <h1 className="text-3xl font-extrabold text-gray-900 leading-tight mb-4 fade2">
+          <h1 className="text-3xl font-extrabold text-gray-800 leading-tight mb-4 fade2">
             Bienvenue sur la<br />
             <span className="text-amber-500">plateforme officielle</span><br />
             de vote
@@ -101,11 +101,11 @@ const Connexion = () => {
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
-            <span className="text-gray-900 font-bold">VotingApp</span>
+            <span className="text-gray-800 font-bold">VotingApp</span>
           </Link>
 
           <div className="mb-8 fade1">
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-2">Connexion</h2>
+            <h2 className="text-2xl font-extrabold text-gray-800 mb-2">Connexion</h2>
             <p className="text-gray-500 text-sm">Entrez vos identifiants pour accéder à votre espace.</p>
           </div>
 
@@ -126,7 +126,7 @@ const Connexion = () => {
                   placeholder="CM-UDS-XXIUTXXXX ou Adresse email"
                   value={form.identifiant}
                   onChange={e => setForm({...form, identifiant: e.target.value})}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-gray-900 outline-none border transition-colors"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm text-gray-800 outline-none border transition-colors"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     borderColor: 'rgba(255,255,255,0.1)',
@@ -145,7 +145,7 @@ const Connexion = () => {
                   placeholder="••••••••"
                   value={form.mot_de_passe}
                   onChange={e => setForm({...form, mot_de_passe: e.target.value})}
-                  className="w-full pl-11 pr-12 py-3.5 rounded-xl text-sm text-gray-900 outline-none border transition-colors"
+                  className="w-full pl-11 pr-12 py-3.5 rounded-xl text-sm text-gray-800 outline-none border transition-colors"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     borderColor: 'rgba(255,255,255,0.1)',

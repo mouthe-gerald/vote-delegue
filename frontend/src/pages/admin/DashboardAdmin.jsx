@@ -120,7 +120,7 @@ const DashboardAdmin = () => {
         .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size:200% 100%; animation: skeleton-wave 1.5s ease-in-out infinite; border-radius:8px; }
       `}</style>
       {/* Sidebar skeleton */}
-      <div className="hidden lg:flex flex-col w-64 bg-gray-100 border-r border-gray-200 p-4 gap-3">
+      <div className="hidden lg:flex flex-col w-64 bg-blue-50 border-r border-gray-200 p-4 gap-3">
         <div className="skeleton h-12 w-full mb-4" />
         {[1,2,3,4,5].map(i => <div key={i} className="skeleton h-9 w-full" />)}
       </div>
@@ -131,7 +131,7 @@ const DashboardAdmin = () => {
         {/* Stats cards skeleton */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[1,2,3,4].map(i => (
-            <div key={i} className="bg-gray-50 rounded-xl p-4 flex flex-col gap-3">
+            <div key={i} className="bg-white rounded-xl p-4 flex flex-col gap-3">
               <div className="skeleton h-4 w-20" />
               <div className="skeleton h-8 w-12" />
               <div className="skeleton h-3 w-16" />
@@ -140,12 +140,12 @@ const DashboardAdmin = () => {
         </div>
         {/* Section principale skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-gray-50 rounded-xl p-5 flex flex-col gap-4">
+          <div className="lg:col-span-2 bg-white rounded-xl p-5 flex flex-col gap-4">
             <div className="skeleton h-6 w-32" />
             {[1,2,3].map(i => <div key={i} className="skeleton h-16 w-full" />)}
           </div>
           <div className="flex flex-col gap-6">
-            <div className="bg-gray-50 rounded-xl p-5 flex flex-col gap-3">
+            <div className="bg-white rounded-xl p-5 flex flex-col gap-3">
               <div className="skeleton h-6 w-24" />
               {[1,2,3].map(i => <div key={i} className="skeleton h-10 w-full" />)}
             </div>
@@ -159,14 +159,14 @@ const DashboardAdmin = () => {
     <div className="min-h-screen bg-white flex">
 
       {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-64 bg-gray-100 border-r border-gray-200">
+      <aside className="hidden lg:flex flex-col w-64 bg-blue-50 border-r border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Vote size={18} className="text-slate-900" />
             </div>
             <div>
-              <div className="text-gray-900 font-bold text-sm">VotingApp</div>
+              <div className="text-gray-800 font-bold text-sm">VotingApp</div>
               <div className="text-gray-400 text-xs">Administration</div>
             </div>
           </div>
@@ -175,7 +175,7 @@ const DashboardAdmin = () => {
         <nav className="flex-1 p-4 flex flex-col gap-1">
           {navLinks.map((l, i) => (
             <button key={i} onClick={l.action}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all text-sm w-full text-left">
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-blue-50 transition-all text-sm w-full text-left">
               <l.icon size={16} />
               {l.label}
             </button>
@@ -188,7 +188,7 @@ const DashboardAdmin = () => {
               {user?.prenom?.[0]}{user?.nom?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-gray-900 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
+              <div className="text-gray-800 text-xs font-medium truncate">{user?.prenom} {user?.nom}</div>
               <div className="text-gray-400 text-xs">Administrateur</div>
             </div>
           </div>
@@ -203,13 +203,13 @@ const DashboardAdmin = () => {
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-72 bg-gray-100 border-r border-gray-200 flex flex-col z-10">
+          <aside className="relative w-72 bg-blue-50 border-r border-gray-200 flex flex-col z-10">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
                   <Vote size={18} className="text-slate-900" />
                 </div>
-                <span className="text-gray-900 font-bold">VotingApp</span>
+                <span className="text-gray-800 font-bold">VotingApp</span>
               </div>
               <button onClick={() => setSidebarOpen(false)} className="text-gray-500">
                 <X size={20} />
@@ -218,7 +218,7 @@ const DashboardAdmin = () => {
             <nav className="flex-1 p-4 flex flex-col gap-1">
               {navLinks.map((l, i) => (
                 <button key={i} onClick={l.action}
-                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all text-sm w-full text-left">
+                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-blue-50 transition-all text-sm w-full text-left">
                   <l.icon size={16} /> {l.label}
                 </button>
               ))}
@@ -237,23 +237,23 @@ const DashboardAdmin = () => {
       <div className="flex-1 flex flex-col min-w-0">
 
         {/* Topbar */}
-        <header className="bg-gray-100 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
+        <header className="bg-blue-50 border-b border-gray-200 px-4 sm:px-6 h-14 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button className="lg:hidden text-gray-500 hover:text-gray-900" onClick={() => setSidebarOpen(true)}>
+            <button className="lg:hidden text-gray-500 hover:text-gray-800" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} />
             </button>
             <div>
-              <h1 className="text-gray-900 font-bold text-sm">Tableau de bord</h1>
+              <h1 className="text-gray-800 font-bold text-sm">Tableau de bord</h1>
               <p className="text-gray-400 text-xs hidden sm:block">
                 {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-gray-500 hover:text-gray-900" onClick={() => { setShowNotifs(!showNotifs); if (!showNotifs) marquerLues() }}>
+            <button className="relative p-2 text-gray-500 hover:text-gray-800" onClick={() => { setShowNotifs(!showNotifs); if (!showNotifs) marquerLues() }}>
               <Bell size={18} />
               {candidatures.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-gray-900 text-xs flex items-center justify-center">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-gray-800 text-xs flex items-center justify-center">
                   {candidatures.length}
                 </span>
               )}
@@ -266,10 +266,10 @@ const DashboardAdmin = () => {
         </header>
         {/* PANNEAU NOTIFICATIONS */}
         {showNotifs && (
-          <div className="absolute top-16 right-4 w-80 bg-gray-50 border border-gray-300 rounded-xl shadow-2xl z-50">
+          <div className="absolute top-16 right-4 w-80 bg-white border border-gray-300 rounded-xl shadow-2xl z-50">
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-300">
-              <span className="text-gray-900 font-semibold text-sm">Notifications</span>
-              <button onClick={() => setShowNotifs(false)} className="text-gray-500 hover:text-gray-900">
+              <span className="text-gray-800 font-semibold text-sm">Notifications</span>
+              <button onClick={() => setShowNotifs(false)} className="text-gray-500 hover:text-gray-800">
                 <X size={14} />
               </button>
             </div>
@@ -280,14 +280,14 @@ const DashboardAdmin = () => {
                 </div>
               ) : (
                 notifications.map(n => (
-                  <div key={n.id} className={`px-4 py-3 border-b border-gray-200 ${!n.lu ? 'bg-gray-50' : ''}`}>
+                  <div key={n.id} className={`px-4 py-3 border-b border-gray-200 ${!n.lu ? 'bg-white' : ''}`}>
                     <div className="flex items-start gap-3">
                       <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
                         n.type === 'CANDIDATURE' ? 'bg-amber-500' :
                         n.type === 'VOTE' ? 'bg-emerald-500' : 'bg-blue-500'
                       }`} />
                       <div>
-                        <p className="text-gray-900 text-xs font-medium">{n.message}</p>
+                        <p className="text-gray-800 text-xs font-medium">{n.message}</p>
                         <p className="text-gray-400 text-xs mt-0.5">{n.date}</p>
                       </div>
                     </div>
@@ -323,12 +323,12 @@ const DashboardAdmin = () => {
               { label: 'Candidatures',     value: toutesLesCandidatures.length,                                            icon: Users,      color: '#3B82F6' },
               { label: 'Résultats publiés', value: elections.filter(e => e.statut === 'RESULTATS_PUBLIES').length, icon: Trophy,     color: '#8B5CF6' },
             ].map((s, i) => (
-              <div key={i} className="card-anim bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <div key={i} className="card-anim bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${s.color}20` }}>
                     <s.icon size={16} style={{ color: s.color }} />
                   </div>
-                  <span className="text-2xl font-extrabold text-gray-900">{s.value}</span>
+                  <span className="text-2xl font-extrabold text-gray-800">{s.value}</span>
                 </div>
                 <p className="text-gray-500 text-xs">{s.label}</p>
               </div>
@@ -338,13 +338,13 @@ const DashboardAdmin = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 fade3">
 
             {/* Élections */}
-            <div className="lg:col-span-2 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-900 font-bold text-sm">Gestion des Élections</h2>
+                  <h2 className="text-gray-800 font-bold text-sm">Gestion des Élections</h2>
                 </div>
-                <button onClick={chargerDonnees} className="text-gray-400 hover:text-gray-900 transition-colors">
+                <button onClick={chargerDonnees} className="text-gray-400 hover:text-gray-800 transition-colors">
                   <RefreshCw size={14} />
                 </button>
               </div>
@@ -357,10 +357,10 @@ const DashboardAdmin = () => {
                 ) : elections.map(election => {
                   const s = statutConfig[election.statut] || statutConfig.PLANIFIEE
                   return (
-                    <div key={election.id} className="bg-gray-200/50 border border-gray-200 rounded-xl p-4">
+                    <div key={election.id} className="bg-blue-100/50 border border-gray-200 rounded-xl p-4">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-gray-900 font-semibold text-sm truncate mb-1">{election.titre}</h3>
+                          <h3 className="text-gray-800 font-semibold text-sm truncate mb-1">{election.titre}</h3>
                           <p className="text-gray-400 text-xs">
                             {new Date(election.date_debut).toLocaleDateString('fr-FR')} → {new Date(election.date_fin).toLocaleDateString('fr-FR')}
                           </p>
@@ -420,10 +420,10 @@ const DashboardAdmin = () => {
             <div className="flex flex-col gap-4">
 
               {/* Résumé */}
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+              <div className="bg-white border border-gray-200 rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-900 font-bold text-sm">Résumé</h2>
+                  <h2 className="text-gray-800 font-bold text-sm">Résumé</h2>
                 </div>
                 <div className="flex flex-col gap-3">
                   {[
@@ -438,17 +438,17 @@ const DashboardAdmin = () => {
                         <div className={`w-2 h-2 rounded-full ${item.color}`} />
                         <span className="text-gray-500 text-xs">{item.label}</span>
                       </div>
-                      <span className="text-gray-900 text-xs font-bold">{item.value}</span>
+                      <span className="text-gray-800 text-xs font-bold">{item.value}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Actions rapides */}
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+              <div className="bg-white border border-gray-200 rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                  <h2 className="text-gray-900 font-bold text-sm">Actions rapides</h2>
+                  <h2 className="text-gray-800 font-bold text-sm">Actions rapides</h2>
                 </div>
                 <div className="flex flex-col gap-2">
                   {[
@@ -457,7 +457,7 @@ const DashboardAdmin = () => {
                     { label: 'Voir les résultats',   icon: Award,  action: () => navigate('/resultats') },
                   ].map((a, i) => (
                     <button key={i} onClick={a.action}
-                      className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-gray-50 hover:bg-white/8 border border-gray-200 transition-all group">
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white hover:bg-white/8 border border-gray-200 transition-all group">
                       <div className="flex items-center gap-2">
                         <a.icon size={14} className="text-amber-500" />
                         <span className="text-gray-600 text-xs">{a.label}</span>
@@ -472,26 +472,26 @@ const DashboardAdmin = () => {
 
           {/* Candidatures */}
           {candidatures.length > 0 && (
-            <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <div className="mt-6 bg-white border border-gray-200 rounded-xl overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-3">
                 <div className="w-1 h-5 bg-amber-500 rounded-full" />
-                <h2 className="text-gray-900 font-bold text-sm">Candidatures en attente</h2>
-                <span className="bg-red-500 text-gray-900 text-xs px-2 py-0.5 rounded-full">{candidatures.length}</span>
+                <h2 className="text-gray-800 font-bold text-sm">Candidatures en attente</h2>
+                <span className="bg-red-500 text-gray-800 text-xs px-2 py-0.5 rounded-full">{candidatures.length}</span>
               </div>
               <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {candidatures.map(cand => (
-                  <div key={cand.id} className="bg-gray-200/50 border border-gray-200 rounded-xl p-4">
+                  <div key={cand.id} className="bg-blue-100/50 border border-gray-200 rounded-xl p-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-9 h-9 bg-amber-500/15 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Users size={15} className="text-amber-500" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-gray-900 text-sm font-medium truncate">{cand.etudiant_nom}</p>
+                        <p className="text-gray-800 text-sm font-medium truncate">{cand.etudiant_nom}</p>
                         <p className="text-gray-400 text-xs">{cand.etudiant_filiere}</p>
                       </div>
                     </div>
                     {cand.programme && (
-                      <p className="text-gray-500 text-xs mb-3 line-clamp-2 bg-gray-300/30 p-2 rounded-lg">{cand.programme}</p>
+                      <p className="text-gray-500 text-xs mb-3 line-clamp-2 bg-blue-100/30 p-2 rounded-lg">{cand.programme}</p>
                     )}
                     <div className="flex gap-2">
                       <button onClick={() => validerCandidature(cand.id)}
@@ -514,47 +514,47 @@ const DashboardAdmin = () => {
       {/* Modal créer élection */}
       {showCreer && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-gray-900 font-bold text-lg">Créer une élection</h3>
-              <button onClick={() => setShowCreer(false)} className="text-gray-500 hover:text-gray-900"><X size={20} /></button>
+              <h3 className="text-gray-800 font-bold text-lg">Créer une élection</h3>
+              <button onClick={() => setShowCreer(false)} className="text-gray-500 hover:text-gray-800"><X size={20} /></button>
             </div>
             <form onSubmit={creerElection} className="flex flex-col gap-4">
               <div>
                 <label className="text-gray-500 text-xs mb-1.5 block">Titre</label>
                 <input placeholder="Titre de l'élection" value={formElection.titre}
                   onChange={e => setFormElection({...formElection, titre: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none placeholder-gray-400" required />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
               </div>
               <div>
                 <label className="text-gray-500 text-xs mb-1.5 block">Description</label>
                 <textarea placeholder="Description (optionnel)" value={formElection.description}
                   onChange={e => setFormElection({...formElection, description: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none resize-none h-20 placeholder-gray-400" />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none resize-none h-20 placeholder-gray-400" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-gray-500 text-xs mb-1.5 block">Date début</label>
                   <input type="datetime-local" value={formElection.date_debut}
                     onChange={e => setFormElection({...formElection, date_debut: e.target.value})}
-                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none" required />
+                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none" required />
                 </div>
                 <div>
                   <label className="text-gray-500 text-xs mb-1.5 block">Date fin</label>
                   <input type="datetime-local" value={formElection.date_fin}
                     onChange={e => setFormElection({...formElection, date_fin: e.target.value})}
-                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none" required />
+                    className="w-full px-3 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none" required />
                 </div>
               </div>
               <div>
                 <label className="text-gray-500 text-xs mb-1.5 block">Année académique</label>
                 <input placeholder="2025-2026" value={formElection.annee_academique}
                   onChange={e => setFormElection({...formElection, annee_academique: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none placeholder-gray-400" required />
+                  className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none placeholder-gray-400" required />
               </div>
               <div className="flex gap-3 mt-2">
                 <button type="button" onClick={() => setShowCreer(false)}
-                  className="flex-1 py-3 rounded-xl text-gray-600 bg-gray-100 border border-gray-300 text-sm font-medium hover:bg-gray-100">
+                  className="flex-1 py-3 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium hover:bg-blue-50">
                   Annuler
                 </button>
                 <button type="submit"
@@ -570,13 +570,13 @@ const DashboardAdmin = () => {
       {/* Modal annuler élection */}
       {showAnnuler && electionAnnuler && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-md p-6">
+          <div className="bg-white border border-gray-300 rounded-2xl w-full max-w-md p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-red-500/15 rounded-xl flex items-center justify-center">
                 <Ban size={20} className="text-red-400" />
               </div>
               <div>
-                <h3 className="text-gray-900 font-bold">Annuler l'élection</h3>
+                <h3 className="text-gray-800 font-bold">Annuler l'élection</h3>
                 <p className="text-gray-500 text-xs">{electionAnnuler.titre}</p>
               </div>
             </div>
@@ -585,14 +585,14 @@ const DashboardAdmin = () => {
             </div>
             <textarea placeholder="Motif d'annulation (obligatoire)..."
               value={motifAnnulation} onChange={e => setMotifAnnulation(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl text-sm text-gray-900 bg-gray-100 border border-gray-300 outline-none resize-none h-24 mb-4 placeholder-gray-400" />
+              className="w-full px-4 py-3 rounded-xl text-sm text-gray-800 bg-blue-50 border border-gray-300 outline-none resize-none h-24 mb-4 placeholder-gray-400" />
             <div className="flex gap-3">
               <button onClick={() => { setShowAnnuler(false); setMotifAnnulation(''); setElectionAnnuler(null) }}
-                className="flex-1 py-3 rounded-xl text-gray-600 bg-gray-100 border border-gray-300 text-sm font-medium hover:bg-gray-100">
+                className="flex-1 py-3 rounded-xl text-gray-600 bg-blue-50 border border-gray-300 text-sm font-medium hover:bg-blue-50">
                 Annuler
               </button>
               <button onClick={confirmerAnnulation}
-                className="flex-1 py-3 rounded-xl bg-red-600 text-gray-900 text-sm font-bold hover:bg-red-500">
+                className="flex-1 py-3 rounded-xl bg-red-600 text-gray-800 text-sm font-bold hover:bg-red-500">
                 Confirmer
               </button>
             </div>

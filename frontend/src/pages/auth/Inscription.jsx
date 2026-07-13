@@ -180,7 +180,7 @@ const Inscription = () => {
         .step-active { animation: stepPulse 2s ease-in-out infinite; }
       `}</style>
 
-      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-all border border-gray-300">
+      <Link to="/" className="absolute top-5 left-5 z-10 w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 hover:bg-blue-50 text-gray-500 hover:text-gray-800 transition-all border border-gray-300">
         <ArrowLeft size={16} />
       </Link>
 
@@ -190,13 +190,13 @@ const Inscription = () => {
           <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
             <Vote size={18} className="text-slate-900" />
           </div>
-          <span className="text-gray-900 font-bold text-base">VotingApp</span>
+          <span className="text-gray-800 font-bold text-base">VotingApp</span>
         </Link>
 
-        <div className="bg-gray-50 border border-gray-300 rounded-2xl p-8">
+        <div className="bg-white border border-gray-300 rounded-2xl p-8">
 
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-1 fade1">Créer un compte</h2>
+            <h2 className="text-2xl font-extrabold text-gray-800 mb-1 fade1">Créer un compte</h2>
             <p className="text-gray-500 text-sm">Plateforme de Vote en Ligne</p>
           </div>
 
@@ -207,12 +207,12 @@ const Inscription = () => {
                 <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all ${
                   i < etape ? 'bg-amber-500 text-slate-900' :
                   i === etape ? 'bg-amber-500 text-slate-900' :
-                  'bg-gray-100 text-gray-400'
+                  'bg-blue-50 text-gray-400'
                 }`}>
                   {i < etape ? <CheckCircle size={14} /> : i + 1}
                 </div>
                 {i < ETAPES.length - 1 && (
-                  <div className={`w-12 h-0.5 mx-1 transition-all ${i < etape ? 'bg-amber-500' : 'bg-gray-100'}`} />
+                  <div className={`w-12 h-0.5 mx-1 transition-all ${i < etape ? 'bg-amber-500' : 'bg-blue-50'}`} />
                 )}
               </div>
             ))}
@@ -234,7 +234,7 @@ const Inscription = () => {
                     <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input placeholder="Prénom" value={form.prenom}
                       onChange={e => setForm({...form, prenom: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                   </div>
                 </div>
                 <div>
@@ -243,7 +243,7 @@ const Inscription = () => {
                     <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input placeholder="Nom" value={form.nom}
                       onChange={e => setForm({...form, nom: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                   </div>
                 </div>
               </div>
@@ -254,7 +254,7 @@ const Inscription = () => {
                   <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input placeholder="CM-UDS-24IUT0001" value={form.matricule}
                     onChange={e => { const v = e.target.value; if (v.startsWith('CM-UDS-')) setForm({...form, matricule: v}) }}
-                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                 </div>
               </div>
 
@@ -264,7 +264,7 @@ const Inscription = () => {
                   <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input type="email" placeholder="votre@email.com" value={form.email}
                     onChange={e => setForm({...form, email: e.target.value})}
-                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                    className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                 </div>
               </div>
 
@@ -274,7 +274,7 @@ const Inscription = () => {
                   <div className="relative">
                     <BookOpen size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <select value={form.filiere} onChange={e => setForm({...form, filiere: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-200 appearance-none" required>
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-100 appearance-none" required>
                       <option value="">Filière</option>
                       <option>Génie Informatique GI</option>
                       <option>Batiment BAT</option>
@@ -299,7 +299,7 @@ const Inscription = () => {
                   <div className="relative">
                     <GraduationCap size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <select value={form.niveau} onChange={e => setForm({...form, niveau: e.target.value})}
-                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-200 appearance-none" required>
+                      className="w-full pl-9 pr-3 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-100 appearance-none" required>
                       <option value="">Niveau</option>
                       <option>Licence 1</option>
                       <option>Licence 2</option>
@@ -317,7 +317,7 @@ const Inscription = () => {
                   <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input type={showPwd ? 'text' : 'password'} placeholder="Min. 8 caractères"
                     value={form.mot_de_passe} onChange={e => setForm({...form, mot_de_passe: e.target.value})}
-                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                   <button type="button" onClick={() => setShowPwd(!showPwd)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                     {showPwd ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -345,7 +345,7 @@ const Inscription = () => {
                   <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input type={showPwd2 ? 'text' : 'password'} placeholder="Répétez le mot de passe"
                     value={form.mot_de_passe_confirm} onChange={e => setForm({...form, mot_de_passe_confirm: e.target.value})}
-                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-900 outline-none border border-gray-300 bg-gray-100 placeholder-gray-400" required />
+                    className="w-full pl-9 pr-10 py-3 rounded-xl text-sm text-gray-800 outline-none border border-gray-300 bg-blue-50 placeholder-gray-400" required />
                   <button type="button" onClick={() => setShowPwd2(!showPwd2)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                     {showPwd2 ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -369,7 +369,7 @@ const Inscription = () => {
                 <Mail size={28} className="text-amber-500" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">Vérifiez votre email</h3>
+                <h3 className="text-lg font-bold text-gray-800 mb-1">Vérifiez votre email</h3>
                 <p className="text-gray-500 text-sm">
                   Code envoyé à <span className="text-amber-500 font-medium">{email}</span>
                 </p>
@@ -378,7 +378,7 @@ const Inscription = () => {
                 {otp.map((digit, i) => (
                   <input key={i} id={`otp-${i}`} type="text" maxLength={1} value={digit}
                     onChange={e => handleOtpChange(i, e.target.value)}
-                    className="w-11 h-12 text-center text-xl font-bold text-gray-900 bg-gray-100 border border-gray-300 rounded-xl outline-none focus:border-amber-500 transition-colors" />
+                    className="w-11 h-12 text-center text-xl font-bold text-gray-800 bg-blue-50 border border-gray-300 rounded-xl outline-none focus:border-amber-500 transition-colors" />
                 ))}
               </div>
               <button onClick={handleFinaliserInscription} disabled={loading}
@@ -392,7 +392,7 @@ const Inscription = () => {
                   Renvoyer le code
                 </button>
                 <button onClick={() => { setEtape(0); setErreur('') }}
-                  className="text-gray-400 text-sm hover:text-gray-900 transition-colors flex items-center gap-1">
+                  className="text-gray-400 text-sm hover:text-gray-800 transition-colors flex items-center gap-1">
                   <ArrowLeft size={14} /> Retour
                 </button>
               </div>
@@ -411,7 +411,7 @@ const Inscription = () => {
                 }
               </div>
               <div className="text-center">
-                <h3 className="text-lg font-bold text-gray-900 mb-1">
+                <h3 className="text-lg font-bold text-gray-800 mb-1">
                   {empreinteOk ? 'Inscription complète !' : 'Dernière étape'}
                 </h3>
                 <p className="text-gray-500 text-sm">
@@ -434,7 +434,7 @@ const Inscription = () => {
                 </button>
               ) : (
                 <button onClick={terminerInscription}
-                  className="w-full bg-emerald-600 text-gray-900 py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-500 transition-all flex items-center justify-center gap-2">
+                  className="w-full bg-emerald-600 text-gray-800 py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-500 transition-all flex items-center justify-center gap-2">
                   <CheckCircle size={18} /> Se connecter
                 </button>
               )}

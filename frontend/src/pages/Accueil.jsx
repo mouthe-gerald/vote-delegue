@@ -92,28 +92,28 @@ const Accueil = () => {
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center logo-pulse">
               <Vote size={18} className="text-slate-900" />
             </div>
-            <span className="text-gray-900 font-bold text-base">VotingApp</span>
+            <span className="text-gray-800 font-bold text-base">VotingApp</span>
           </div>
           <div className="hidden md:flex items-center gap-6">
-            <a href="#apropos" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">À propos</a>
-            <a href="#fonctionnalites" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Fonctionnalités</a>
-            <a href="#contact" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Contact</a>
-            <Link to="/resultats" className="nav-link text-gray-500 hover:text-gray-900 text-sm transition-colors">Résultats</Link>
+            <a href="#apropos" className="nav-link text-gray-500 hover:text-gray-800 text-sm transition-colors">À propos</a>
+            <a href="#fonctionnalites" className="nav-link text-gray-500 hover:text-gray-800 text-sm transition-colors">Fonctionnalités</a>
+            <a href="#contact" className="nav-link text-gray-500 hover:text-gray-800 text-sm transition-colors">Contact</a>
+            <Link to="/resultats" className="nav-link text-gray-500 hover:text-gray-800 text-sm transition-colors">Résultats</Link>
             <button onClick={() => navigate('/inscription')}
               className="btn-inscrire text-amber-500 border border-amber-500 px-4 py-2 rounded-lg text-sm font-semibold hover:text-slate-900 transition-all duration-200">
               <span>S'inscrire</span>
             </button>
             <button onClick={() => navigate('/connexion')}
-              className="btn-connecter text-gray-900 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">
+              className="btn-connecter text-gray-800 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200">
               <span>Se connecter</span>
             </button>
           </div>
-          <button className="md:hidden text-gray-900" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="md:hidden text-gray-800" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
         {menuOpen && (
-          <div className="md:hidden bg-gray-50 border-t border-slate-700 px-4 py-4 flex flex-col gap-3 slide-down">
+          <div className="md:hidden bg-white border-t border-slate-700 px-4 py-4 flex flex-col gap-3 slide-down">
             <a href="#apropos" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>À propos</a>
             <a href="#fonctionnalites" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Fonctionnalités</a>
             <a href="#contact" className="text-gray-600 text-sm py-2 hover:text-amber-500 transition-colors" onClick={() => setMenuOpen(false)}>Contact</a>
@@ -134,7 +134,7 @@ const Accueil = () => {
             <div className="fade1 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-full px-4 py-1.5 mb-8">
               <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
             </div>
-            <h1 className="fade2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-normal mb-6">
+            <h1 className="fade2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-800 leading-normal mb-6">
               Election<br />
               <span className="text-amber-500">Transparente</span>
             </h1>
@@ -147,7 +147,7 @@ const Accueil = () => {
                 Accéder à la plateforme <ChevronRight size={16} />
               </button>
               <button onClick={() => navigate('/resultats')}
-                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-gray-900 border border-white/20 hover:bg-gray-100 hover:border-white/40 hover:scale-105 transition-all duration-200">
+                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-gray-800 border border-white/20 hover:bg-blue-50 hover:border-white/40 hover:scale-105 transition-all duration-200">
                 Voir les résultats
               </button>
             </div>
@@ -160,10 +160,10 @@ const Accueil = () => {
               ))}
             </div>
           </div>
-          <div className="fade3 bg-gray-100 border border-gray-300 rounded-2xl p-6 backdrop-blur-sm">
+          <div className="fade3 bg-blue-50 border border-gray-300 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1 h-5 bg-amber-500 rounded-full" />
-              <span className="text-gray-900 font-semibold text-sm">Fonctionnalités clés</span>
+              <span className="text-gray-800 font-semibold text-sm">Fonctionnalités clés</span>
             </div>
             <div className="flex flex-col gap-3">
               {[
@@ -173,12 +173,12 @@ const Accueil = () => {
                 {icon:BarChart2,label:'Résultats en temps réel',desc:'Visualisation instantanée',color:'#F59E0B'},
                 {icon:Mail,label:'Vérification OTP',desc:"Email sécurisé à l'inscription",color:'#EF4444'},
               ].map((f,i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-white/8 hover:border-gray-300 transition-all duration-200 cursor-default group">
+                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-gray-200 hover:bg-white/8 hover:border-gray-300 transition-all duration-200 cursor-default group">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200" style={{background:`${f.color}20`}}>
                     <f.icon size={16} style={{color:f.color}} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-gray-900 text-xs font-semibold">{f.label}</div>
+                    <div className="text-gray-800 text-xs font-semibold">{f.label}</div>
                     <div className="text-gray-400 text-xs">{f.desc}</div>
                   </div>
                   <CheckCircle size={14} className="text-emerald-500 flex-shrink-0 group-hover:scale-110 transition-transform duration-200" />
@@ -260,7 +260,7 @@ const Accueil = () => {
               <div className="w-1 h-8 bg-amber-500 rounded-full" />
               <span className="text-gray-400 text-xs font-semibold tracking-widest uppercase">Contact</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Une question ?<br />Contactez-nous</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4">Une question ?<br />Contactez-nous</h2>
             <p className="text-gray-500 text-base leading-relaxed mb-10">L'équipe de développement est disponible pour toute question relative à la plateforme.</p>
             <div className="flex flex-col gap-5">
               {[
@@ -274,18 +274,18 @@ const Accueil = () => {
                   </div>
                   <div>
                     <div className="text-gray-400 text-xs mb-1">{c.label}</div>
-                    <div className="text-gray-900 text-sm font-medium">{c.value}</div>
+                    <div className="text-gray-800 text-sm font-medium">{c.value}</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <form onSubmit={handleContact} className="bg-gray-100 border border-gray-300 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300">
-            <h3 className="text-gray-900 font-bold text-base mb-5">Envoyer un message</h3>
+          <form onSubmit={handleContact} className="bg-blue-50 border border-gray-300 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300">
+            <h3 className="text-gray-800 font-bold text-base mb-5">Envoyer un message</h3>
             <div className="flex flex-col gap-4">
-              <input placeholder="Votre nom" value={contactForm.nom} onChange={e => setContactForm({...contactForm,nom:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
-              <input placeholder="Votre email" type="email" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
-              <textarea placeholder="Votre message" rows={5} value={contactForm.message} onChange={e => setContactForm({...contactForm,message:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm outline-none placeholder-gray-400 resize-none focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <input placeholder="Votre nom" value={contactForm.nom} onChange={e => setContactForm({...contactForm,nom:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-800 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <input placeholder="Votre email" type="email" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-800 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
+              <textarea placeholder="Votre message" rows={5} value={contactForm.message} onChange={e => setContactForm({...contactForm,message:e.target.value})} className="border border-gray-300 rounded-lg px-4 py-3 text-gray-800 text-sm outline-none placeholder-gray-400 resize-none focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
               <button type="submit" disabled={contactLoading} className="shimmer-btn w-full text-slate-900 py-3 rounded-lg font-bold text-sm hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2">
                 {contactLoading ? <div className="w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" /> : 'Envoyer le message'}
               </button>
@@ -295,12 +295,12 @@ const Accueil = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-100 border-t border-gray-200 py-8 px-4 text-center">
+      <footer className="bg-blue-50 border-t border-gray-200 py-8 px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="w-6 h-6 bg-amber-500 rounded-md flex items-center justify-center">
             <Vote size={12} className="text-slate-900" />
           </div>
-          <span className="text-gray-900 font-semibold text-sm">VotingApp</span>
+          <span className="text-gray-800 font-semibold text-sm">VotingApp</span>
         </div>
       </footer>
     </div>

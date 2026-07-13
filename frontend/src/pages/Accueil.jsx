@@ -147,7 +147,7 @@ const Accueil = () => {
                 Accéder à la plateforme <ChevronRight size={16} />
               </button>
               <button onClick={() => navigate('/resultats')}
-                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-slate-700 border border-white/20 hover:bg-slate-800 hover:border-white/40 hover:scale-105 transition-all duration-200">
+                className="px-6 py-3.5 rounded-lg font-semibold text-sm text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105 transition-all duration-200">
                 Voir les résultats
               </button>
             </div>
@@ -160,10 +160,10 @@ const Accueil = () => {
               ))}
             </div>
           </div>
-          <div className="fade3 bg-slate-800 border border-slate-200 rounded-2xl p-6 backdrop-blur-sm">
+          <div className="fade3 bg-white border border-gray-200 rounded-2xl p-6 shadow-lg">
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1 h-5 bg-amber-500 rounded-full" />
-              <span className="text-slate-700 font-semibold text-sm">Fonctionnalités clés</span>
+              <span className="text-gray-700 font-semibold text-sm">Fonctionnalités clés</span>
             </div>
             <div className="flex flex-col gap-3">
               {[
@@ -190,7 +190,7 @@ const Accueil = () => {
       </section>
 
       {/* À PROPOS */}
-      <section id="apropos" className="bg-slate-50 py-24 px-4">
+      <section id="apropos" className="bg-gray-50 py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-1 h-8 bg-amber-500 rounded-full" />
@@ -280,7 +280,7 @@ const Accueil = () => {
               ))}
             </div>
           </div>
-          <form onSubmit={handleContact} className="bg-slate-800 border border-slate-200 rounded-2xl p-6 hover:border-white/20 transition-colors duration-300">
+          <form onSubmit={handleContact} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg hover:border-blue-300 transition-colors duration-300">
             <h3 className="text-slate-700 font-bold text-base mb-5">Envoyer un message</h3>
             <div className="flex flex-col gap-4">
               <input placeholder="Votre nom" value={contactForm.nom} onChange={e => setContactForm({...contactForm,nom:e.target.value})} className="border border-slate-200 rounded-lg px-4 py-3 text-slate-700 text-sm outline-none placeholder-gray-400 focus:border-amber-500/50 transition-colors w-full" style={{background:'rgba(255,255,255,0.06)'}} />
@@ -295,7 +295,7 @@ const Accueil = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-slate-800 border-t border-slate-200 py-8 px-4 text-center">
+      <footer className="bg-blue-900 border-t border-blue-800 py-8 px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="w-6 h-6 bg-amber-500 rounded-md flex items-center justify-center">
             <Vote size={12} className="text-slate-900" />
